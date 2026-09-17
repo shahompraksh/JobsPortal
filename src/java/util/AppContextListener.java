@@ -17,6 +17,7 @@ public class AppContextListener implements ServletContextListener {
         System.out.println("==================================================");
         System.out.println("[AppContextListener] Initializing Elevate Workforce application...");
         AppConfig.init(sce.getServletContext());
+        DatabaseInitializer.initializeIfNeeded();
 
         String smtpHost = AppConfig.getSmtpHost();
         String smtpPort = AppConfig.getSmtpPort();
