@@ -17,7 +17,7 @@ RUN apt-get update && \
 COPY . .
 
 # Build production WAR using Tomcat's server libs
-RUN ant -Dj2ee.server.domain=/usr/local/tomcat dist
+RUN ant -Dj2ee.server.domain=/usr/local/tomcat -Dlibs.CopyLibs.classpath=/workspace/lib/CopyLibs/org-netbeans-modules-java-j2seproject-copylibstask.jar dist
 
 # ── Stage 2: Production Apache Tomcat 11 Runtime ────────────────
 FROM tomcat:11.0-jdk21-temurin-jammy

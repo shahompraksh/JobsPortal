@@ -8,8 +8,13 @@ build/
 dist/
 target/
 *.war
-*.jar
 *.class
+
+# Keep required project libraries
+!lib/
+!lib/**
+!web/WEB-INF/lib/
+!web/WEB-INF/lib/**
 
 # IDE and Project metadata
 .nb-gradle/
