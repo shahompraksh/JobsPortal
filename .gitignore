@@ -5,10 +5,12 @@
 
 # Build artifacts
 build/
-dist/
 target/
-*.war
 *.class
+
+# Keep pre-built production WAR for cloud deployment
+!dist/
+!dist/JobsPortal.war
 
 # Keep required project libraries
 !lib/

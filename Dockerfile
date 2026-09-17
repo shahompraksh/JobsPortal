@@ -1,25 +1,7 @@
 # ================================================================
-# Multi-Stage Production Dockerfile for JobsPortalAssignment
+# Production Dockerfile for Elevate JobsPortal
 # Runs on Apache Tomcat 11 (Jakarta EE 10) + OpenJDK 21
 # ================================================================
-
-# ── Stage 1: Build WAR from source using Apache Ant ─────────────
-FROM tomcat:11.0-jdk21-temurin-jammy AS builder
-
-WORKDIR /workspace
-
-# Install Apache Ant build tool
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends ant && \
-    rm -rf /var/lib/apt/lists/*
-
-# Copy full project source and libraries
-COPY . .
-
-# Build production WAR using Tomcat's server libs
-RUN ant -Dj2ee.server.domain=/usr/local/tomcat -Dlibs.CopyLibs.classpath=/workspace/lib/CopyLibs/org-netbeans-modules-java-j2seproject-copylibstask.jar dist
-
-# ── Stage 2: Production Apache Tomcat 11 Runtime ────────────────
 FROM tomcat:11.0-jdk21-temurin-jammy
 
 LABEL maintainer="Elevate Workforce Solutions"
@@ -30,10 +12,9 @@ WORKDIR /usr/local/tomcat
 # Remove default boilerplate Tomcat apps
 RUN rm -rf webapps/*
 
-# Deploy WAR to ROOT (domain root /), /JobsPortal, and /JobsPortalAssignment
-COPY --from=builder /workspace/dist/JobsPortal.war webapps/ROOT.war
-COPY --from=builder /workspace/dist/JobsPortal.war webapps/JobsPortal.war
-COPY --from=builder /workspace/dist/JobsPortal.war webapps/JobsPortalAssignment.war
+# Deploy pre-built production WAR to ROOT (domain root /) and /JobsPortal
+COPY dist/JobsPortal.war webapps/ROOT.war
+COPY dist/JobsPortal.war webapps/JobsPortal.war
 
 # Copy dynamic port entrypoint script
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
