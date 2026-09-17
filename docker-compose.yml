@@ -1,0 +1,44 @@
+services:
+  # ── MySQL Database Service ─────────────────────────────────────────
+  db:
+    image: mysql:8.4
+    container_name: jobsportal-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: jobsportal
+      MYSQL_USER: jobuser
+      MYSQL_PASSWORD: jobpassword
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./database/production_init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    ports:
+      - "3307:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ── Tomcat 11 Web Application Service ──────────────────────────────
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jobsportal-web
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      MYSQLHOST: db
+      MYSQLPORT: "3306"
+      MYSQLDATABASE: jobsportal
+      MYSQLUSER: jobuser
+      MYSQLPASSWORD: jobpassword
+      APP_BASE_URL: "http://localhost:8080"
+    ports:
+      - "8080:8080"
+
+volumes:
+  db_data:

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+
+    <!-- ── EXISTING SERVLETS ───────────────────────────── -->
+    <servlet><servlet-name>doAddJob</servlet-name><servlet-class>controller.doAddJob</servlet-class></servlet>
+    <servlet><servlet-name>doAdminLogin</servlet-name><servlet-class>controller.doAdminLogin</servlet-class></servlet>
+    <servlet><servlet-name>doDeleteJob</servlet-name><servlet-class>controller.doDeleteJob</servlet-class></servlet>
+    <servlet><servlet-name>doUpdateJob</servlet-name><servlet-class>controller.doUpdateJob</servlet-class></servlet>
+    <servlet><servlet-name>doUserLogin</servlet-name><servlet-class>controller.doUserLogin</servlet-class></servlet>
+    <servlet><servlet-name>doUserProfile</servlet-name><servlet-class>controller.doUserProfile</servlet-class></servlet>
+    <servlet><servlet-name>doUserRegister</servlet-name><servlet-class>controller.doUserRegister</servlet-class></servlet>
+    <servlet><servlet-name>doapplyjob</servlet-name><servlet-class>controller.doapplyjob</servlet-class></servlet>
+    <servlet><servlet-name>dofindajob</servlet-name><servlet-class>controller.dofindajob</servlet-class></servlet>
+    <servlet><servlet-name>doWithdrawApplication</servlet-name><servlet-class>controller.doWithdrawApplication</servlet-class></servlet>
+    <servlet><servlet-name>ContactController</servlet-name><servlet-class>controller.ContactController</servlet-class></servlet>
+    <servlet><servlet-name>doUpdateApplicationStatus</servlet-name><servlet-class>controller.doUpdateApplicationStatus</servlet-class></servlet>
+
+    <!-- ── NEW AUTH SERVLETS ───────────────────────────── -->
+    <servlet><servlet-name>doVerifyOtp</servlet-name><servlet-class>controller.doVerifyOtp</servlet-class></servlet>
+    <servlet><servlet-name>doResendOtp</servlet-name><servlet-class>controller.doResendOtp</servlet-class></servlet>
+
+    <!-- Google OAuth -->
+    <servlet><servlet-name>OAuthInitGoogle</servlet-name><servlet-class>controller.OAuthInitGoogle</servlet-class></servlet>
+    <servlet><servlet-name>OAuthCallbackGoogle</servlet-name><servlet-class>controller.OAuthCallbackGoogle</servlet-class></servlet>
+
+    <!-- Facebook OAuth -->
+    <servlet><servlet-name>OAuthInitFacebook</servlet-name><servlet-class>controller.OAuthInitFacebook</servlet-class></servlet>
+    <servlet><servlet-name>OAuthCallbackFacebook</servlet-name><servlet-class>controller.OAuthCallbackFacebook</servlet-class></servlet>
+
+    <!-- LinkedIn OAuth -->
+    <servlet><servlet-name>OAuthInitLinkedIn</servlet-name><servlet-class>controller.OAuthInitLinkedIn</servlet-class></servlet>
+    <servlet><servlet-name>OAuthCallbackLinkedIn</servlet-name><servlet-class>controller.OAuthCallbackLinkedIn</servlet-class></servlet>
+
+    <!-- Apple Sign-in -->
+    <servlet><servlet-name>OAuthInitApple</servlet-name><servlet-class>controller.OAuthInitApple</servlet-class></servlet>
+    <servlet><servlet-name>OAuthCallbackApple</servlet-name><servlet-class>controller.OAuthCallbackApple</servlet-class></servlet>
+
+    <!-- Test Email Diagnostic Endpoint -->
+    <servlet><servlet-name>TestEmailServlet</servlet-name><servlet-class>controller.TestEmailServlet</servlet-class></servlet>
+
+    <!-- ── EXISTING MAPPINGS ───────────────────────────── -->
+    <servlet-mapping><servlet-name>doAddJob</servlet-name><url-pattern>/doAddJob</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>doAdminLogin</servlet-name><url-pattern>/doAdminLogin</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>doDeleteJob</servlet-name><url-pattern>/doDeleteJob</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>doUpdateJob</servlet-name><url-pattern>/doUpdateJob</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>doUserLogin</servlet-name><url-pattern>/doUserLogin</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>doUserProfile</servlet-name><url-pattern>/doUserProfile</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>doUserRegister</servlet-name><url-pattern>/doUserRegister</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>doapplyjob</servlet-name><url-pattern>/doapplyjob</url-pattern><url-pattern>/doApplyJob</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>dofindajob</servlet-name><url-pattern>/dofindajob</url-pattern><url-pattern>/findajob</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>doWithdrawApplication</servlet-name><url-pattern>/doWithdrawApplication</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>ContactController</servlet-name><url-pattern>/ContactController</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>doUpdateApplicationStatus</servlet-name><url-pattern>/doUpdateApplicationStatus</url-pattern></servlet-mapping>
+
+    <!-- ── NEW AUTH MAPPINGS ───────────────────────────── -->
+    <servlet-mapping><servlet-name>doVerifyOtp</servlet-name><url-pattern>/doVerifyOtp</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>doResendOtp</servlet-name><url-pattern>/doResendOtp</url-pattern></servlet-mapping>
+
+    <servlet-mapping><servlet-name>OAuthInitGoogle</servlet-name><url-pattern>/auth/google</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>OAuthCallbackGoogle</servlet-name><url-pattern>/auth/google/callback</url-pattern></servlet-mapping>
+
+    <servlet-mapping><servlet-name>OAuthInitFacebook</servlet-name><url-pattern>/auth/facebook</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>OAuthCallbackFacebook</servlet-name><url-pattern>/auth/facebook/callback</url-pattern></servlet-mapping>
+
+    <servlet-mapping><servlet-name>OAuthInitLinkedIn</servlet-name><url-pattern>/auth/linkedin</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>OAuthCallbackLinkedIn</servlet-name><url-pattern>/auth/linkedin/callback</url-pattern></servlet-mapping>
+
+    <servlet-mapping><servlet-name>OAuthInitApple</servlet-name><url-pattern>/auth/apple</url-pattern></servlet-mapping>
+    <servlet-mapping><servlet-name>OAuthCallbackApple</servlet-name><url-pattern>/auth/apple/callback</url-pattern></servlet-mapping>
+
+    <servlet-mapping><servlet-name>TestEmailServlet</servlet-name><url-pattern>/api/test-email</url-pattern><url-pattern>/testEmail</url-pattern><url-pattern>/auth/test-email</url-pattern></servlet-mapping>
+
+    <listener>
+        <listener-class>util.AppContextListener</listener-class>
+    </listener>
+
+    <session-config>
+        <session-timeout>60</session-timeout>
+    </session-config>
+</web-app>

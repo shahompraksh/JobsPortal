@@ -1,0 +1,1049 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="java.sql.*, dbHelper.MyConnect, util.OAuthConfig"%>
+<%
+    // If user already logged in, redirect to user dashboard
+    String sessionUser = (String) session.getAttribute("username");
+    if (sessionUser != null && !sessionUser.isBlank()) {
+        response.sendRedirect(request.getContextPath() + "/userdashboard.jsp");
+        return;
+    }
+    int liveJobs = 24;
+    int liveUsers = 3;
+    try (Connection conn = MyConnect.connectDatab()) {
+        try (Statement st = conn.createStatement(); ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM jobs")) {
+            if (rs.next()) liveJobs = rs.getInt(1);
+        }
+        try (Statement st = conn.createStatement(); ResultSet rs = st.executeQuery("SELECT COUNT(*) FROM user")) {
+            if (rs.next()) liveUsers = rs.getInt(1);
+        }
+    } catch (Exception ignored) {}
+%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create Candidate Account — Elevate Workforce Solutions</title>
+    <meta name="description" content="Register your free candidate account on Elevate Workforce and connect with top employers across Nepal.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --ez-blue:       #0066cc;
+            --ez-blue-hover: #0052a3;
+            --ez-navy:       #173b75;
+            --ez-slate:      #0f172a;
+            --ez-amber:      #f59e0b;
+            --ez-green:      #059669;
+            --ez-cyan:       #06b6d4;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: radial-gradient(circle at 10% 20%, rgba(224,242,254,0.6) 0%, transparent 40%),
+                        radial-gradient(circle at 90% 60%, rgba(219,234,254,0.5) 0%, transparent 50%),
+                        #f8fafc;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Subtle background dot pattern */
+        .bg-dot-art {
+            position: fixed;
+            top: 50px;
+            right: -60px;
+            width: 650px;
+            height: 650px;
+            pointer-events: none;
+            opacity: 0.15;
+            z-index: 0;
+            background-image: radial-gradient(#0284c7 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* ── NAVBAR ─────────────────────── */
+        .ez-navbar {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 14px 0;
+            position: relative;
+            z-index: 20;
+            box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+        }
+        .ez-brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+        .ez-brand-logo {
+            height: 34px;
+            width: auto;
+            object-fit: contain;
+        }
+        .ez-nav-link {
+            color: #475569;
+            font-weight: 500;
+            font-size: 0.92rem;
+            text-decoration: none;
+            padding: 6px 12px;
+            transition: color 0.2s;
+        }
+        .ez-nav-link:hover { color: var(--ez-blue); }
+
+        /* ── HERO SECTION ───────────────── */
+        .ez-hero-section {
+            padding: 36px 0 54px;
+            flex-grow: 1;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ── GRAPHIC STAGE (left column) ── */
+        .graphic-stage {
+            position: relative;
+            width: 100%;
+            max-width: 480px;
+            height: 350px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Central circular portrait */
+        .candidate-circle {
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top center;
+            border: 6px solid #ffffff;
+            box-shadow: 0 16px 36px rgba(15,23,42,0.12);
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Dashed orbit ring */
+        .orbit-ring {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            border: 2px dashed #93c5fd;
+            pointer-events: none;
+            animation: slowRotate 45s linear infinite;
+        }
+        @keyframes slowRotate {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        /* ── Floating badges ── */
+        @keyframes floatUpDown {
+            0%, 100% { transform: translateY(0);   }
+            50%       { transform: translateY(-7px); }
+        }
+
+        /* Amber "100% Free" top-left */
+        .float-badge-apply {
+            position: absolute;
+            top: 22px;
+            left: 28px;
+            background: var(--ez-amber);
+            color: #ffffff;
+            font-size: 0.76rem;
+            font-weight: 700;
+            padding: 5px 14px;
+            border-radius: 20px;
+            letter-spacing: 0.3px;
+            box-shadow: 0 4px 14px rgba(245,158,11,0.4);
+            z-index: 4;
+            animation: floatUpDown 4s ease-in-out infinite;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        /* Left white card: Direct Matching / Free Forever */
+        .float-card-left {
+            position: absolute;
+            left: 0;
+            top: 96px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 10px 14px;
+            box-shadow: 0 10px 24px rgba(15,23,42,0.08);
+            width: 184px;
+            z-index: 4;
+            animation: floatUpDown 5s ease-in-out infinite 0.5s;
+        }
+
+        /* Top-right company card */
+        .float-card-right-top {
+            position: absolute;
+            right: 12px;
+            top: 14px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 8px 14px;
+            box-shadow: 0 10px 24px rgba(15,23,42,0.08);
+            width: 185px;
+            z-index: 4;
+            animation: floatUpDown 4.5s ease-in-out infinite 1s;
+        }
+
+        /* Bottom-right cyan stat badge */
+        .float-badge-stat {
+            position: absolute;
+            right: 20px;
+            bottom: 68px;
+            background: linear-gradient(135deg, #0284c7, #06b6d4);
+            color: #ffffff;
+            border-radius: 12px;
+            padding: 10px 16px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(6,182,212,0.35);
+            z-index: 4;
+            animation: floatUpDown 5.5s ease-in-out infinite 1.5s;
+        }
+
+        /* ── Hero headline below graphic ── */
+        .hero-hire-title {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0f172a;
+            letter-spacing: -0.5px;
+            margin-top: 18px;
+            text-align: center;
+        }
+        .hero-hire-title .highlight { color: var(--ez-blue); }
+        .hero-hire-subtitle {
+            font-size: 1.05rem;
+            color: #64748b;
+            text-align: center;
+            margin-top: 8px;
+            max-width: 440px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ── REGISTER CARD (right column) ──── */
+        .ez-register-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 0;
+            box-shadow: 0 8px 30px rgba(15,23,42,0.08);
+            overflow: hidden;
+        }
+
+        /* Tabs */
+        .ez-tabs {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .ez-tab-item {
+            flex: 1;
+            padding: 14px 10px;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #64748b;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .ez-tab-item.active {
+            color: var(--ez-blue);
+            border-bottom-color: var(--ez-blue);
+        }
+        .ez-tab-item:hover:not(.active) { color: #1e293b; }
+
+        /* Card body */
+        .ez-card-body {
+            padding: 24px 28px 28px;
+        }
+
+        /* Alerts */
+        .ez-alert {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 9px;
+            font-size: 0.84rem;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        .ez-alert-ok  { background: #f0fdf4; border: 1px solid #bbf7d0; color: #16a34a; }
+        .ez-alert-err { background: #fef2f2; border: 1px solid #fecaca; color: #dc2626; }
+
+        /* Form labels and inputs */
+        .ez-input-label {
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 5px;
+            display: block;
+        }
+        .ez-input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .ez-input-icon {
+            position: absolute;
+            left: 14px;
+            color: #94a3b8;
+            font-size: 0.95rem;
+            pointer-events: none;
+            z-index: 3;
+        }
+        .ez-form-control {
+            display: block;
+            width: 100%;
+            padding: 9.5px 14px 9.5px 38px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 9px;
+            font-size: 0.88rem;
+            font-family: 'Inter', sans-serif;
+            color: #0f172a;
+            background: #fff;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        .ez-form-control::placeholder { color: #b0b7c3; }
+        .ez-form-control:focus {
+            border-color: var(--ez-blue);
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.12);
+        }
+
+        /* Password eye */
+        .pw-wrap { position: relative; }
+        .pw-wrap .ez-form-control { padding-right: 42px; }
+        .pw-eye {
+            position: absolute;
+            right: 12px; top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #9ca3af;
+            cursor: pointer;
+            font-size: 0.95rem;
+            padding: 2px;
+            z-index: 3;
+        }
+        .pw-eye:hover { color: var(--ez-blue); }
+
+        /* Password strength meter */
+        .strength-meter {
+            height: 4px;
+            border-radius: 2px;
+            background: #e2e8f0;
+            margin-top: 6px;
+            overflow: hidden;
+            display: none;
+        }
+        .strength-bar {
+            height: 100%;
+            width: 0%;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+        .strength-text {
+            font-size: 0.72rem;
+            color: #64748b;
+            margin-top: 3px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Primary button */
+        .ez-btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: var(--ez-blue);
+            border: none;
+            border-radius: 9px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.22s;
+            box-shadow: 0 4px 14px rgba(0,102,204,0.35);
+            position: relative;
+            overflow: hidden;
+        }
+        .ez-btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.5s;
+        }
+        .ez-btn-primary:hover::before { left: 100%; }
+        .ez-btn-primary:hover {
+            background: var(--ez-blue-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 22px rgba(0,102,204,0.45);
+        }
+        .ez-btn-primary:active { transform: translateY(0); }
+        .ez-btn-primary:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+        /* Social Auth Divider & Buttons */
+        .ez-divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 18px 0 14px;
+            color: #94a3b8;
+            font-size: 0.78rem;
+            font-weight: 500;
+        }
+        .ez-divider::before, .ez-divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .ez-divider span {
+            padding: 0 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .social-btn-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 12px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            background: #ffffff;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        .social-btn:hover {
+            border-color: #cbd5e1;
+            background: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(15,23,42,0.06);
+        }
+        .social-btn svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* Register text */
+        .ez-register-text {
+            text-align: center;
+            font-size: 0.85rem;
+            color: #64748b;
+            margin-top: 14px;
+        }
+        .ez-register-text a {
+            color: var(--ez-blue);
+            font-weight: 700;
+            text-decoration: none;
+        }
+        .ez-register-text a:hover { text-decoration: underline; }
+
+        /* Terms label */
+        .ez-terms-label {
+            font-size: 0.78rem;
+            color: #64748b;
+            line-height: 1.35;
+            cursor: pointer;
+            user-select: none;
+        }
+        .ez-terms-label a {
+            color: var(--ez-blue);
+            text-decoration: none;
+        }
+        .ez-terms-label a:hover { text-decoration: underline; }
+
+        /* Support / WhatsApp section */
+        .support-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 14px 16px;
+        }
+        .support-wa-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            text-decoration: none;
+            transition: all 0.2s;
+            margin-bottom: 12px;
+        }
+        .support-wa-row:hover { background: #dcfce7; }
+        .wa-icon-box {
+            width: 38px; height: 38px;
+            background: #16a34a;
+            border-radius: 9px;
+            display: flex; align-items: center; justify-content: center;
+            color: #fff; font-size: 1.1rem; flex-shrink: 0;
+        }
+        .wa-text-block small  { display: block; font-size: 0.73rem; color: #166534; }
+        .wa-text-block strong { font-size: 0.88rem; color: #15803d; }
+
+        /* Floating WhatsApp corner button */
+        .floating-wa-btn {
+            position: fixed;
+            bottom: 24px;
+            left: 24px;
+            z-index: 99;
+            background: #25d366;
+            color: #ffffff;
+            border-radius: 30px;
+            padding: 10px 18px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.88rem;
+            font-weight: 700;
+            text-decoration: none;
+            box-shadow: 0 6px 20px rgba(37,211,102,0.4);
+            transition: all 0.25s ease;
+        }
+        .floating-wa-btn:hover {
+            color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(37,211,102,0.55);
+            background: #22bf5b;
+        }
+
+        /* ── KPI SECTION ─────────────────── */
+        .ez-kpi-section {
+            background: linear-gradient(135deg, #173b75 0%, #0066cc 50%, #0891b2 100%);
+            padding: 30px 0;
+            position: relative;
+            z-index: 10;
+        }
+        .kpi-navy-card {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 14px;
+            padding: 20px 24px;
+            text-align: center;
+            transition: all 0.25s;
+        }
+        .kpi-navy-card:hover {
+            background: rgba(255,255,255,0.14);
+            transform: translateY(-3px);
+        }
+        .kpi-number {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 2.1rem;
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 4px;
+            color: #ffffff;
+        }
+        .kpi-label {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            margin-bottom: 0;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .hero-hire-title { font-size: 2rem; }
+            .graphic-stage { height: 300px; }
+            .candidate-circle { width: 180px; height: 180px; }
+            .orbit-ring { width: 265px; height: 265px; }
+            .float-card-left { width: 160px; top: 76px; }
+            .kpi-number { font-size: 1.7rem; }
+            .social-btn-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 767px) {
+            .ez-hero-section { padding: 24px 0 36px; }
+            .hero-hire-title { font-size: 1.65rem; }
+            .ez-card-body { padding: 18px 18px 22px; }
+            .floating-wa-btn span { display: none; }
+            .floating-wa-btn { padding: 12px; border-radius: 50%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background dot pattern -->
+    <div class="bg-dot-art"></div>
+
+    <!-- Floating WhatsApp action button -->
+    <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce%2C%20I%20have%20a%20question%20about%20candidate%20registration."
+       class="floating-wa-btn" target="_blank" rel="noopener">
+        <i class="bi bi-whatsapp fs-5"></i>
+        <span>Chat on WhatsApp</span>
+    </a>
+
+    <!-- ── NAVBAR ─────────────────────────────── -->
+    <header class="ez-navbar">
+        <div class="container d-flex align-items-center justify-content-between">
+            <a href="<%= request.getContextPath() %>/index.jsp" class="ez-brand">
+                <img src="images/logo.png" alt="Elevate Workforce Logo" class="ez-brand-logo"
+                     onerror="this.style.display='none'">
+                <span class="fw-bold text-dark fs-5">Elevate</span>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1 small">Candidate Zone</span>
+            </a>
+            <div class="d-flex align-items-center gap-2 gap-md-3">
+                <a href="<%= request.getContextPath() %>/index.jsp" class="ez-nav-link d-none d-md-inline">Home</a>
+                <a href="<%= request.getContextPath() %>/findajob.jsp" class="ez-nav-link d-none d-md-inline">Find a Job</a>
+                <a href="<%= request.getContextPath() %>/contact.jsp"  class="ez-nav-link d-none d-sm-inline">Contact</a>
+                <a href="<%= request.getContextPath() %>/login.jsp" class="btn btn-outline-primary rounded-pill px-3 py-1 btn-sm fw-semibold">
+                    Login
+                </a>
+                <a href="<%= request.getContextPath() %>/register.jsp" class="btn btn-primary rounded-pill px-3 py-1 btn-sm fw-semibold text-white shadow-sm">
+                    Register
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ── HERO SECTION ────────────────────────── -->
+    <main class="ez-hero-section">
+        <div class="container">
+            <div class="row align-items-center g-4 g-lg-5">
+
+                <!-- LEFT: Graphic Stage + Headline -->
+                <div class="col-lg-6">
+
+                    <!-- Graphic Stage with circular portrait + floating badges -->
+                    <div class="graphic-stage">
+
+                        <!-- Dashed orbit ring -->
+                        <div class="orbit-ring"></div>
+
+                        <!-- Amber "100% Free" badge top-left -->
+                        <div class="float-badge-apply">
+                            <i class="bi bi-sparkles"></i> 100% Free for Talents
+                        </div>
+
+                        <!-- Left floating card: Fast-track Hiring -->
+                        <div class="float-card-left">
+                            <div class="d-flex align-items-start gap-2 mb-2">
+                                <i class="bi bi-rocket-takeoff-fill text-primary mt-1" style="font-size:.95rem;"></i>
+                                <div>
+                                    <strong class="d-block text-dark" style="font-size:0.74rem;">Fast-Track Match</strong>
+                                    <span class="text-muted d-block" style="font-size:0.65rem;line-height:1.25;">Direct access to <%= liveJobs %>+ active openings.</span>
+                                </div>
+                            </div>
+                            <div class="border-top pt-2 d-flex align-items-start gap-2">
+                                <i class="bi bi-shield-check text-success mt-1" style="font-size:.95rem;"></i>
+                                <div>
+                                    <strong class="d-block text-dark" style="font-size:0.74rem;">Verified Employers</strong>
+                                    <span class="text-muted d-block" style="font-size:0.65rem;line-height:1.25;">100% legitimate career opportunities.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Central portrait in circle -->
+                        <img src="images/candidate-portrait.jpg"
+                             alt="Professional Candidate"
+                             class="candidate-circle">
+
+                        <!-- Top-right card: Corporate Recruiters -->
+                        <div class="float-card-right-top">
+                            <div class="d-flex align-items-center gap-2 mb-1">
+                                <span class="badge bg-primary rounded-circle p-1" style="width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;">
+                                    <i class="bi bi-building text-white" style="font-size:0.6rem;"></i>
+                                </span>
+                                <strong class="text-dark" style="font-size:0.74rem;">Top Recruiters</strong>
+                                <i class="bi bi-chevron-down text-muted small ms-1"></i>
+                            </div>
+                            <div class="text-primary" style="font-size:0.68rem;line-height:1.35;">
+                                <div>&bull; Tech, Telecom &amp; Banking</div>
+                                <div>&bull; Remote &amp; On-site Roles</div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom-right stat badge -->
+                        <div class="float-badge-stat">
+                            <div class="fw-bold fs-5 mb-0">500K+</div>
+                            <span style="font-size:0.65rem;font-weight:600;opacity:0.9;">Careers Launched</span>
+                        </div>
+
+                    </div><!-- /graphic-stage -->
+
+                    <!-- Headline below graphic -->
+                    <h1 class="hero-hire-title">
+                        Start Your <span class="highlight">Career Journey</span>
+                    </h1>
+                    <p class="hero-hire-subtitle">
+                        Create your free profile in under 2 minutes and unlock verified job opportunities across Nepal. <span style="color:#6366f1;">✨</span>
+                    </p>
+
+                </div><!-- /col-lg-6 -->
+
+                <!-- RIGHT: Register Card -->
+                <div class="col-lg-6">
+                    <div class="ez-register-card">
+
+                        <!-- Tabs -->
+                        <div class="ez-tabs">
+                            <div class="ez-tab-item active" id="tabRegister" onclick="switchTab('register')">
+                                Candidate Register
+                            </div>
+                            <div class="ez-tab-item" id="tabHelp" onclick="switchTab('help')">
+                                Need Help?
+                            </div>
+                        </div>
+
+                        <div class="ez-card-body">
+
+                            <!-- Alerts -->
+                            <%
+                                String msg = request.getParameter("msg");
+                                String err = request.getParameter("error");
+                                if (msg != null && !msg.isBlank()) {
+                            %>
+                            <div class="ez-alert ez-alert-ok">
+                                <i class="bi bi-check-circle-fill"></i> <%= msg %>
+                            </div>
+                            <% } else if (err != null && !err.isBlank()) { %>
+                            <div class="ez-alert ez-alert-err">
+                                <i class="bi bi-exclamation-triangle-fill"></i> <%= err %>
+                            </div>
+                            <% } %>
+
+                            <!-- ── REGISTER SECTION ── -->
+                            <div id="registerSection">
+                                <p class="text-muted small mb-3">Fill out your details to create your secure candidate profile</p>
+
+                                <form id="registerForm" action="<%= request.getContextPath() %>/doUserRegister" method="post" novalidate>
+
+                                    <!-- Full Name -->
+                                    <div class="mb-3">
+                                        <label class="ez-input-label" for="regName">Full Name <span class="text-danger">*</span></label>
+                                        <div class="ez-input-group">
+                                            <i class="bi bi-person ez-input-icon"></i>
+                                            <input type="text" id="regName" name="name" class="ez-form-control"
+                                                   placeholder="e.g. Aayush Sharma" required autofocus autocomplete="name">
+                                        </div>
+                                    </div>
+
+                                    <!-- Email & Phone row -->
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-sm-6">
+                                            <label class="ez-input-label" for="regEmail">Email Address <span class="text-danger">*</span></label>
+                                            <div class="ez-input-group">
+                                                <i class="bi bi-envelope ez-input-icon"></i>
+                                                <input type="email" id="regEmail" name="email" class="ez-form-control"
+                                                       placeholder="aayush@example.com" required autocomplete="email">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="ez-input-label" for="regPhone">Phone Number</label>
+                                            <div class="ez-input-group">
+                                                <i class="bi bi-telephone ez-input-icon"></i>
+                                                <input type="tel" id="regPhone" name="phone" class="ez-form-control"
+                                                       placeholder="+977 98XXXXXXXX" autocomplete="tel">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Username & Password row -->
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-sm-6">
+                                            <label class="ez-input-label" for="regUser">Username <span class="text-danger">*</span></label>
+                                            <div class="ez-input-group">
+                                                <i class="bi bi-at ez-input-icon"></i>
+                                                <input type="text" id="regUser" name="username" class="ez-form-control"
+                                                       placeholder="Choose username" required autocomplete="username">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="ez-input-label" for="regPass">Password <span class="text-danger">*</span></label>
+                                            <div class="ez-input-group pw-wrap">
+                                                <i class="bi bi-lock ez-input-icon"></i>
+                                                <input type="password" id="regPass" name="password" class="ez-form-control"
+                                                       placeholder="Strong password" required autocomplete="new-password">
+                                                <button type="button" class="pw-eye" id="eyeBtn" title="Toggle password visibility">
+                                                    <i class="bi bi-eye" id="eyeIco"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Password strength meter -->
+                                    <div class="mb-3">
+                                        <div class="strength-meter" id="strengthMeter">
+                                            <div class="strength-bar" id="strengthBar"></div>
+                                        </div>
+                                        <div class="strength-text" id="strengthText" style="display:none;">
+                                            <span>Password strength: <strong id="strengthLabel">Weak</strong></span>
+                                            <span class="text-muted">Min. 6 chars</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Terms and Conditions Checkbox -->
+                                    <div class="form-check mb-3">
+                                        <input class="form-check-input" type="checkbox" id="termsCheck" required checked>
+                                        <label class="form-check-label ez-terms-label" for="termsCheck">
+                                            I agree to the <a href="<%= request.getContextPath() %>/terms.jsp" target="_blank">Terms of Service</a> &amp; 
+                                            <a href="<%= request.getContextPath() %>/privacy.jsp" target="_blank">Privacy Policy</a>
+                                        </label>
+                                    </div>
+
+                                    <!-- Submit Button -->
+                                    <button type="submit" class="ez-btn-primary" id="registerBtn">
+                                        <span id="regBtnText"><i class="bi bi-check-circle-fill me-1"></i> Complete Registration</span>
+                                        <span id="regSpinner" class="spinner-border spinner-border-sm d-none"></span>
+                                    </button>
+
+                                </form>
+
+                                <!-- Social Sign-up Divider -->
+                                <div class="ez-divider">
+                                    <span>or sign up with</span>
+                                </div>
+
+                                <!-- 4 Social Sign Up Buttons -->
+                                <div class="social-btn-grid">
+                                    <!-- Google -->
+                                    <a href="<%= request.getContextPath() %>/auth/google" class="social-btn" title="Sign up with Google">
+                                         <svg viewBox="0 0 24 24">
+                                            <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3.03h3.88c2.27-2.09 3.665-5.17 3.665-9.12z"/>
+                                            <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.03c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.26v3.13C3.26 21.36 7.34 24 12 24z"/>
+                                            <path fill="#FBBC05" d="M5.28 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.58H1.26C.46 8.18 0 9.99 0 12s.46 3.82 1.26 5.42l4.02-3.13z"/>
+                                            <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.26 6.58l4.02 3.13c.95-2.83 3.6-4.93 6.72-4.93z"/>
+                                        </svg>
+                                    </a>
+
+                                    <!-- LinkedIn -->
+                                    <a href="<%= request.getContextPath() %>/auth/linkedin" class="social-btn" title="Sign up with LinkedIn">
+                                         <svg viewBox="0 0 24 24" fill="#0077b5">
+                                            <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+                                        </svg>
+                                    </a>
+
+                                    <!-- Facebook -->
+                                    <a href="<%= request.getContextPath() %>/auth/facebook" class="social-btn" title="Sign up with Facebook">
+                                         <svg viewBox="0 0 24 24" fill="#1877F2">
+                                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                                        </svg>
+                                    </a>
+
+                                    <!-- Apple -->
+                                    <a href="<%= request.getContextPath() %>/auth/apple" class="social-btn" title="Sign up with Apple">
+                                         <svg viewBox="0 0 24 24" fill="#000000">
+                                            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.38c.62-.75 1.04-1.8 0.92-2.85-.9.04-2 .6-2.65 1.36-.58.67-1.08 1.74-.95 2.77 1.01.08 2.05-.53 2.68-1.28z"/>
+                                        </svg>
+                                    </a>
+                                </div>
+
+                                <div class="ez-register-text">
+                                    Already have an account? <a href="<%= request.getContextPath() %>/login.jsp">Sign In here</a>
+                                </div>
+                            </div>
+
+                            <!-- ── HELP / SUPPORT SECTION ── -->
+                            <div id="helpSection" class="d-none">
+                                <p class="text-muted small mb-3">Connect with our support team instantly:</p>
+
+                                <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce%2C%20I%20need%20help%20with%20registration."
+                                   class="support-wa-row" target="_blank" rel="noopener">
+                                    <div class="wa-icon-box"><i class="bi bi-whatsapp"></i></div>
+                                    <div class="wa-text-block">
+                                        <small>WhatsApp — Instant Support</small>
+                                        <strong>+977 9761819137</strong>
+                                    </div>
+                                </a>
+
+                                <div class="support-card">
+                                    <div class="d-flex align-items-center gap-3 mb-3">
+                                        <div class="p-2 bg-primary-subtle text-primary rounded-circle">
+                                            <i class="bi bi-telephone fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <strong class="d-block text-dark small">Direct Support Line</strong>
+                                            <a href="tel:9761819137" class="text-primary text-decoration-none fw-semibold small">
+                                                +977 9761819137
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="p-2 bg-warning-subtle text-warning rounded-circle">
+                                            <i class="bi bi-envelope fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <strong class="d-block text-dark small">Email Support</strong>
+                                            <a href="mailto:support@elevate.com.np" class="text-warning text-decoration-none fw-semibold small">
+                                                support@elevate.com.np
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="d-grid mt-3">
+                                    <button class="btn btn-outline-secondary rounded-pill btn-sm" onclick="switchTab('register')">
+                                        &larr; Back to Registration
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div><!-- /ez-card-body -->
+                    </div><!-- /ez-register-card -->
+                </div><!-- /col-lg-6 -->
+
+            </div><!-- /row -->
+        </div><!-- /container -->
+    </main>
+
+    <!-- ── KPI STATS STRIP ──────────────────────── -->
+    <section class="ez-kpi-section">
+        <div class="container">
+            <div class="row g-3 g-lg-4">
+                <div class="col-lg-3 col-6">
+                    <div class="kpi-navy-card">
+                        <div class="kpi-number"><%= liveJobs %>+</div>
+                        <p class="kpi-label">Active Job Postings</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="kpi-navy-card">
+                        <div class="kpi-number">40K+</div>
+                        <p class="kpi-label">Registered Employers</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="kpi-navy-card">
+                        <div class="kpi-number">4.1M+</div>
+                        <p class="kpi-label">Monthly Visits</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6">
+                    <div class="kpi-navy-card">
+                        <div class="kpi-number">500K+</div>
+                        <p class="kpi-label">Success Stories</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Password eye toggle
+        const eyeBtn = document.getElementById('eyeBtn');
+        const eyeIco = document.getElementById('eyeIco');
+        const regPass = document.getElementById('regPass');
+        if (eyeBtn && regPass) {
+            eyeBtn.addEventListener('click', () => {
+                const show = regPass.type === 'password';
+                regPass.type = show ? 'text' : 'password';
+                eyeIco.className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+            });
+        }
+
+        // Real-time password strength meter
+        const strengthMeter = document.getElementById('strengthMeter');
+        const strengthBar   = document.getElementById('strengthBar');
+        const strengthText  = document.getElementById('strengthText');
+        const strengthLabel = document.getElementById('strengthLabel');
+
+        if (regPass) {
+            regPass.addEventListener('input', () => {
+                const val = regPass.value;
+                if (!val) {
+                    strengthMeter.style.display = 'none';
+                    strengthText.style.display  = 'none';
+                    return;
+                }
+                strengthMeter.style.display = 'block';
+                strengthText.style.display  = 'flex';
+
+                let score = 0;
+                if (val.length >= 6) score++;
+                if (val.length >= 10) score++;
+                if (/[A-Z]/.test(val)) score++;
+                if (/[0-9]/.test(val)) score++;
+                if (/[^A-Za-z0-9]/.test(val)) score++;
+
+                if (score <= 2) {
+                    strengthBar.style.width = '33%';
+                    strengthBar.style.backgroundColor = '#ef4444'; // Red
+                    strengthLabel.textContent = 'Weak';
+                    strengthLabel.style.color = '#ef4444';
+                } else if (score <= 3) {
+                    strengthBar.style.width = '66%';
+                    strengthBar.style.backgroundColor = '#f59e0b'; // Amber
+                    strengthLabel.textContent = 'Medium';
+                    strengthLabel.style.color = '#f59e0b';
+                } else {
+                    strengthBar.style.width = '100%';
+                    strengthBar.style.backgroundColor = '#10b981'; // Green
+                    strengthLabel.textContent = 'Strong';
+                    strengthLabel.style.color = '#10b981';
+                }
+            });
+        }
+
+        // Submit spinner
+        const regForm     = document.getElementById('registerForm');
+        const regBtn      = document.getElementById('registerBtn');
+        const regBtnText  = document.getElementById('regBtnText');
+        const regSpinner  = document.getElementById('regSpinner');
+        if (regForm) {
+            regForm.addEventListener('submit', (e) => {
+                if (!regForm.checkValidity()) return;
+                regBtn.disabled = true;
+                regBtnText.textContent = 'Creating Account...';
+                regSpinner.classList.remove('d-none');
+            });
+        }
+
+        // Tab switcher
+        function switchTab(tab) {
+            const regSec  = document.getElementById('registerSection');
+            const helpSec = document.getElementById('helpSection');
+            const tReg    = document.getElementById('tabRegister');
+            const tHelp   = document.getElementById('tabHelp');
+            if (tab === 'help') {
+                tReg.classList.remove('active');
+                tHelp.classList.add('active');
+                regSec.classList.add('d-none');
+                helpSec.classList.remove('d-none');
+            } else {
+                tHelp.classList.remove('active');
+                tReg.classList.add('active');
+                helpSec.classList.add('d-none');
+                regSec.classList.remove('d-none');
+            }
+        }
+    </script>
+</body>
+</html>

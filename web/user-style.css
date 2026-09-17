@@ -1,0 +1,6 @@
+/* Legacy user-style.css updated with modern variables and styling */
+@import url('modern-style.css');
+
+body {
+    background: var(--slate-50);
+}

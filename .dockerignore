@@ -1,0 +1,13 @@
+# Build artifacts and temp files
+build/
+nbproject/private/
+*.log
+*.tmp
+.DS_Store
+cookies*.txt
+autouser_cookies.txt
+e2e_cookies.txt
+e2e_login_cookies.txt
+.git
+.gitignore
+.env.local

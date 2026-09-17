@@ -1,0 +1,23 @@
+# Environment variables and secrets
+.env
+.env.local
+.env.*.local
+
+# Build artifacts
+build/
+dist/
+target/
+*.war
+*.jar
+*.class
+
+# IDE and Project metadata
+.nb-gradle/
+nbproject/private/
+.vscode/
+.idea/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
