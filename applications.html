@@ -105,8 +105,11 @@
         </div>
     </div>
 
-    <div class="container my-4" id="applicationsContainer">
-        <!-- Renders application table matching applications.jsp -->
+    <div class="container my-4">
+        <div id="appAlertContainer"></div>
+        <div id="applicationsContainer">
+            <!-- Renders application table matching applications.jsp -->
+        </div>
     </div>
 
     <!-- Modern Footer -->
@@ -227,7 +230,58 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="modern-script.js"></script>
 
+    <!-- In-Page Confirmation Modal for Withdrawing Application (No native browser alerts) -->
+    <div class="modal fade" id="withdrawConfirmModal" tabindex="-1" aria-labelledby="withdrawConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+                <div class="modal-body p-4 text-center">
+                    <div class="mx-auto mb-3 d-flex align-items-center justify-content-center text-danger rounded-circle" style="width: 60px; height: 60px; background: #fee2e2; font-size: 1.6rem;">
+                        <i class="bi bi-exclamation-triangle-fill"></i>
+                    </div>
+                    <h5 class="fw-bold text-slate-900 mb-2" id="withdrawConfirmModalLabel">Withdraw Application?</h5>
+                    <p class="text-muted small mb-4">
+                        Are you sure you want to withdraw your application for <strong id="withdrawJobName" class="text-slate-900">this position</strong>? This action will cancel your submission.
+                    </p>
+                    <div class="d-flex gap-2 justify-content-center">
+                        <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2 small fw-semibold" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger rounded-pill px-4 py-2 small fw-semibold" id="confirmWithdrawActionBtn" onclick="executeWithdrawApplication()">Confirm Withdraw</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
+        // Known roles mapping from the official database to normalize any undefined/missing records
+        const knownCompanyJobs = {
+            "National Federation of the Disabled Nepal": "Project Coordinator",
+            "Nepal IT Solution": "Full Stack Java & Web Developer",
+            "Nepal It Solution": "UI/UX & Product Designer",
+            "Sajag Nepal Project": "Data Integration Specialist (Bipad Portal)",
+            "International Federation of Red Cross (IFRC)": "Operations Manager",
+            "International Federation of Red Cross and Red Crescent Societies (IFRC)": "Operations Manager",
+            "Oxfam in Nepal": "Emergency Food Security & Livelihoods Officer",
+            "JobsNepal Direct Recruitment": "Client Relations Officer",
+            "Software Company": "Senior UI/UX Specialist",
+            "Kamal Rug": "Client Relations & Order Processing Officer",
+            "Reputed Legal Consultancy": "Associate at a Law Firm",
+            "Bhagya Laxmi International Pvt. Ltd.": "Technical Support Representative",
+            "Himalaya Media Solutions": "Graphic Designer & Content Creator",
+            "Robotics Association of Nepal": "AI-Assisted Software Engineer",
+            "KNS Enterprises Pvt Ltd": "Biomedical Engineer (Sales & Service)",
+            "Youth Innovation Lab": "Communication and Outreach Officer",
+            "SOSEC Nepal": "Admin and Finance Officer (AFO)",
+            "NIP Holdings Pvt Ltd": "Sales Executive Officer",
+            "WWF Nepal": "Sustainable Infrastructure Specialist",
+            "TurnKey Development Group": "Virtual Teachers for Mathematics, Science, and English",
+            "Diplomat Nepal Pvt. Ltd.": "Marketing Manager / Sales Executive",
+            "FAIRMED Foundation Nepal": "Research, Monitoring and Evaluation Coordinator",
+            "Andmine": "Part-Time Bookkeeper - Remote",
+            "Action For Nepal": "District Project Manager",
+            "World Vision International Nepal": "Traineeship Opportunities in Project Administration"
+        };
+
         // Seed applications matching production database
         const defaultApplications = [
             { id: 1, title: "Full Stack Java & Web Developer", company: "Nepal IT Solution", appliedDate: "2026-09-16 19:44:41", status: "Hired" },
@@ -239,14 +293,68 @@
             { id: 7, title: "Client Relations & Order Processing Officer", company: "Kamal Rug", appliedDate: "2026-09-17 11:21:06", status: "Shortlisted" }
         ];
 
+        function normalizeJobTitle(app) {
+            if (app.title && app.title !== 'undefined' && app.title !== 'null' && String(app.title).trim() !== '') {
+                return app.title;
+            }
+            if (app.job && app.job !== 'undefined' && app.job !== 'null' && String(app.job).trim() !== '') {
+                return app.job;
+            }
+            if (app.jobtitle && app.jobtitle !== 'undefined' && app.jobtitle !== 'null') {
+                return app.jobtitle;
+            }
+            if (app.jobTitle && app.jobTitle !== 'undefined' && app.jobTitle !== 'null') {
+                return app.jobTitle;
+            }
+            if (app.role && app.role !== 'undefined' && app.role !== 'null') {
+                return app.role;
+            }
+            if (app.position && app.position !== 'undefined' && app.position !== 'null') {
+                return app.position;
+            }
+            if (app.company && knownCompanyJobs[app.company]) {
+                return knownCompanyJobs[app.company];
+            }
+            return "Professional Opportunity";
+        }
+
         function getApplications() {
             const saved = localStorage.getItem('elevate_applications');
+            let apps = defaultApplications;
             if (saved) {
                 try {
-                    return JSON.parse(saved);
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        apps = parsed;
+                    }
                 } catch(e) {}
             }
-            return defaultApplications;
+
+            // Normalize and repair any undefined titles in memory and localStorage
+            let changed = false;
+            apps.forEach(app => {
+                const normalized = normalizeJobTitle(app);
+                if (app.title !== normalized) {
+                    app.title = normalized;
+                    changed = true;
+                }
+                if (!app.company || app.company === 'undefined') {
+                    app.company = 'Elevate Partner Organization';
+                    changed = true;
+                }
+                if (!app.appliedDate || app.appliedDate === 'undefined') {
+                    app.appliedDate = app.date || 'Recent';
+                    changed = true;
+                }
+            });
+
+            if (changed) {
+                try {
+                    localStorage.setItem('elevate_applications', JSON.stringify(apps));
+                } catch(e) {}
+            }
+
+            return apps;
         }
 
         function renderApplications() {
@@ -276,6 +384,10 @@
             let rows = '';
             apps.forEach((app, idx) => {
                 const status = app.status || 'Pending';
+                const jobTitle = normalizeJobTitle(app);
+                const company = app.company || 'Elevate Partner';
+                const appliedDate = app.appliedDate || app.date || 'Recent';
+
                 let badgeClass = "bg-warning-subtle text-warning-emphasis border border-warning-subtle";
                 if (status.toLowerCase() === 'shortlisted') {
                     badgeClass = "bg-info-subtle text-info border border-info-subtle";
@@ -288,7 +400,7 @@
                 let actionHtml = '';
                 if (status.toLowerCase() === 'pending') {
                     actionHtml = `
-                        <button class="btn btn-sm btn-outline-danger rounded-pill px-3" type="button" onclick="withdrawApplication(${app.id})">
+                        <button class="btn btn-sm btn-outline-danger rounded-pill px-3" type="button" onclick="promptWithdrawApplication(${app.id})">
                             <i class="bi bi-x-circle me-1"></i> Withdraw
                         </button>
                     `;
@@ -304,13 +416,13 @@
                     <tr>
                         <td class="ps-4 fw-bold text-slate-400">${idx + 1}</td>
                         <td>
-                            <div class="fw-bold text-slate-900">${app.title}</div>
+                            <div class="fw-bold text-slate-900">${jobTitle}</div>
                         </td>
                         <td>
-                            <span class="text-slate-600"><i class="bi bi-building me-1 text-muted"></i>${app.company}</span>
+                            <span class="text-slate-600"><i class="bi bi-building me-1 text-muted"></i>${company}</span>
                         </td>
                         <td>
-                            <span class="text-slate-500 small"><i class="bi bi-calendar3 me-1 text-muted"></i>${app.appliedDate}</span>
+                            <span class="text-slate-500 small"><i class="bi bi-calendar3 me-1 text-muted"></i>${appliedDate}</span>
                         </td>
                         <td>
                             <span class="badge rounded-pill ${badgeClass} px-3 py-1 fw-semibold small">
@@ -347,13 +459,52 @@
             `;
         }
 
-        function withdrawApplication(id) {
-            if (confirm('Are you sure you want to withdraw this application?')) {
-                let apps = getApplications();
-                apps = apps.filter(a => a.id !== id);
-                localStorage.setItem('elevate_applications', JSON.stringify(apps));
-                renderApplications();
+        let withdrawTargetId = null;
+
+        function promptWithdrawApplication(id) {
+            withdrawTargetId = id;
+            const apps = getApplications();
+            const app = apps.find(a => a.id === id);
+            const title = app ? normalizeJobTitle(app) : 'this position';
+            document.getElementById('withdrawJobName').innerText = title;
+
+            const modalEl = document.getElementById('withdrawConfirmModal');
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+
+        function executeWithdrawApplication() {
+            if (!withdrawTargetId) return;
+            let apps = getApplications();
+            const app = apps.find(a => a.id === withdrawTargetId);
+            const title = app ? normalizeJobTitle(app) : 'Application';
+
+            apps = apps.filter(a => a.id !== withdrawTargetId);
+            localStorage.setItem('elevate_applications', JSON.stringify(apps));
+
+            const modalEl = document.getElementById('withdrawConfirmModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) {
+                modalInstance.hide();
             }
+
+            renderApplications();
+
+            // Render sleek in-page banner alert (no browser popups!)
+            const alertContainer = document.getElementById('appAlertContainer');
+            if (alertContainer) {
+                alertContainer.innerHTML = `
+                    <div class="alert alert-warning alert-dismissible fade show rounded-4 py-3 px-4 mb-4 shadow-sm border-0 d-flex align-items-center justify-content-between" role="alert">
+                        <div class="d-flex align-items-center gap-2">
+                            <i class="bi bi-check-circle-fill text-warning fs-5"></i>
+                            <div>Your application for <strong>${title}</strong> has been successfully withdrawn.</div>
+                        </div>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+            }
+
+            withdrawTargetId = null;
         }
 
         function checkUser() {

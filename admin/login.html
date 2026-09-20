@@ -502,7 +502,7 @@
                                             Remember Me
                                         </label>
                                     </div>
-                                    <a href="#" onclick="alert('Please contact System Administrator or support team at 9761819137 for password reset.'); return false;" class="small text-muted text-decoration-none">Forgot Password?</a>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#adminForgotModal" onclick="event.preventDefault();" class="small text-muted text-decoration-none">Forgot Password?</a>
                                 </div>
 
                                 <div class="d-grid mb-3">
@@ -682,5 +682,30 @@
             return false;
         }
     </script>
+
+    <!-- In-Page Administrator Support Modal (No browser alerts) -->
+    <div class="modal fade" id="adminForgotModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden text-center p-4">
+                <div class="mx-auto mb-3 d-flex align-items-center justify-content-center text-primary rounded-circle" style="width: 58px; height: 58px; background: rgba(0,102,204,0.1); font-size: 1.6rem;">
+                    <i class="bi bi-shield-lock-fill"></i>
+                </div>
+                <h5 class="fw-bold text-slate-900 mb-2">Administrator Support</h5>
+                <p class="text-muted small mb-3">To reset administrator privileges or credentials, please contact the Lead System Administrator directly:</p>
+                <div class="bg-light p-3 rounded-3 mb-4 text-start small border">
+                    <div class="mb-1"><i class="bi bi-person-badge text-primary me-2"></i><strong>Admin:</strong> Om Prakash Sah</div>
+                    <div class="mb-1"><i class="bi bi-envelope-fill text-primary me-2"></i><strong>Email:</strong> shahomprakash2004@gmail.com</div>
+                    <div class="mb-1"><i class="bi bi-telephone-fill text-success me-2"></i><strong>Hotline:</strong> +977 9761819137</div>
+                    <div><i class="bi bi-whatsapp text-success me-2"></i><strong>WhatsApp:</strong> +977 9761819137</div>
+                </div>
+                <div class="d-flex gap-2 justify-content-center">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4 btn-sm" data-bs-dismiss="modal">Close</button>
+                    <a href="https://wa.me/9779761819137?text=Hello%20Lead%20Admin,%20I%20need%20assistance%20with%20Elevate%20Admin%20credentials." target="_blank" class="btn btn-success rounded-pill px-4 btn-sm fw-semibold">
+                        <i class="bi bi-whatsapp me-1"></i> Chat on WhatsApp
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

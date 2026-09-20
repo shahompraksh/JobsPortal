@@ -367,13 +367,38 @@
                 });
                 localStorage.setItem('elevate_applications', JSON.stringify(apps));
 
-                alert('Application submitted successfully! Redirecting to your applications dashboard.');
-                window.location.href = 'applications.html';
+                const companyEl = document.getElementById('successCompanyName');
+                if (companyEl) companyEl.innerText = currentJob.company;
+                const modalEl = document.getElementById('applySuccessModal');
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+
+                setTimeout(() => {
+                    window.location.href = 'applications.html';
+                }, 1800);
             }, 700);
             return false;
         }
 
         window.addEventListener('DOMContentLoaded', initApplyPage);
     </script>
+
+    <!-- In-Page Success Modal (No browser alerts) -->
+    <div class="modal fade" id="applySuccessModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 440px;">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden text-center p-4">
+                <div class="mx-auto mb-3 d-flex align-items-center justify-content-center text-success rounded-circle" style="width: 64px; height: 64px; background: #dcfce7; font-size: 2rem;">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <h4 class="fw-bold text-slate-900 mb-2">Application Submitted!</h4>
+                <p class="text-muted small mb-4">Your application has been received by <strong id="successCompanyName" class="text-slate-900">the hiring team</strong>. Redirecting to your tracking dashboard...</p>
+                <div>
+                    <a href="applications.html" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold">
+                        View Applications Dashboard
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

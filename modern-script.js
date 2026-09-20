@@ -205,3 +205,47 @@ function logoutUser() {
     window.location.href = 'login.html';
 }
 
+/**
+ * Universal In-Page Toast Interceptor
+ * Ensures no browser dialogs ("shahompraksh.github.io says") can pop up
+ */
+(function() {
+    window.alert = function(message) {
+        if (!message) return;
+        let container = document.getElementById('globalSystemToastContainer');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'globalSystemToastContainer';
+            container.style.position = 'fixed';
+            container.style.top = '24px';
+            container.style.left = '50%';
+            container.style.transform = 'translateX(-50%)';
+            container.style.zIndex = '999999';
+            container.style.maxWidth = '92%';
+            container.style.width = '420px';
+            container.style.pointerEvents = 'none';
+            document.body.appendChild(container);
+        }
+
+        const toast = document.createElement('div');
+        toast.className = 'alert alert-primary alert-dismissible fade show rounded-4 py-3 px-4 shadow-lg border-0 d-flex align-items-center justify-content-between mb-2';
+        toast.style.background = '#ffffff';
+        toast.style.borderLeft = '4px solid #0066cc';
+        toast.style.boxShadow = '0 12px 36px rgba(15, 23, 42, 0.16)';
+        toast.style.color = '#0f172a';
+        toast.style.pointerEvents = 'auto';
+        toast.innerHTML = `
+            <div class="d-flex align-items-center gap-2">
+                <i class="bi bi-info-circle-fill text-primary fs-5"></i>
+                <div style="font-size: 0.9rem; font-weight: 500;">${message}</div>
+            </div>
+            <button type="button" class="btn-close ms-2" style="font-size: 0.75rem;" onclick="this.parentElement.remove()"></button>
+        `;
+        container.appendChild(toast);
+        setTimeout(() => {
+            if (toast.parentElement) toast.remove();
+        }, 4000);
+    };
+})();
+
+

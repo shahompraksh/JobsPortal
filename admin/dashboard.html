@@ -537,7 +537,7 @@
                         <h6 class="fw-bold text-slate-800 mb-1">Standard Verified Candidate Profile Document</h6>
                         <p class="text-muted small mb-3">Includes educational credentials, skills summary, references, and verified contact information.</p>
                         <div class="d-inline-flex gap-2">
-                            <button class="btn btn-primary rounded-pill btn-sm px-4 shadow-sm" onclick="alert('Downloading CV document in PDF format...');">
+                            <button class="btn btn-primary rounded-pill btn-sm px-4 shadow-sm" onclick="downloadCandidateCV();">
                                 <i class="bi bi-cloud-arrow-down-fill me-1"></i> Download Verified PDF
                             </button>
                         </div>
@@ -635,6 +635,23 @@
                         <i class="bi bi-reply-fill me-1"></i> Reply via Email
                     </a>
                     <button type="button" class="btn btn-sm btn-secondary rounded-pill px-3" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 5: In-Page Universal Confirmation Modal (No browser alerts/popups) -->
+    <div class="modal fade" id="adminConfirmModal" tabindex="-1" aria-labelledby="adminConfirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+            <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden text-center p-4">
+                <div class="mx-auto mb-3 d-flex align-items-center justify-content-center text-danger rounded-circle" style="width: 58px; height: 58px; background: #fee2e2; font-size: 1.6rem;">
+                    <i class="bi bi-exclamation-triangle-fill"></i>
+                </div>
+                <h5 class="fw-bold text-slate-900 mb-2" id="adminConfirmModalTitle">Confirm Action</h5>
+                <p class="text-muted small mb-4" id="adminConfirmModalBody">Are you sure you want to proceed with this operation?</p>
+                <div class="d-flex gap-2 justify-content-center">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4 py-2 small fw-semibold" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-danger rounded-pill px-4 py-2 small fw-semibold" id="adminConfirmActionBtn">Confirm Delete</button>
                 </div>
             </div>
         </div>
@@ -934,24 +951,69 @@
             }
         }
 
+        let adminConfirmCallback = null;
+
+        function showAdminConfirm(title, message, btnText, onConfirm) {
+            document.getElementById('adminConfirmModalTitle').innerText = title;
+            document.getElementById('adminConfirmModalBody').innerText = message;
+            const btn = document.getElementById('adminConfirmActionBtn');
+            btn.innerText = btnText || 'Confirm';
+            adminConfirmCallback = onConfirm;
+            const modal = new bootstrap.Modal(document.getElementById('adminConfirmModal'));
+            modal.show();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            const confirmBtn = document.getElementById('adminConfirmActionBtn');
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', () => {
+                    if (typeof adminConfirmCallback === 'function') {
+                        adminConfirmCallback();
+                    }
+                    const modalEl = document.getElementById('adminConfirmModal');
+                    const modalInstance = bootstrap.Modal.getInstance(modalEl);
+                    if (modalInstance) modalInstance.hide();
+                    adminConfirmCallback = null;
+                });
+            }
+        });
+
+        function downloadCandidateCV() {
+            const name = document.getElementById('resumeCandidateName').innerText || 'Candidate';
+            const role = document.getElementById('resumeAppliedRole').innerText || 'Applied Role';
+            const dummyCV = `ELEVATE WORKFORCE SOLUTIONS - VERIFIED CANDIDATE DOSSIER\nCandidate Name: ${name}\n${role}\nStatus: Verified Document\nPlatform: Elevate Workforce Nepal\nVerification Hash: EV-${Date.now().toString(36).toUpperCase()}`;
+            const blob = new Blob([dummyCV], { type: 'text/plain;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute('download', `${name.toLowerCase().replace(/\\s+/g, '_')}_verified_cv.txt`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
         function deleteApplication(id) {
             const app = applications.find(a => a.id === id);
-            const name = app ? app.applicant : 'this';
-            if (confirm(`Are you sure you want to remove the application for ${name}?`)) {
-                applications = applications.filter(a => a.id !== id);
-                saveApplications();
-                renderApplications();
+            const name = app ? app.applicant : 'this application';
+            showAdminConfirm(
+                'Delete Application?',
+                `Are you sure you want to remove the application for ${name}?`,
+                'Delete Application',
+                () => {
+                    applications = applications.filter(a => a.id !== id);
+                    saveApplications();
+                    renderApplications();
 
-                const alertContainer = document.getElementById('adminActionAlertContainer');
-                if (alertContainer) {
-                    alertContainer.innerHTML = `
-                        <div class="alert alert-secondary alert-dismissible fade show rounded-3 small py-2 px-3 mb-3 shadow-sm border-0" role="alert">
-                            <i class="bi bi-trash me-2 text-danger"></i> Application #${id} deleted successfully.
-                            <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
-                        </div>
-                    `;
+                    const alertContainer = document.getElementById('adminActionAlertContainer');
+                    if (alertContainer) {
+                        alertContainer.innerHTML = `
+                            <div class="alert alert-secondary alert-dismissible fade show rounded-3 small py-2 px-3 mb-3 shadow-sm border-0" role="alert">
+                                <i class="bi bi-trash me-2 text-danger"></i> Application #${id} deleted successfully.
+                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                            </div>
+                        `;
+                    }
                 }
-            }
+            );
         }
 
         function viewApplicantResume(name, job, status) {
@@ -1204,12 +1266,17 @@
         function deleteJob(id) {
             const j = jobs.find(job => job.id === id);
             const title = j ? j.title : 'this job';
-            if (confirm(`Are you sure you want to delete "${title}"?`)) {
-                jobs = jobs.filter(job => job.id !== id);
-                saveJobs();
-                renderJobs();
-                updateKPICounters();
-            }
+            showAdminConfirm(
+                'Delete Job Posting?',
+                `Are you sure you want to delete "${title}"?`,
+                'Delete Job',
+                () => {
+                    jobs = jobs.filter(job => job.id !== id);
+                    saveJobs();
+                    renderJobs();
+                    updateKPICounters();
+                }
+            );
         }
 
         // ==========================================================================
@@ -1292,12 +1359,17 @@
         }
 
         function deleteMessage(id) {
-            if (confirm('Delete this inquiry message?')) {
-                messages = messages.filter(m => m.id !== id);
-                saveMessages();
-                renderMessages();
-                updateKPICounters();
-            }
+            showAdminConfirm(
+                'Delete Inquiry Message?',
+                'Are you sure you want to delete this contact message?',
+                'Delete Message',
+                () => {
+                    messages = messages.filter(m => m.id !== id);
+                    saveMessages();
+                    renderMessages();
+                    updateKPICounters();
+                }
+            );
         }
 
         // ==========================================================================
