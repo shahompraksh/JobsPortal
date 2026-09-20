@@ -640,6 +640,29 @@
             }
         }
 
+        const defaultAccounts = [
+            { name: "Om Prakash Sah", username: "admin", email: "shahomprakash2004@gmail.com", phone: "+977 9761819137", password: "admin", role: "Administrator", status: "Active" },
+            { name: "Ram Sharma", username: "ram", email: "ram@gmail.com", phone: "+977 9099999999", password: "ram", role: "Candidate", status: "Active" },
+            { name: "Shyam Sundar", username: "shyam", email: "shyam@gmail.com", phone: "+977 9801234567", password: "shyam", role: "Employer", status: "Active" },
+            { name: "Dhirendra Kumar Gupta", username: "login", email: "dhirendragupta572@gmail.com", phone: "+977 9820960396", password: "login", role: "Candidate", status: "Active" },
+            { name: "Sabin Mandal", username: "Sabin", email: "sabinmandal189@gmail.com", phone: "+977 9811002233", password: "Sabin", role: "Candidate", status: "Active" },
+            { name: "Arbind Yadav", username: "Arbind", email: "yadavarbind0205@gmail.com", phone: "+977 9814820942", password: "Arbind", role: "Candidate", status: "Active" }
+        ];
+
+        function getRegisteredAccounts() {
+            const saved = localStorage.getItem('elevate_accounts');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        return parsed;
+                    }
+                } catch(e) {}
+            }
+            localStorage.setItem('elevate_accounts', JSON.stringify(defaultAccounts));
+            return defaultAccounts;
+        }
+
         function handleAdminLoginSubmit(e) {
             e.preventDefault();
             const submitBtn = document.getElementById('loginSubmitBtn');
@@ -657,28 +680,40 @@
                 btnText.textContent = 'Login';
                 btnSpinner.classList.add('d-none');
 
-                if ((un === 'admin' && pw === 'admin') || (un === 'admin@elevate.np' && pw === 'admin')) {
-                    const adminSession = { username: un, role: 'Administrator', loginTime: new Date().toISOString() };
+                const accounts = getRegisteredAccounts();
+                const matched = accounts.find(acc => 
+                    (acc.username.toLowerCase() === un.toLowerCase() || acc.email.toLowerCase() === un.toLowerCase()) && 
+                    acc.password === pw
+                );
+
+                if (matched) {
+                    const adminSession = { 
+                        username: matched.username, 
+                        name: matched.name,
+                        role: matched.role || 'Administrator', 
+                        email: matched.email, 
+                        loginTime: new Date().toISOString() 
+                    };
                     sessionStorage.setItem('elevate_admin', JSON.stringify(adminSession));
                     localStorage.setItem('elevate_admin', JSON.stringify(adminSession));
 
                     document.getElementById('adminAlertContainer').innerHTML = `
                         <div class="alert alert-success alert-dismissible fade show rounded-3 small py-2 mb-3" role="alert">
-                            <i class="bi bi-check-circle-fill me-1"></i> Admin Authentication successful! Redirecting...
+                            <i class="bi bi-check-circle-fill me-1"></i> Authentication successful! Access granted to ${matched.name}.
                         </div>
                     `;
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
-                    }, 600);
+                    }, 500);
                 } else {
                     document.getElementById('adminAlertContainer').innerHTML = `
                         <div class="alert alert-danger alert-dismissible fade show rounded-3 small py-2 mb-3" role="alert">
-                            <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid administrator credentials. Default is <code>admin</code> / <code>admin</code>.
+                            <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid username or password. Access is granted only to registered accounts.
                             <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
                         </div>
                     `;
                 }
-            }, 600);
+            }, 500);
             return false;
         }
     </script>

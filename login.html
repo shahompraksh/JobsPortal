@@ -663,6 +663,7 @@
                             <!-- ── SIGN IN SECTION ── -->
                             <div id="signinSection">
                                 <p class="text-muted small mb-3">Login with your registered Username &amp; Password</p>
+                                <div id="loginAlertContainer"></div>
 
                                 <form id="loginForm" onsubmit="handleLoginSubmit(event)">
 
@@ -864,50 +865,89 @@
             }
         }
 
+        const defaultAccounts = [
+            { name: "Om Prakash Sah", username: "admin", email: "shahomprakash2004@gmail.com", phone: "+977 9761819137", password: "admin", role: "Administrator", status: "Active" },
+            { name: "Ram Sharma", username: "ram", email: "ram@gmail.com", phone: "+977 9099999999", password: "ram", role: "Candidate", status: "Active" },
+            { name: "Shyam Sundar", username: "shyam", email: "shyam@gmail.com", phone: "+977 9801234567", password: "shyam", role: "Employer", status: "Active" },
+            { name: "Dhirendra Kumar Gupta", username: "login", email: "dhirendragupta572@gmail.com", phone: "+977 9820960396", password: "login", role: "Candidate", status: "Active" },
+            { name: "Sabin Mandal", username: "Sabin", email: "sabinmandal189@gmail.com", phone: "+977 9811002233", password: "Sabin", role: "Candidate", status: "Active" },
+            { name: "Arbind Yadav", username: "Arbind", email: "yadavarbind0205@gmail.com", phone: "+977 9814820942", password: "Arbind", role: "Candidate", status: "Active" }
+        ];
+
+        function getRegisteredAccounts() {
+            const saved = localStorage.getItem('elevate_accounts');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        return parsed;
+                    }
+                } catch(e) {}
+            }
+            localStorage.setItem('elevate_accounts', JSON.stringify(defaultAccounts));
+            return defaultAccounts;
+        }
+
         function handleLoginSubmit(e) {
             e.preventDefault();
             const btn = document.getElementById('loginBtn');
             const text = document.getElementById('loginBtnText');
             const spinner = document.getElementById('loginSpinner');
             const unInput = document.getElementById('un');
+            const pwInput = document.getElementById('pw');
             const remInput = document.getElementById('rem');
 
-            const un = unInput ? unInput.value.trim() : 'Candidate';
+            const un = unInput ? unInput.value.trim() : '';
+            const pw = pwInput ? pwInput.value : '';
             const rem = remInput ? remInput.checked : false;
 
             btn.disabled = true;
             text.textContent = 'Signing in...';
             spinner.classList.remove('d-none');
 
-            // Map authentic database users or generate clean profile
-            const candidateRoster = {
-                'om_prakash': { name: 'Om Prakash Sah', username: 'om_prakash', email: 'shahomprakash2004@gmail.com', phone: '+977 9761819137' },
-                'ram123': { name: 'Ram Bahadur Thapa', username: 'ram123', email: 'ram@nepal.np', phone: '+977 9841234567' },
-                'aayush': { name: 'Aayush Sharma', username: 'aayush', email: 'aayush@gmail.com', phone: '+977 9812345678' }
-            };
-
-            const lower = un.toLowerCase();
-            const userProfile = candidateRoster[lower] || {
-                name: un.includes('@') ? un.split('@')[0] : (un.charAt(0).toUpperCase() + un.slice(1)),
-                username: un,
-                email: un.includes('@') ? un : `${lower}@gmail.com`,
-                phone: '+977 98XXXXXXXX'
-            };
-
-            // Persist session to localStorage so user stays logged in across all pages
-            localStorage.setItem('elevate_user', JSON.stringify(userProfile));
-
-            if (rem) {
-                localStorage.setItem('elevate_remember', 'true');
-                localStorage.setItem('elevate_remembered_user', un);
-            } else {
-                localStorage.removeItem('elevate_remember');
-                localStorage.removeItem('elevate_remembered_user');
-            }
-
             setTimeout(() => {
-                window.location.href = 'userdashboard.html';
-            }, 600);
+                const accounts = getRegisteredAccounts();
+                const matched = accounts.find(a => 
+                    ((a.username && a.username.toLowerCase() === un.toLowerCase()) || 
+                     (a.email && a.email.toLowerCase() === un.toLowerCase())) &&
+                    a.password === pw
+                );
+
+                if (matched) {
+                    const userProfile = {
+                        name: matched.name,
+                        username: matched.username,
+                        email: matched.email,
+                        phone: matched.phone || '+977 98XXXXXXXX'
+                    };
+
+                    localStorage.setItem('elevate_user', JSON.stringify(userProfile));
+
+                    if (rem) {
+                        localStorage.setItem('elevate_remember', 'true');
+                        localStorage.setItem('elevate_remembered_user', un);
+                    } else {
+                        localStorage.removeItem('elevate_remember');
+                        localStorage.removeItem('elevate_remembered_user');
+                    }
+
+                    window.location.href = 'userdashboard.html';
+                } else {
+                    btn.disabled = false;
+                    text.textContent = 'Login';
+                    spinner.classList.add('d-none');
+
+                    const alertBox = document.getElementById('loginAlertContainer');
+                    if (alertBox) {
+                        alertBox.innerHTML = `
+                            <div class="alert alert-danger alert-dismissible fade show rounded-3 small py-2 mb-3" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid username or password. Access is granted only to registered accounts. <a href="register.html" class="fw-bold text-danger text-decoration-underline">Register now</a>.
+                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                            </div>
+                        `;
+                    }
+                }
+            }, 500);
         }
 
         // Initialize remember state & check existing session

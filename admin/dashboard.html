@@ -750,7 +750,37 @@
                 messages = savedMsgs ? JSON.parse(savedMsgs) : defaultMessages;
             } catch(e) { messages = defaultMessages; }
 
-            candidates = defaultCandidates;
+            try {
+                const regAccountsStr = localStorage.getItem('elevate_accounts');
+                if (regAccountsStr) {
+                    const regAccounts = JSON.parse(regAccountsStr);
+                    if (Array.isArray(regAccounts)) {
+                        candidates = [...defaultCandidates];
+                        regAccounts.forEach(acc => {
+                            const exists = candidates.find(c => 
+                                (c.username && c.username.toLowerCase() === acc.username.toLowerCase()) ||
+                                (c.email && c.email.toLowerCase() === acc.email.toLowerCase())
+                            );
+                            if (!exists) {
+                                candidates.push({
+                                    id: acc.id || (100 + candidates.length),
+                                    name: acc.name,
+                                    email: acc.email,
+                                    username: acc.username,
+                                    phone: acc.phone || '+977 98XXXXXXXX',
+                                    resume: acc.resume || 'Uploaded',
+                                    apps: 0,
+                                    status: acc.status || 'Active Candidate'
+                                });
+                            }
+                        });
+                    }
+                } else {
+                    candidates = defaultCandidates;
+                }
+            } catch(e) {
+                candidates = defaultCandidates;
+            }
         }
 
         function saveApplications() {

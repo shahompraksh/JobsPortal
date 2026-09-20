@@ -975,11 +975,59 @@
             const email = document.getElementById('regEmail') ? document.getElementById('regEmail').value.trim() : '';
             const phone = document.getElementById('regPhone') ? document.getElementById('regPhone').value.trim() : '';
             const un = document.getElementById('regUsername') ? document.getElementById('regUsername').value.trim() : (email.split('@')[0] || 'user');
+            const pw = document.getElementById('regPass') ? document.getElementById('regPass').value : '';
 
             regBtn.disabled = true;
             regBtnText.textContent = 'Creating Account...';
             regSpinner.classList.remove('d-none');
 
+            // Default seed accounts
+            const defaultAccounts = [
+                { name: "Om Prakash Sah", username: "admin", email: "shahomprakash2004@gmail.com", phone: "+977 9761819137", password: "admin", role: "Administrator", status: "Active" },
+                { name: "Ram Sharma", username: "ram", email: "ram@gmail.com", phone: "+977 9099999999", password: "ram", role: "Candidate", status: "Active" },
+                { name: "Shyam Sundar", username: "shyam", email: "shyam@gmail.com", phone: "+977 9801234567", password: "shyam", role: "Employer", status: "Active" },
+                { name: "Dhirendra Kumar Gupta", username: "login", email: "dhirendragupta572@gmail.com", phone: "+977 9820960396", password: "login", role: "Candidate", status: "Active" },
+                { name: "Sabin Mandal", username: "Sabin", email: "sabinmandal189@gmail.com", phone: "+977 9811002233", password: "Sabin", role: "Candidate", status: "Active" },
+                { name: "Arbind Yadav", username: "Arbind", email: "yadavarbind0205@gmail.com", phone: "+977 9814820942", password: "Arbind", role: "Candidate", status: "Active" }
+            ];
+
+            let accounts = defaultAccounts;
+            const savedAccounts = localStorage.getItem('elevate_accounts');
+            if (savedAccounts) {
+                try {
+                    const parsed = JSON.parse(savedAccounts);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        accounts = parsed;
+                    }
+                } catch(err) {}
+            }
+
+            const existingIdx = accounts.findIndex(a => 
+                (a.username && a.username.toLowerCase() === un.toLowerCase()) || 
+                (a.email && a.email.toLowerCase() === email.toLowerCase())
+            );
+
+            const newAccount = {
+                id: Date.now(),
+                name: name,
+                username: un,
+                email: email,
+                phone: phone,
+                password: pw,
+                role: 'Candidate',
+                resume: 'Uploaded',
+                status: 'Active Candidate'
+            };
+
+            if (existingIdx >= 0) {
+                accounts[existingIdx] = Object.assign(accounts[existingIdx], newAccount);
+            } else {
+                accounts.push(newAccount);
+            }
+
+            localStorage.setItem('elevate_accounts', JSON.stringify(accounts));
+
+            // Set current candidate session
             const newUser = {
                 name: name,
                 username: un,
