@@ -658,6 +658,10 @@
                 btnSpinner.classList.add('d-none');
 
                 if ((un === 'admin' && pw === 'admin') || (un === 'admin@elevate.np' && pw === 'admin')) {
+                    const adminSession = { username: un, role: 'Administrator', loginTime: new Date().toISOString() };
+                    sessionStorage.setItem('elevate_admin', JSON.stringify(adminSession));
+                    localStorage.setItem('elevate_admin', JSON.stringify(adminSession));
+
                     document.getElementById('adminAlertContainer').innerHTML = `
                         <div class="alert alert-success alert-dismissible fade show rounded-3 small py-2 mb-3" role="alert">
                             <i class="bi bi-check-circle-fill me-1"></i> Admin Authentication successful! Redirecting...
@@ -665,7 +669,7 @@
                     `;
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
-                    }, 700);
+                    }, 600);
                 } else {
                     document.getElementById('adminAlertContainer').innerHTML = `
                         <div class="alert alert-danger alert-dismissible fade show rounded-3 small py-2 mb-3" role="alert">

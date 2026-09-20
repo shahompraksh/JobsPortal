@@ -307,29 +307,38 @@
 
     <script>
         function loadProfileData() {
-            const userStr = localStorage.getItem('elevate_user');
-            if (userStr) {
-                try {
-                    const u = JSON.parse(userStr);
-                    const name = u.name || 'Om Prakash Sah';
-                    const username = u.username || 'om_prakash';
-                    const email = u.email || 'shahomprakash2004@gmail.com';
-                    const phone = u.phone || '+977 9761819137';
-                    const initial = name.charAt(0).toUpperCase();
-
-                    document.getElementById('profileHeaderAvatar').innerText = initial;
-                    document.getElementById('profileHeaderName').innerText = name;
-                    document.getElementById('profileHeaderUsername').innerText = username;
-                    document.getElementById('profileInputName').value = name;
-                    document.getElementById('profileInputUsername').value = username;
-                    document.getElementById('profileInputEmail').value = email;
-                    document.getElementById('profileInputPhone').value = phone;
-
-                    document.getElementById('navUserInitial').innerText = initial;
-                    document.getElementById('navUserName').innerText = name;
-                    document.getElementById('navDropdownName').innerText = name;
-                } catch(e) {}
+            let userStr = localStorage.getItem('elevate_user');
+            if (!userStr) {
+                const defaultUser = {
+                    name: 'Om Prakash Sah',
+                    username: 'om_prakash',
+                    email: 'shahomprakash2004@gmail.com',
+                    phone: '+977 9761819137'
+                };
+                localStorage.setItem('elevate_user', JSON.stringify(defaultUser));
+                userStr = JSON.stringify(defaultUser);
             }
+
+            try {
+                const u = JSON.parse(userStr);
+                const name = u.name || 'Om Prakash Sah';
+                const username = u.username || 'om_prakash';
+                const email = u.email || 'shahomprakash2004@gmail.com';
+                const phone = u.phone || '+977 9761819137';
+                const initial = name.charAt(0).toUpperCase();
+
+                document.getElementById('profileHeaderAvatar').innerText = initial;
+                document.getElementById('profileHeaderName').innerText = name;
+                document.getElementById('profileHeaderUsername').innerText = username;
+                document.getElementById('profileInputName').value = name;
+                document.getElementById('profileInputUsername').value = username;
+                document.getElementById('profileInputEmail').value = email;
+                document.getElementById('profileInputPhone').value = phone;
+
+                document.getElementById('navUserInitial').innerText = initial;
+                document.getElementById('navUserName').innerText = name;
+                document.getElementById('navDropdownName').innerText = name;
+            } catch(e) {}
         }
 
         function handleProfileSave(e) {

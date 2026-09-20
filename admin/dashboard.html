@@ -610,6 +610,7 @@
 
         function logoutAdmin() {
             sessionStorage.removeItem('elevate_admin');
+            localStorage.removeItem('elevate_admin');
             window.location.href = 'login.html';
         }
 

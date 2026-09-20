@@ -969,9 +969,24 @@
             const regBtn      = document.getElementById('registerBtn');
             const regBtnText  = document.getElementById('regBtnText');
             const regSpinner  = document.getElementById('regSpinner');
+
+            const name = document.getElementById('regName') ? document.getElementById('regName').value.trim() : 'Candidate';
+            const email = document.getElementById('regEmail') ? document.getElementById('regEmail').value.trim() : '';
+            const phone = document.getElementById('regPhone') ? document.getElementById('regPhone').value.trim() : '';
+            const un = document.getElementById('regUsername') ? document.getElementById('regUsername').value.trim() : (email.split('@')[0] || 'user');
+
             regBtn.disabled = true;
             regBtnText.textContent = 'Creating Account...';
             regSpinner.classList.remove('d-none');
+
+            const newUser = {
+                name: name,
+                username: un,
+                email: email,
+                phone: phone
+            };
+            localStorage.setItem('elevate_user', JSON.stringify(newUser));
+
             setTimeout(() => {
                 window.location.href = 'userdashboard.html';
             }, 600);

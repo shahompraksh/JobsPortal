@@ -357,17 +357,26 @@
         }
 
         function checkUser() {
-            const userStr = localStorage.getItem('elevate_user');
-            if (userStr) {
-                try {
-                    const u = JSON.parse(userStr);
-                    const name = u.name || u.username || 'Om Prakash';
-                    const initial = name.charAt(0).toUpperCase();
-                    document.getElementById('navUserInitial').innerText = initial;
-                    document.getElementById('navUserName').innerText = name;
-                    document.getElementById('navDropdownName').innerText = name;
-                } catch(e) {}
+            let userStr = localStorage.getItem('elevate_user');
+            if (!userStr) {
+                const defaultUser = {
+                    name: 'Om Prakash Sah',
+                    username: 'om_prakash',
+                    email: 'shahomprakash2004@gmail.com',
+                    phone: '+977 9761819137'
+                };
+                localStorage.setItem('elevate_user', JSON.stringify(defaultUser));
+                userStr = JSON.stringify(defaultUser);
             }
+
+            try {
+                const u = JSON.parse(userStr);
+                const name = u.name || u.username || 'Om Prakash';
+                const initial = name.charAt(0).toUpperCase();
+                document.getElementById('navUserInitial').innerText = initial;
+                document.getElementById('navUserName').innerText = name;
+                document.getElementById('navDropdownName').innerText = name;
+            } catch(e) {}
         }
 
         function logoutUser() {

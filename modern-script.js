@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initCounterAnimations();
     initBackToTop();
     initMobileNavEnhancements();
+    initGlobalAuth();
 });
 
 /**
@@ -158,3 +159,49 @@ function initMobileNavEnhancements() {
         });
     }
 }
+
+/**
+ * Global Candidate Authentication Persistence
+ */
+function initGlobalAuth() {
+    const authContainer = document.getElementById('navAuthSection');
+    const userStr = localStorage.getItem('elevate_user');
+    
+    if (!authContainer) return;
+
+    if (userStr) {
+        try {
+            const user = JSON.parse(userStr);
+            const name = user.name || user.username || 'Candidate';
+            const initial = name.charAt(0).toUpperCase();
+
+            authContainer.innerHTML = `
+                <div class="dropdown">
+                    <button class="btn user-dropdown-btn dropdown-toggle d-flex align-items-center gap-2 border-0 bg-transparent py-1 px-2" type="button" id="globalUserMenuBtn" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="user-avatar-badge" style="width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; background: linear-gradient(135deg, #0066cc, #06b6d4); color: white; border-radius: 50%; font-weight: 700; font-size: 0.95rem;">${initial}</span>
+                        <span class="d-inline-block text-truncate fw-semibold text-slate-800" style="max-width: 140px;">${name}</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 p-2" aria-labelledby="globalUserMenuBtn" style="min-width: 200px;">
+                        <li class="px-3 py-2 border-bottom mb-1">
+                            <small class="text-muted d-block" style="font-size: 0.75rem;">Signed in as</small>
+                            <strong class="text-dark d-block text-truncate" style="max-width: 170px;">${name}</strong>
+                        </li>
+                        <li><a class="dropdown-item rounded-2 py-2" href="userdashboard.html"><i class="bi bi-grid-1x2 text-primary me-2"></i> Dashboard</a></li>
+                        <li><a class="dropdown-item rounded-2 py-2" href="profile.html"><i class="bi bi-person-gear text-info me-2"></i> Profile</a></li>
+                        <li><a class="dropdown-item rounded-2 py-2" href="applications.html"><i class="bi bi-file-earmark-text text-success me-2"></i> Applications</a></li>
+                        <li><hr class="dropdown-divider my-1"></li>
+                        <li><a class="dropdown-item rounded-2 py-2 text-danger" href="javascript:void(0)" onclick="logoutUser()"><i class="bi bi-box-arrow-right text-danger me-2"></i> Logout</a></li>
+                    </ul>
+                </div>
+            `;
+        } catch(e) {
+            console.error('Error parsing session user', e);
+        }
+    }
+}
+
+function logoutUser() {
+    localStorage.removeItem('elevate_user');
+    window.location.href = 'login.html';
+}
+
