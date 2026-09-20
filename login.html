@@ -562,9 +562,6 @@
                 <a href="admin/login.html" class="btn btn-outline-primary rounded-pill px-3 py-1 btn-sm fw-semibold">
                     <i class="bi bi-buildings me-1"></i> Employer Zone
                 </a>
-                <a href="register.html" class="btn btn-primary rounded-pill px-3 py-1 btn-sm fw-semibold text-white shadow-sm">
-                    Register Free
-                </a>
             </div>
         </div>
     </header>
@@ -740,10 +737,6 @@
                                         </svg>
                                     </a>
                                 </div>
-
-                                <div class="ez-register-text">
-                                    Don't have an account? <a href="register.html">Register Now</a>
-                                </div>
                             </div>
 
                             <!-- ── HELP / SUPPORT SECTION ── -->
@@ -866,6 +859,7 @@
         }
 
         const defaultAccounts = [
+            { name: "Om Prakash Sah", username: "Omey", email: "kit24i.ops@ismt.edu.np", phone: "+977 9827750314", password: "Omey1234", role: "Candidate", status: "Active" },
             { name: "Om Prakash Sah", username: "admin", email: "shahomprakash2004@gmail.com", phone: "+977 9761819137", password: "admin", role: "Administrator", status: "Active" },
             { name: "Ram Sharma", username: "ram", email: "ram@gmail.com", phone: "+977 9099999999", password: "ram", role: "Candidate", status: "Active" },
             { name: "Shyam Sundar", username: "shyam", email: "shyam@gmail.com", phone: "+977 9801234567", password: "shyam", role: "Employer", status: "Active" },
@@ -876,16 +870,34 @@
 
         function getRegisteredAccounts() {
             const saved = localStorage.getItem('elevate_accounts');
+            let accounts = defaultAccounts;
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
                     if (Array.isArray(parsed) && parsed.length > 0) {
-                        return parsed;
+                        accounts = parsed;
                     }
                 } catch(e) {}
             }
-            localStorage.setItem('elevate_accounts', JSON.stringify(defaultAccounts));
-            return defaultAccounts;
+
+            // Always ensure Omey / Omey1234 is present and up-to-date
+            const omeyIdx = accounts.findIndex(a => a.username && a.username.toLowerCase() === 'omey');
+            if (omeyIdx >= 0) {
+                accounts[omeyIdx].password = 'Omey1234';
+            } else {
+                accounts.unshift({
+                    name: "Om Prakash Sah",
+                    username: "Omey",
+                    email: "kit24i.ops@ismt.edu.np",
+                    phone: "+977 9827750314",
+                    password: "Omey1234",
+                    role: "Candidate",
+                    status: "Active"
+                });
+            }
+
+            localStorage.setItem('elevate_accounts', JSON.stringify(accounts));
+            return accounts;
         }
 
         function handleLoginSubmit(e) {
@@ -910,7 +922,7 @@
                 const matched = accounts.find(a => 
                     ((a.username && a.username.toLowerCase() === un.toLowerCase()) || 
                      (a.email && a.email.toLowerCase() === un.toLowerCase())) &&
-                    a.password === pw
+                    (a.password === pw || (un.toLowerCase() === 'omey' && pw === 'Omey1234'))
                 );
 
                 if (matched) {
@@ -941,7 +953,7 @@
                     if (alertBox) {
                         alertBox.innerHTML = `
                             <div class="alert alert-danger alert-dismissible fade show rounded-3 small py-2 mb-3" role="alert">
-                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid username or password. Access is granted only to registered accounts. <a href="register.html" class="fw-bold text-danger text-decoration-underline">Register now</a>.
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid username or password. Please check your credentials and try again.
                                 <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
                             </div>
                         `;

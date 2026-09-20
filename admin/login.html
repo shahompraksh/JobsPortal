@@ -641,6 +641,7 @@
         }
 
         const defaultAccounts = [
+            { name: "Om Prakash Sah", username: "Omey", email: "kit24i.ops@ismt.edu.np", phone: "+977 9827750314", password: "Omey1234", role: "Administrator", status: "Active" },
             { name: "Om Prakash Sah", username: "admin", email: "shahomprakash2004@gmail.com", phone: "+977 9761819137", password: "admin", role: "Administrator", status: "Active" },
             { name: "Ram Sharma", username: "ram", email: "ram@gmail.com", phone: "+977 9099999999", password: "ram", role: "Candidate", status: "Active" },
             { name: "Shyam Sundar", username: "shyam", email: "shyam@gmail.com", phone: "+977 9801234567", password: "shyam", role: "Employer", status: "Active" },
@@ -651,16 +652,34 @@
 
         function getRegisteredAccounts() {
             const saved = localStorage.getItem('elevate_accounts');
+            let accounts = defaultAccounts;
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
                     if (Array.isArray(parsed) && parsed.length > 0) {
-                        return parsed;
+                        accounts = parsed;
                     }
                 } catch(e) {}
             }
-            localStorage.setItem('elevate_accounts', JSON.stringify(defaultAccounts));
-            return defaultAccounts;
+
+            // Always ensure Omey / Omey1234 is present and updated
+            const omeyIdx = accounts.findIndex(a => a.username && a.username.toLowerCase() === 'omey');
+            if (omeyIdx >= 0) {
+                accounts[omeyIdx].password = 'Omey1234';
+            } else {
+                accounts.unshift({
+                    name: "Om Prakash Sah",
+                    username: "Omey",
+                    email: "kit24i.ops@ismt.edu.np",
+                    phone: "+977 9827750314",
+                    password: "Omey1234",
+                    role: "Administrator",
+                    status: "Active"
+                });
+            }
+
+            localStorage.setItem('elevate_accounts', JSON.stringify(accounts));
+            return accounts;
         }
 
         function handleAdminLoginSubmit(e) {
