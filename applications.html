@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>My Applications | Elevate Workforce Solutions Nepal</title>
-    <meta name="description" content="Track your job application statuses, interviews, and recruiter reviews.">
+    <title>My Applications - Elevate Workforce Solutions</title>
     
     <!-- Google Fonts & Bootstrap -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +14,7 @@
     
     <!-- Modern Design System Stylesheet -->
     <link rel="stylesheet" href="css/modern-style.css">
+    <link rel="stylesheet" href="modern-style.css">
 </head>
 <body class="bg-light">
 
@@ -27,16 +27,65 @@
                 <span class="brand-badge ms-1">Nepal</span>
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <!-- Mobile Toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="bi bi-list fs-4"></i>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto align-items-lg-center gap-1 my-3 my-lg-0">
-                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="findajob.html">Find a Job</a></li>
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
-                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0" id="navbarAuthContainer"></li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="bi bi-house-door me-1 d-lg-none"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="findajob.html">
+                            <i class="bi bi-briefcase me-1 d-lg-none"></i> Find a Job
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">
+                            <i class="bi bi-envelope me-1 d-lg-none"></i> Contact
+                        </a>
+                    </li>
+
+                    <!-- Dynamic Login / User Profile -->
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0" id="navAuthSection">
+                        <div class="dropdown">
+                            <button class="btn user-dropdown-btn dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="user-avatar-badge" id="navUserInitial">O</span>
+                                <span class="d-inline-block text-truncate" style="max-width: 130px;" id="navUserName">Om Prakash</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="userMenuButton">
+                                <li class="px-3 py-2 border-bottom mb-1">
+                                    <small class="text-muted d-block">Signed in as</small>
+                                    <strong class="text-dark" id="navDropdownName">Om Prakash</strong>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="userdashboard.html">
+                                        <i class="bi bi-grid-1x2 text-primary"></i> Dashboard
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="profile.html">
+                                        <i class="bi bi-person-gear text-info"></i> Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="applications.html">
+                                        <i class="bi bi-file-earmark-text text-success"></i> Applications
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider my-1"></li>
+                                <li>
+                                    <a class="dropdown-item text-danger" href="javascript:void(0)" onclick="logoutUser()">
+                                        <i class="bi bi-box-arrow-right text-danger"></i> Logout
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -47,7 +96,7 @@
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
             <div>
                 <h2 class="fw-bold mb-1 text-slate-900">My Job Applications</h2>
-                <p class="text-slate-500 mb-0" id="applicationsCountBadge">Loading your submission records...</p>
+                <p class="text-slate-500 mb-0">Track real-time recruitment statuses and review submission records.</p>
             </div>
             <div>
                 <a href="findajob.html" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold btn-sm shadow-sm">
@@ -57,61 +106,280 @@
         </div>
     </div>
 
-    <!-- Main Content Container -->
-    <div class="container my-4">
-        
-        <!-- Table Wrapper -->
-        <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white mb-5" id="applicationsTableWrapper">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                    <thead class="table-light">
-                        <tr>
-                            <th class="ps-4 text-slate-600 small text-uppercase fw-bold">#</th>
-                            <th class="text-slate-600 small text-uppercase fw-bold">Job Title & Salary</th>
-                            <th class="text-slate-600 small text-uppercase fw-bold">Hiring Company</th>
-                            <th class="text-slate-600 small text-uppercase fw-bold">Date Applied</th>
-                            <th class="text-slate-600 small text-uppercase fw-bold">Recruitment Status</th>
-                            <th class="pe-4 text-end text-slate-600 small text-uppercase fw-bold">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="applicationsTableBody">
-                        <!-- Dynamically populated by portal.js -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Empty State -->
-        <div class="card border-0 shadow-sm rounded-4 p-5 text-center bg-white my-5 d-none" id="applicationsEmptyState">
-            <div class="user-avatar-badge mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.8rem; background: var(--slate-100); color: var(--slate-400);">
-                <i class="bi bi-file-earmark-x"></i>
-            </div>
-            <h4 class="fw-bold text-slate-800">No Applications Submitted Yet</h4>
-            <p class="text-slate-500 max-w-md mx-auto mb-4" style="max-width: 460px;">
-                You haven't submitted any job applications yet. Discover verified roles across Nepal tailored to your skillset.
-            </p>
-            <div>
-                <a href="findajob.html" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold shadow-sm">
-                    Explore Open Jobs Now
-                </a>
-            </div>
-        </div>
-
+    <div class="container my-4" id="applicationsContainer">
+        <!-- Renders application table matching applications.jsp -->
     </div>
 
-    <!-- Footer -->
-    <footer class="modern-footer py-4">
-        <div class="container text-center text-slate-400 small">
-            &copy; 2025-2026 Elevate Workforce Solutions Nepal. All rights reserved.
+    <!-- Modern Footer -->
+    <footer class="modern-footer">
+        <div class="container pb-5">
+            <div class="row g-4 justify-content-between">
+                
+                <!-- Column 1: Brand & Bio -->
+                <div class="col-lg-4 col-md-6 footer-brand">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="images/logo.png" alt="Elevate Workforce Logo" class="brand-logo" style="background: white; padding: 4px; border-radius: 8px; height: 42px;">
+                        <h4 class="mb-0 text-white fw-bold">Elevate Workforce</h4>
+                    </div>
+                    <p class="text-slate-400">
+                        Nepal's premier workforce acceleration platform. Connecting exceptional talent with industry-leading companies across Kathmandu, Pokhara, Lalitpur, and beyond.
+                    </p>
+                    <div class="d-flex align-items-center gap-2 mt-3">
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">
+                            <i class="bi bi-patch-check-fill text-primary me-1"></i> Verified Employment Platform
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Column 2: Quick Navigation -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-col-title">Navigation</h5>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="bi bi-chevron-right text-primary small"></i> Home</a></li>
+                        <li><a href="findajob.html"><i class="bi bi-chevron-right text-primary small"></i> Find a Job</a></li>
+                        <li><a href="contact.html"><i class="bi bi-chevron-right text-primary small"></i> Contact Us</a></li>
+                        <li><a href="login.html"><i class="bi bi-chevron-right text-primary small"></i> Candidate Login</a></li>
+                        <li><a href="register.html"><i class="bi bi-chevron-right text-primary small"></i> Register Account</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Popular Categories -->
+                <div class="col-lg-3 col-md-6 col-6">
+                    <h5 class="footer-col-title">Job Categories</h5>
+                    <ul class="footer-links">
+                        <li><a href="findajob.html?category=IT"><i class="bi bi-code-slash text-info small"></i> IT & Software</a></li>
+                        <li><a href="findajob.html?category=Marketing"><i class="bi bi-megaphone text-warning small"></i> Marketing & Growth</a></li>
+                        <li><a href="findajob.html?category=Finance"><i class="bi bi-cash-coin text-success small"></i> Finance & Accounting</a></li>
+                        <li><a href="findajob.html?category=Design"><i class="bi bi-palette text-danger small"></i> UI/UX & Design</a></li>
+                        <li><a href="findajob.html?type=Remote"><i class="bi bi-globe2 text-primary small"></i> Remote Opportunities</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Contact & Socials -->
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-col-title">Get in Touch</h5>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-geo-alt-fill text-primary"></i>
+                        <span>Kathmandu, Bagmati Province, Nepal</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-envelope-fill text-primary"></i>
+                        <a href="mailto:shahomprakash2004@gmail.com" class="text-slate-300">shahomprakash2004@gmail.com</a>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-telephone-fill text-primary"></i>
+                        <a href="tel:9761819137" class="text-slate-300">+977 9761819137</a>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-whatsapp text-success"></i>
+                        <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce,%20I%20have%20an%20inquiry" target="_blank" rel="noopener noreferrer" class="text-slate-300">WhatsApp: +977 9761819137</a>
+                    </div>
+
+                    <div class="mt-3">
+                        <span class="d-block small text-slate-400 mb-2 fw-semibold">Connect with us:</span>
+                        <div class="d-flex align-items-center">
+                            <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce,%20I%20have%20an%20inquiry" target="_blank" rel="noopener noreferrer" class="social-button social-whatsapp" aria-label="WhatsApp" title="Connect on WhatsApp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                            <a href="https://www.facebook.com/share/1E3QEKNVUz/?mibextid=wwXIfr" target="_blank" class="social-button" aria-label="Facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="https://www.instagram.com/shah_omey07?stkn=MTgweWZzYTFjbHFwNQ%3D%3D&utm_source=qr" target="_blank" class="social-button" aria-label="Instagram">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/omprakash077?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" class="social-button" aria-label="LinkedIn">
+                                <i class="bi bi-linkedin"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="footer-bottom">
+            <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 text-center text-md-start">
+                <div>
+                    &copy; 2025-2026 <strong>Elevate Workforce Solutions</strong>. All rights reserved.
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
+                        <i class="bi bi-circle-fill small me-1"></i> System Operational
+                    </span>
+                    <span class="text-slate-500">Built for Nepal's Future</span>
+                </div>
+            </div>
         </div>
     </footer>
 
-    <!-- Bootstrap 5.3.3 JS Bundle -->
+    <!-- Floating WhatsApp Quick Connect Button -->
+    <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce%20Team,%20I%20have%20an%20inquiry%20regarding%20jobs%20and%20recruitment." target="_blank" rel="noopener noreferrer" class="floating-whatsapp" id="whatsappFloatingBtn" aria-label="Connect with WhatsApp" title="Chat on WhatsApp (+977 9761819137)">
+        <div class="whatsapp-pulse"></div>
+        <i class="bi bi-whatsapp"></i>
+        <span class="whatsapp-label">Chat on WhatsApp</span>
+    </a>
+
+    <!-- Floating Scroll to Top Button -->
+    <button id="backToTop" class="back-to-top" title="Scroll to top" aria-label="Scroll to top">
+        <i class="bi bi-chevron-up"></i>
+    </button>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Portal JavaScript Engine -->
-    <script src="js/jobs-data.js"></script>
-    <script src="js/modern-script.js"></script>
-    <script src="js/portal.js"></script>
+    <script src="modern-script.js"></script>
+
+    <script>
+        // Seed applications matching production database
+        const defaultApplications = [
+            { id: 1, title: "Full Stack Java & Web Developer", company: "Nepal IT Solution", appliedDate: "2026-09-16 19:44:41", status: "Hired" },
+            { id: 2, title: "UI/UX & Product Designer", company: "Nepal IT Solution", appliedDate: "2026-09-10 11:33:06", status: "Hired" },
+            { id: 3, title: "Client Relations Officer", company: "JobsNepal Direct Recruitment", appliedDate: "2026-09-15 23:56:42", status: "Hired" },
+            { id: 4, title: "Emergency Food Security & Livelihoods Officer", company: "Oxfam in Nepal", appliedDate: "2026-09-16 19:52:19", status: "Shortlisted" },
+            { id: 5, title: "Senior UI/UX Specialist", company: "Software Company", appliedDate: "2026-09-16 10:09:12", status: "Hired" },
+            { id: 6, title: "Associate at a Law Firm", company: "Reputed Legal Consultancy", appliedDate: "2026-09-17 07:27:49", status: "Rejected" },
+            { id: 7, title: "Client Relations & Order Processing Officer", company: "Kamal Rug", appliedDate: "2026-09-17 11:21:06", status: "Shortlisted" }
+        ];
+
+        function getApplications() {
+            const saved = localStorage.getItem('elevate_applications');
+            if (saved) {
+                try {
+                    return JSON.parse(saved);
+                } catch(e) {}
+            }
+            return defaultApplications;
+        }
+
+        function renderApplications() {
+            const apps = getApplications();
+            const container = document.getElementById('applicationsContainer');
+
+            if (!apps || apps.length === 0) {
+                container.innerHTML = `
+                    <div class="card border-0 shadow-sm rounded-4 p-5 text-center bg-white my-5">
+                        <div class="user-avatar-badge mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.8rem; background: var(--slate-100); color: var(--slate-400);">
+                            <i class="bi bi-file-earmark-x"></i>
+                        </div>
+                        <h4 class="fw-bold text-slate-800">No Applications Submitted Yet</h4>
+                        <p class="text-slate-500 max-w-md mx-auto mb-4" style="max-width: 460px;">
+                            You haven't submitted any job applications yet. Discover thousands of open roles tailored to your skillset.
+                        </p>
+                        <div>
+                            <a href="findajob.html" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold">
+                                Explore Open Jobs Now
+                            </a>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            let rows = '';
+            apps.forEach((app, idx) => {
+                const status = app.status || 'Pending';
+                let badgeClass = "bg-warning-subtle text-warning-emphasis border border-warning-subtle";
+                if (status.toLowerCase() === 'shortlisted') {
+                    badgeClass = "bg-info-subtle text-info border border-info-subtle";
+                } else if (status.toLowerCase() === 'hired') {
+                    badgeClass = "bg-success-subtle text-success border border-success-subtle";
+                } else if (status.toLowerCase() === 'rejected') {
+                    badgeClass = "bg-danger-subtle text-danger border border-danger-subtle";
+                }
+
+                let actionHtml = '';
+                if (status.toLowerCase() === 'pending') {
+                    actionHtml = `
+                        <button class="btn btn-sm btn-outline-danger rounded-pill px-3" type="button" onclick="withdrawApplication(${app.id})">
+                            <i class="bi bi-x-circle me-1"></i> Withdraw
+                        </button>
+                    `;
+                } else {
+                    actionHtml = `
+                        <span class="badge bg-light text-muted border rounded-pill px-3 py-1">
+                            <i class="bi bi-lock-fill me-1"></i> In Review
+                        </span>
+                    `;
+                }
+
+                rows += `
+                    <tr>
+                        <td class="ps-4 fw-bold text-slate-400">${idx + 1}</td>
+                        <td>
+                            <div class="fw-bold text-slate-900">${app.title}</div>
+                        </td>
+                        <td>
+                            <span class="text-slate-600"><i class="bi bi-building me-1 text-muted"></i>${app.company}</span>
+                        </td>
+                        <td>
+                            <span class="text-slate-500 small"><i class="bi bi-calendar3 me-1 text-muted"></i>${app.appliedDate}</span>
+                        </td>
+                        <td>
+                            <span class="badge rounded-pill ${badgeClass} px-3 py-1 fw-semibold small">
+                                ${status}
+                            </span>
+                        </td>
+                        <td class="pe-4 text-end">
+                            ${actionHtml}
+                        </td>
+                    </tr>
+                `;
+            });
+
+            container.innerHTML = `
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4 text-slate-600 small text-uppercase fw-bold">#</th>
+                                    <th class="text-slate-600 small text-uppercase fw-bold">Job Title</th>
+                                    <th class="text-slate-600 small text-uppercase fw-bold">Hiring Company</th>
+                                    <th class="text-slate-600 small text-uppercase fw-bold">Date Applied</th>
+                                    <th class="text-slate-600 small text-uppercase fw-bold">Current Status</th>
+                                    <th class="pe-4 text-end text-slate-600 small text-uppercase fw-bold">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${rows}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            `;
+        }
+
+        function withdrawApplication(id) {
+            if (confirm('Are you sure you want to withdraw this application?')) {
+                let apps = getApplications();
+                apps = apps.filter(a => a.id !== id);
+                localStorage.setItem('elevate_applications', JSON.stringify(apps));
+                renderApplications();
+            }
+        }
+
+        function checkUser() {
+            const userStr = localStorage.getItem('elevate_user');
+            if (userStr) {
+                try {
+                    const u = JSON.parse(userStr);
+                    const name = u.name || u.username || 'Om Prakash';
+                    const initial = name.charAt(0).toUpperCase();
+                    document.getElementById('navUserInitial').innerText = initial;
+                    document.getElementById('navUserName').innerText = name;
+                    document.getElementById('navDropdownName').innerText = name;
+                } catch(e) {}
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('elevate_user');
+            window.location.href = 'login.html';
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            checkUser();
+            renderApplications();
+        });
+    </script>
 </body>
 </html>

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Find a Job | Elevate Workforce Solutions Nepal</title>
-    <meta name="description" content="Explore verified job openings across Nepal. Filter by category, location, and salary in IT, Marketing, Finance, and Design.">
+    <title>Find a Job | Elevate Workforce Solutions</title>
+    <meta name="description" content="Explore verified job openings across Nepal. Filter by category, location, and salary.">
     
     <!-- Google Fonts & Bootstrap -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,6 +15,7 @@
     
     <!-- Modern Design System Stylesheet -->
     <link rel="stylesheet" href="css/modern-style.css">
+    <link rel="stylesheet" href="modern-style.css">
 </head>
 <body class="bg-light">
 
@@ -27,6 +28,7 @@
                 <span class="brand-badge ms-1">Nepal</span>
             </a>
 
+            <!-- Mobile Toggler -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="bi bi-list fs-4"></i>
             </button>
@@ -49,7 +51,8 @@
                         </a>
                     </li>
 
-                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0" id="navbarAuthContainer">
+                    <!-- Dynamic Login / User Profile -->
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0" id="navAuthSection">
                         <div class="d-flex align-items-center gap-2">
                             <a href="login.html" class="btn btn-outline-primary rounded-pill px-3 py-1 fw-semibold">Login</a>
                             <a href="register.html" class="btn btn-primary rounded-pill px-3 py-1 fw-semibold shadow-sm">Register</a>
@@ -66,19 +69,19 @@
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2">
                 <div>
                     <h2 class="fw-bold mb-1 text-slate-900">Discover Opportunities</h2>
-                    <p class="text-slate-500 mb-0" id="totalJobsCount">Loading verified openings across Nepal...</p>
+                    <p class="text-slate-500 mb-0" id="pageJobCountText">Showing 24 verified job openings across Nepal</p>
                 </div>
                 <div class="d-flex align-items-center gap-2">
                     <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">
-                        <i class="bi bi-patch-check-fill me-1"></i> Verified Direct Listings
+                        <i class="bi bi-clock-history me-1"></i> Live Database
                     </span>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Running Top Employers Marquee Ticker -->
-    <div class="top-employers-ticker-wrapper" style="border-bottom: 1px solid var(--slate-200);">
+    
+    <!-- Top Employers Running Marquee Ticker -->
+    <div class="top-employers-ticker-wrapper">
         <div class="container">
             <div class="top-employers-container">
                 <div class="top-employers-label">
@@ -87,14 +90,245 @@
                 </div>
                 <div class="ticker-content-mask">
                     <div class="ticker-track">
-                        <div class="employer-card-item"><span class="emp-name" style="color: #0066cc;">WorldLink</span></div>
-                        <div class="employer-card-item"><span class="emp-name" style="color: #e11d48;">Teach For Nepal</span></div>
-                        <div class="employer-card-item"><span class="emp-name" style="color: #ea580c;">WebSurfer</span></div>
-                        <div class="employer-card-item"><span class="emp-name" style="color: #0f172a;">Sterling Wells</span></div>
-                        <div class="employer-card-item"><span class="emp-name" style="color: #f97316;">Saurabh Group</span></div>
-                        <div class="employer-card-item"><span class="emp-name" style="color: #16a34a;">Safa Network</span></div>
-                        <div class="employer-card-item"><span class="emp-name" style="color: #0284c7;">Malax Media</span></div>
-                        <div class="employer-card-item"><span class="emp-name" style="color: #0369a1;">Tacmed</span></div>
+                        <!-- Set 1: Top Nepali & International Employers -->
+                        <a href="findajob.html?search=WorldLink" class="employer-card-item" title="View jobs at WorldLink">
+                            <div class="emp-logo-box" style="background: #0066cc;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <circle cx="20" cy="20" r="13" fill="none" stroke="white" stroke-width="3"/>
+                                    <path d="M12 20 Q20 8 28 20 Q20 32 12 20 Z" fill="none" stroke="white" stroke-width="2.5"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #0066cc;">WorldLink</span>
+                        </a>
+
+                        <a href="findajob.html?search=Teach+For+Nepal" class="employer-card-item" title="View jobs at Teach For Nepal">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #e11d48;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <circle cx="20" cy="13" r="4" fill="#e11d48"/>
+                                    <path d="M13 27 C13 20 27 20 27 27" fill="#e11d48"/>
+                                    <circle cx="30" cy="16" r="3" fill="#e11d48"/>
+                                    <circle cx="10" cy="16" r="3" fill="#e11d48"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name text-uppercase" style="color: #e11d48; font-size: 0.82rem; letter-spacing: 0.3px;">Teach For Nepal</span>
+                        </a>
+
+                        <a href="findajob.html?search=WebSurfer" class="employer-card-item" title="View jobs at WebSurfer">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #ea580c;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M8 26 C16 10 26 12 32 23 C25 23 18 25 8 26 Z" fill="#ea580c"/>
+                                    <circle cx="27" cy="13" r="3.5" fill="#ea580c"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #ea580c;">WebSurfer</span>
+                        </a>
+
+                        <a href="findajob.html?search=Sterling+Wells" class="employer-card-item" title="View jobs at Sterling Wells">
+                            <div class="emp-logo-box" style="background: #0f172a;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M10 13 L16 27 L20 18 L24 25 L29 13" fill="none" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round"/>
+                                    <path d="M14 13 L18 24 L22 17" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #0f172a;">Sterling Wells</span>
+                        </a>
+
+                        <a href="findajob.html?search=Saurabh+Group" class="employer-card-item" title="View jobs at Saurabh Group">
+                            <div class="emp-logo-box" style="background: #f97316;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <polygon points="20,8 32,30 8,30" fill="none" stroke="white" stroke-width="3"/>
+                                    <circle cx="20" cy="22" r="3" fill="white"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #f97316;">Saurabh Group</span>
+                        </a>
+
+                        <a href="findajob.html?search=Safa+Network" class="employer-card-item" title="View jobs at Safa Network">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #16a34a;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M20 7 C27 7 31 11 31 19 C31 27 20 33 20 33 C20 33 9 27 9 19 C9 11 13 7 20 7 Z" fill="#16a34a"/>
+                                    <circle cx="20" cy="18" r="4.5" fill="white"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #16a34a;">Safa Network</span>
+                        </a>
+
+                        <a href="findajob.html?search=Malax+Media" class="employer-card-item" title="View jobs at Malax Media">
+                            <div class="emp-logo-box" style="background: #0284c7;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <polygon points="15,12 30,20 15,28" fill="white"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #0284c7;">Malax Media</span>
+                        </a>
+
+                        <a href="findajob.html?search=Tacmed" class="employer-card-item" title="View jobs at Tacmed">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #0369a1;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <rect x="17" y="10" width="6" height="20" rx="2" fill="#0369a1"/>
+                                    <rect x="10" y="17" width="20" height="6" rx="2" fill="#0369a1"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #0369a1;">Tacmed</span>
+                        </a>
+
+                        <a href="findajob.html?search=Skybase" class="employer-card-item" title="View jobs at Skybase">
+                            <div class="emp-logo-box" style="background: #2563eb;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M12 26 C9 26 7 24 7 21 C7 18 9.5 16 12.5 16 C13.5 12 17 9 21.5 9 C26.5 9 30 12.5 30.5 17 C32.5 17.5 34 19 34 21.5 C34 24 32 26 29.5 26 Z" fill="white"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #2563eb;">Skybase</span>
+                        </a>
+
+                        <a href="findajob.html?search=Smart+Ideas" class="employer-card-item" title="View jobs at Smart Ideas">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #eab308;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M20 9 C15 9 12 13 12 17 C12 20 14 22 15 24 L15 27 L25 27 L25 24 C26 22 28 20 28 17 C28 13 25 9 20 9 Z" fill="#eab308"/>
+                                    <rect x="17" y="28" width="6" height="3" rx="1" fill="#713f12"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #ca8a04;">Smart Ideas</span>
+                        </a>
+
+                        <a href="findajob.html?search=Deerwalk" class="employer-card-item" title="View jobs at Deerwalk">
+                            <div class="emp-logo-box" style="background: #1e3a8a;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M14 28 L14 12 L20 12 C24 12 27 15 27 20 C27 25 24 28 20 28 Z" fill="none" stroke="white" stroke-width="3"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #1e3a8a;">Deerwalk</span>
+                        </a>
+
+                        <a href="findajob.html?search=Fusemachines" class="employer-card-item" title="View jobs at Fusemachines">
+                            <div class="emp-logo-box" style="background: #4f46e5;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <polygon points="20,7 32,14 32,26 20,33 8,26 8,14" fill="none" stroke="white" stroke-width="2.5"/>
+                                    <circle cx="20" cy="20" r="4" fill="white"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #4f46e5;">Fusemachines</span>
+                        </a>
+
+                        <!-- Duplicate Set for Seamless Continuous Running Animation -->
+                        <a href="findajob.html?search=WorldLink" class="employer-card-item" aria-hidden="true">
+                            <div class="emp-logo-box" style="background: #0066cc;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <circle cx="20" cy="20" r="13" fill="none" stroke="white" stroke-width="3"/>
+                                    <path d="M12 20 Q20 8 28 20 Q20 32 12 20 Z" fill="none" stroke="white" stroke-width="2.5"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #0066cc;">WorldLink</span>
+                        </a>
+
+                        <a href="findajob.html?search=Teach+For+Nepal" class="employer-card-item" aria-hidden="true">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #e11d48;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <circle cx="20" cy="13" r="4" fill="#e11d48"/>
+                                    <path d="M13 27 C13 20 27 20 27 27" fill="#e11d48"/>
+                                    <circle cx="30" cy="16" r="3" fill="#e11d48"/>
+                                    <circle cx="10" cy="16" r="3" fill="#e11d48"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name text-uppercase" style="color: #e11d48; font-size: 0.82rem; letter-spacing: 0.3px;">Teach For Nepal</span>
+                        </a>
+
+                        <a href="findajob.html?search=WebSurfer" class="employer-card-item" aria-hidden="true">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #ea580c;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M8 26 C16 10 26 12 32 23 C25 23 18 25 8 26 Z" fill="#ea580c"/>
+                                    <circle cx="27" cy="13" r="3.5" fill="#ea580c"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #ea580c;">WebSurfer</span>
+                        </a>
+
+                        <a href="findajob.html?search=Sterling+Wells" class="employer-card-item" aria-hidden="true">
+                            <div class="emp-logo-box" style="background: #0f172a;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M10 13 L16 27 L20 18 L24 25 L29 13" fill="none" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round"/>
+                                    <path d="M14 13 L18 24 L22 17" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #0f172a;">Sterling Wells</span>
+                        </a>
+
+                        <a href="findajob.html?search=Saurabh+Group" class="employer-card-item" aria-hidden="true">
+                            <div class="emp-logo-box" style="background: #f97316;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <polygon points="20,8 32,30 8,30" fill="none" stroke="white" stroke-width="3"/>
+                                    <circle cx="20" cy="22" r="3" fill="white"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #f97316;">Saurabh Group</span>
+                        </a>
+
+                        <a href="findajob.html?search=Safa+Network" class="employer-card-item" aria-hidden="true">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #16a34a;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M20 7 C27 7 31 11 31 19 C31 27 20 33 20 33 C20 33 9 27 9 19 C9 11 13 7 20 7 Z" fill="#16a34a"/>
+                                    <circle cx="20" cy="18" r="4.5" fill="white"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #16a34a;">Safa Network</span>
+                        </a>
+
+                        <a href="findajob.html?search=Malax+Media" class="employer-card-item" aria-hidden="true">
+                            <div class="emp-logo-box" style="background: #0284c7;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <polygon points="15,12 30,20 15,28" fill="white"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #0284c7;">Malax Media</span>
+                        </a>
+
+                        <a href="findajob.html?search=Tacmed" class="employer-card-item" aria-hidden="true">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #0369a1;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <rect x="17" y="10" width="6" height="20" rx="2" fill="#0369a1"/>
+                                    <rect x="10" y="17" width="20" height="6" rx="2" fill="#0369a1"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #0369a1;">Tacmed</span>
+                        </a>
+
+                        <a href="findajob.html?search=Skybase" class="employer-card-item" aria-hidden="true">
+                            <div class="emp-logo-box" style="background: #2563eb;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M12 26 C9 26 7 24 7 21 C7 18 9.5 16 12.5 16 C13.5 12 17 9 21.5 9 C26.5 9 30 12.5 30.5 17 C32.5 17.5 34 19 34 21.5 C34 24 32 26 29.5 26 Z" fill="white"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #2563eb;">Skybase</span>
+                        </a>
+
+                        <a href="findajob.html?search=Smart+Ideas" class="employer-card-item" aria-hidden="true">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #eab308;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M20 9 C15 9 12 13 12 17 C12 20 14 22 15 24 L15 27 L25 27 L25 24 C26 22 28 20 28 17 C28 13 25 9 20 9 Z" fill="#eab308"/>
+                                    <rect x="17" y="28" width="6" height="3" rx="1" fill="#713f12"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #ca8a04;">Smart Ideas</span>
+                        </a>
+
+                        <a href="findajob.html?search=Deerwalk" class="employer-card-item" aria-hidden="true">
+                            <div class="emp-logo-box" style="background: #1e3a8a;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M14 28 L14 12 L20 12 C24 12 27 15 27 20 C27 25 24 28 20 28 Z" fill="none" stroke="white" stroke-width="3"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #1e3a8a;">Deerwalk</span>
+                        </a>
+
+                        <a href="findajob.html?search=Fusemachines" class="employer-card-item" aria-hidden="true">
+                            <div class="emp-logo-box" style="background: #4f46e5;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <polygon points="20,7 32,14 32,26 20,33 8,26 8,14" fill="none" stroke="white" stroke-width="2.5"/>
+                                    <circle cx="20" cy="20" r="4" fill="white"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #4f46e5;">Fusemachines</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -107,167 +341,172 @@
             
             <!-- Sidebar Filters -->
             <div class="col-lg-3 col-md-4">
-                <div class="job-filter-sidebar bg-white p-4 rounded-4 shadow-sm border border-slate-200">
+                <div class="job-filter-sidebar">
                     <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
                         <h5 class="fw-bold mb-0 text-slate-900"><i class="bi bi-funnel text-primary me-2"></i>Filters</h5>
-                        <button type="button" class="btn btn-link p-0 small text-danger text-decoration-none fw-semibold" id="clearFiltersBtn">Clear All</button>
+                        <a href="findajob.html" class="small text-danger text-decoration-none fw-semibold" id="clearFilterBtn">Clear All</a>
                     </div>
 
-                    <!-- Search Input -->
-                    <div class="mb-4">
-                        <label class="form-label small fw-bold text-slate-700">Search Keyword</label>
-                        <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search text-slate-400"></i></span>
-                            <input type="text" class="form-control border-start-0 ps-0" id="filterSearch" placeholder="Role, skill, company...">
+                    <form id="sidebarFilterForm" onsubmit="return applyFilters(event)">
+                        <!-- Job Category -->
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-slate-700">Category</label>
+                            <select name="category" id="filterCategory" class="form-select form-select-sm rounded-3">
+                                <option value="">All Categories</option>
+                                <option value="IT">IT & Software</option>
+                                <option value="Marketing">Marketing & Growth</option>
+                                <option value="Finance">Finance & Banking</option>
+                                <option value="Design">UI/UX & Design</option>
+                            </select>
                         </div>
-                    </div>
 
-                    <!-- Category Filter -->
-                    <div class="mb-4">
-                        <label class="form-label small fw-bold text-slate-700">Industry Category</label>
-                        <select id="filterCategory" class="form-select form-select-sm rounded-3">
-                            <option value="">All Categories</option>
-                            <option value="IT">IT & Software</option>
-                            <option value="Marketing">Marketing & Growth</option>
-                            <option value="Finance">Finance & Accounting</option>
-                            <option value="Design">UI/UX & Design</option>
-                            <option value="Operations">Operations & Field</option>
-                            <option value="Healthcare">Healthcare & Biotech</option>
-                            <option value="Engineering">Civil & Infrastructure</option>
-                            <option value="Education">Education & Training</option>
-                            <option value="Legal">Legal & Compliance</option>
-                        </select>
-                    </div>
-
-                    <!-- Employment Type Radios -->
-                    <div class="mb-4">
-                        <label class="form-label small fw-bold text-slate-700 d-block">Employment Type</label>
-                        <div class="d-flex flex-column gap-2">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="filterType" id="type_all" value="All" checked>
-                                <label class="form-check-label small text-slate-700" for="type_all">All Types</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="filterType" id="type_full" value="Full-time">
-                                <label class="form-check-label small text-slate-700" for="type_full">Full-Time</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="filterType" id="type_part" value="Part-time">
-                                <label class="form-check-label small text-slate-700" for="type_part">Part-Time</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="filterType" id="type_remote" value="Remote">
-                                <label class="form-check-label small text-slate-700" for="type_remote">Remote / WFH</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="filterType" id="type_intern" value="Internship">
-                                <label class="form-check-label small text-slate-700" for="type_intern">Internship / Trainee</label>
+                        <!-- Job Type (Pills / Radios) -->
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-slate-700 d-block">Employment Type</label>
+                            <div class="d-flex flex-column gap-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="type" id="type_Full-Time" value="Full-time" onclick="handleTypeClick('Full-time')">
+                                    <label class="form-check-label small text-slate-700" for="type_Full-Time">
+                                        Full-Time
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="type" id="type_Part-Time" value="Part-time" onclick="handleTypeClick('Part-time')">
+                                    <label class="form-check-label small text-slate-700" for="type_Part-Time">
+                                        Part-Time
+                                    </label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="type" id="type_Remote" value="Remote" onclick="handleTypeClick('Remote')">
+                                    <label class="form-check-label small text-slate-700" for="type_Remote">
+                                        Remote
+                                    </label>
+                                </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Location Selector -->
-                    <div class="mb-4">
-                        <label class="form-label small fw-bold text-slate-700">Location</label>
-                        <select id="filterLocation" class="form-select form-select-sm rounded-3">
-                            <option value="">Anywhere in Nepal</option>
-                            <option value="Kathmandu">Kathmandu</option>
-                            <option value="Lalitpur">Lalitpur</option>
-                            <option value="Pokhara">Pokhara</option>
-                            <option value="Birgunj">Birgunj</option>
-                            <option value="Dailekh">Dailekh</option>
-                            <option value="Taplejung">Taplejung</option>
-                            <option value="Remote">Remote Only</option>
-                        </select>
-                    </div>
-
-                    <!-- Salary Range Slider -->
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <label class="form-label small fw-bold text-slate-700 mb-0">Salary Range</label>
-                            <span class="small fw-semibold text-primary" id="salaryValueDisplay">Up to NPR 120,000+</span>
+                        <!-- Job Location -->
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-slate-700">Location</label>
+                            <select name="location" id="filterLocation" class="form-select form-select-sm rounded-3">
+                                <option value="">Any Location</option>
+                                <option value="Kathmandu">Kathmandu</option>
+                                <option value="Pokhara">Pokhara</option>
+                                <option value="Lalitpur">Lalitpur</option>
+                            </select>
                         </div>
-                        <input type="range" class="form-range" id="filterSalary" min="25000" max="120000" step="5000" value="120000">
-                        <div class="d-flex justify-content-between text-slate-400" style="font-size: 0.75rem;">
-                            <span>NPR 25k</span>
-                            <span>NPR 120k+</span>
-                        </div>
-                    </div>
 
+                        <!-- Max Salary -->
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold text-slate-700">Max Salary (NPR)</label>
+                            <div class="input-group input-group-sm">
+                                <span class="input-group-text bg-light text-muted">NPR</span>
+                                <input type="number" class="form-control" name="salary" id="filterSalary" placeholder="e.g. 150000">
+                            </div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 fw-semibold mb-2 shadow-sm">
+                            <i class="bi bi-funnel-fill me-1"></i> Apply Filters
+                        </button>
+                        <a href="findajob.html" class="btn btn-outline-secondary w-100 rounded-pill py-2 fw-semibold btn-sm">
+                            Reset All Filters
+                        </a>
+                    </form>
                 </div>
             </div>
 
-            <!-- Main Job Listings List -->
+            <!-- Job Listings Column -->
             <div class="col-lg-9 col-md-8">
                 
-                <!-- Sort Bar -->
-                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center bg-white p-3 rounded-4 shadow-sm mb-4 border border-slate-200 gap-2">
-                    <div class="text-slate-600 small">
-                        Showing verified opportunities with direct recruiter access
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <label class="small text-slate-500 flex-shrink-0 mb-0">Sort By:</label>
-                        <select id="sortBy" class="form-select form-select-sm rounded-3" style="width: 170px;">
-                            <option value="">Default (Featured)</option>
-                            <option value="salaryDesc">Salary: High to Low</option>
-                            <option value="salaryAsc">Salary: Low to High</option>
-                            <option value="titleAsc">Title: A to Z</option>
-                        </select>
-                    </div>
+                <!-- Search & Sort Top Toolbar -->
+                <div class="bg-white p-3 rounded-4 border mb-4 shadow-sm">
+                    <form class="row g-2 align-items-center" id="searchToolbarForm" onsubmit="return applyFilters(event)">
+                        <div class="col-md-7 col-12">
+                            <div class="input-group">
+                                <span class="input-group-text bg-light border-end-0 text-muted"><i class="bi bi-search"></i></span>
+                                <input type="text" class="form-control border-start-0" id="filterSearch" placeholder="Search by title, role or keywords...">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-8">
+                            <select class="form-select" id="filterSort" onchange="applyFilters()">
+                                <option value="">Sort by: Default</option>
+                                <option value="Newest">Newest First</option>
+                                <option value="Oldest">Oldest First</option>
+                                <option value="Salary: High to Low">Salary: High to Low</option>
+                                <option value="Salary: Low to High">Salary: Low to High</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-2 col-4">
+                            <button type="submit" class="btn btn-primary w-100 fw-semibold">Search</button>
+                        </div>
+                    </form>
                 </div>
 
-                <!-- Job Listings Container -->
-                <div id="jobsListContainer">
-                    <div class="text-center py-5">
-                        <div class="spinner-border text-primary" role="status">
-                            <span class="visually-hidden">Loading jobs...</span>
-                        </div>
-                    </div>
+                <!-- Job Listings -->
+                <div id="jobListingsContainer">
+                    <!-- Populated dynamically via JS adhering strictly to .job-card-modern structure -->
+                </div>
+
+                <!-- Pagination -->
+                <div id="paginationContainer" class="mt-5">
+                    <!-- Pagination generated dynamically -->
                 </div>
 
             </div>
-
         </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Modern Footer -->
     <footer class="modern-footer">
-        <div class="container pb-4">
+        <div class="container pb-5">
             <div class="row g-4 justify-content-between">
+                
+                <!-- Column 1: Brand & Bio -->
                 <div class="col-lg-4 col-md-6 footer-brand">
                     <div class="d-flex align-items-center gap-2 mb-3">
-                        <img src="images/logo.png" alt="Elevate Workforce Logo" class="brand-logo" style="background: white; padding: 4px; border-radius: 8px; height: 40px;">
+                        <img src="images/logo.png" alt="Elevate Workforce Logo" class="brand-logo" style="background: white; padding: 4px; border-radius: 8px; height: 42px;">
                         <h4 class="mb-0 text-white fw-bold">Elevate Workforce</h4>
                     </div>
                     <p class="text-slate-400">
                         Nepal's premier workforce acceleration platform. Connecting exceptional talent with industry-leading companies across Kathmandu, Pokhara, Lalitpur, and beyond.
                     </p>
+                    <div class="d-flex align-items-center gap-2 mt-3">
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">
+                            <i class="bi bi-patch-check-fill text-primary me-1"></i> Verified Employment Platform
+                        </span>
+                    </div>
                 </div>
 
+                <!-- Column 2: Quick Navigation -->
                 <div class="col-lg-2 col-md-6 col-6">
                     <h5 class="footer-col-title">Navigation</h5>
                     <ul class="footer-links">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="findajob.html">Find a Job</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                        <li><a href="login.html">Candidate Login</a></li>
-                        <li><a href="register.html">Register Account</a></li>
+                        <li><a href="index.html"><i class="bi bi-chevron-right text-primary small"></i> Home</a></li>
+                        <li><a href="findajob.html"><i class="bi bi-chevron-right text-primary small"></i> Find a Job</a></li>
+                        <li><a href="contact.html"><i class="bi bi-chevron-right text-primary small"></i> Contact Us</a></li>
+                        <li><a href="login.html"><i class="bi bi-chevron-right text-primary small"></i> Candidate Login</a></li>
+                        <li><a href="register.html"><i class="bi bi-chevron-right text-primary small"></i> Register Account</a></li>
                     </ul>
                 </div>
 
+                <!-- Column 3: Popular Categories -->
                 <div class="col-lg-3 col-md-6 col-6">
                     <h5 class="footer-col-title">Job Categories</h5>
                     <ul class="footer-links">
-                        <li><a href="findajob.html?category=IT">IT & Software</a></li>
-                        <li><a href="findajob.html?category=Marketing">Marketing & Growth</a></li>
-                        <li><a href="findajob.html?category=Finance">Finance & Accounting</a></li>
-                        <li><a href="findajob.html?category=Design">UI/UX & Design</a></li>
-                        <li><a href="findajob.html?type=Remote">Remote Roles</a></li>
+                        <li><a href="findajob.html?category=IT"><i class="bi bi-code-slash text-info small"></i> IT & Software</a></li>
+                        <li><a href="findajob.html?category=Marketing"><i class="bi bi-megaphone text-warning small"></i> Marketing & Growth</a></li>
+                        <li><a href="findajob.html?category=Finance"><i class="bi bi-cash-coin text-success small"></i> Finance & Accounting</a></li>
+                        <li><a href="findajob.html?category=Design"><i class="bi bi-palette text-danger small"></i> UI/UX & Design</a></li>
+                        <li><a href="findajob.html?type=Remote"><i class="bi bi-globe2 text-primary small"></i> Remote Opportunities</a></li>
                     </ul>
                 </div>
 
+                <!-- Column 4: Contact & Socials -->
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="footer-col-title">Direct Contact</h5>
+                    <h5 class="footer-col-title">Get in Touch</h5>
                     <div class="footer-contact-item">
                         <i class="bi bi-geo-alt-fill text-primary"></i>
                         <span>Kathmandu, Bagmati Province, Nepal</span>
@@ -280,24 +519,51 @@
                         <i class="bi bi-telephone-fill text-primary"></i>
                         <a href="tel:9761819137" class="text-slate-300">+977 9761819137</a>
                     </div>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-whatsapp text-success"></i>
+                        <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce,%20I%20have%20an%20inquiry" target="_blank" rel="noopener noreferrer" class="text-slate-300">WhatsApp: +977 9761819137</a>
+                    </div>
+
+                    <div class="mt-3">
+                        <span class="d-block small text-slate-400 mb-2 fw-semibold">Connect with us:</span>
+                        <div class="d-flex align-items-center">
+                            <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce,%20I%20have%20an%20inquiry" target="_blank" rel="noopener noreferrer" class="social-button social-whatsapp" aria-label="WhatsApp" title="Connect on WhatsApp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                            <a href="https://www.facebook.com/share/1E3QEKNVUz/?mibextid=wwXIfr" target="_blank" class="social-button" aria-label="Facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="https://www.instagram.com/shah_omey07?stkn=MTgweWZzYTFjbHFwNQ%3D%3D&utm_source=qr" target="_blank" class="social-button" aria-label="Instagram">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/omprakash077?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" class="social-button" aria-label="LinkedIn">
+                                <i class="bi bi-linkedin"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
 
+        <!-- Bottom Bar -->
         <div class="footer-bottom">
             <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 text-center text-md-start">
-                <div>&copy; 2025-2026 <strong>Elevate Workforce Solutions</strong>. All rights reserved.</div>
+                <div>
+                    &copy; 2025-2026 <strong>Elevate Workforce Solutions</strong>. All rights reserved.
+                </div>
                 <div class="d-flex align-items-center gap-3">
                     <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
                         <i class="bi bi-circle-fill small me-1"></i> System Operational
                     </span>
+                    <span class="text-slate-500">Built for Nepal's Future</span>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- Floating WhatsApp Quick Connect Button -->
-    <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce%20Team,%20I%20have%20an%20inquiry%20regarding%20jobs." target="_blank" rel="noopener noreferrer" class="floating-whatsapp" id="whatsappFloatingBtn" aria-label="Connect with WhatsApp">
+    <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce%20Team,%20I%20have%20an%20inquiry%20regarding%20jobs%20and%20recruitment." target="_blank" rel="noopener noreferrer" class="floating-whatsapp" id="whatsappFloatingBtn" aria-label="Connect with WhatsApp" title="Chat on WhatsApp (+977 9761819137)">
         <div class="whatsapp-pulse"></div>
         <i class="bi bi-whatsapp"></i>
         <span class="whatsapp-label">Chat on WhatsApp</span>
@@ -310,10 +576,283 @@
 
     <!-- Bootstrap 5.3.3 JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Portal JavaScript Engine -->
-    <script src="js/jobs-data.js"></script>
-    <script src="js/modern-script.js"></script>
-    <script src="js/portal.js"></script>
+    <script src="modern-script.js"></script>
+
+    <!-- Job Data & Filter Engine (Identical HTML output as findajob.jsp) -->
+    <script>
+        // Real jobs database from production_init.sql
+        const allJobs = [
+            { id: 1, title: "Full Stack Java & Web Developer", company: "Nepal IT Solution", location: "Kathmandu", salary: 40000, category: "IT", type: "Full-time", desc: "Knowledge of both frontend and backend." },
+            { id: 2, title: "UI/UX & Product Designer", company: "Nepal IT Solution", location: "Pokhara", salary: 50000, category: "Design", type: "Full-time", desc: "Craft intuitive user journeys and modern design systems." },
+            { id: 4, title: "Technical Support Representative", company: "Bhagya Laxmi International Pvt. Ltd.", location: "Kathmandu", salary: 45000, category: "IT", type: "Full-time", desc: "Provide front-line technical helpdesk and IT support for enterprise clients." },
+            { id: 5, title: "Graphic Designer & Content Creator", company: "Himalaya Media Solutions", location: "Lalitpur", salary: 42000, category: "Design", type: "Full-time", desc: "Design high-impact visual graphics, digital marketing creatives, and website UI banners." },
+            { id: 6, title: "AI-Assisted Software Engineer", company: "Robotics Association of Nepal", location: "Pokhara", salary: 75000, category: "IT", type: "Full-time", desc: "Participate in intermediate software engineering projects leveraging modern AI tools and Python." },
+            { id: 7, title: "Biomedical Engineer (Sales & Service)", company: "KNS Enterprises Pvt Ltd", location: "Kathmandu", salary: 55000, category: "Engineering", type: "Full-time", desc: "Responsible for installation, calibration, and maintenance of advanced diagnostic equipment." },
+            { id: 8, title: "Communication and Outreach Officer", company: "Youth Innovation Lab", location: "Lalitpur", salary: 60000, category: "Marketing", type: "Full-time", desc: "Lead communication campaigns, create content for digital outreach, and coordinate public relations." },
+            { id: 9, title: "Data Integration Specialist (Bipad Portal)", company: "Sajag Nepal Project", location: "Kathmandu", salary: 85000, category: "IT", type: "Remote", desc: "Design data pipelines for integrating geohazard datasets into the national Bipad portal." },
+            { id: 10, title: "Admin and Finance Officer (AFO)", company: "SOSEC Nepal", location: "Kathmandu", salary: 50000, category: "Finance", type: "Full-time", desc: "Manage project accounting, prepare financial statements, and coordinate with statutory auditors." },
+            { id: 11, title: "Sales Executive Officer", company: "NIP Holdings Pvt Ltd", location: "Kathmandu", salary: 38000, category: "Marketing", type: "Full-time", desc: "Drive B2B sales growth, manage corporate client accounts, and conduct product pitches." },
+            { id: 12, title: "Project Coordinator", company: "National Federation of the Disabled Nepal", location: "Kathmandu", salary: 70000, category: "Operations", type: "Full-time", desc: "Coordinate advocacy projects, organize capacity development workshops, and submit progress reports." },
+            { id: 13, title: "Client Relations Officer", company: "JobsNepal Direct Recruitment", location: "Kathmandu", salary: 35000, category: "Marketing", type: "Full-time", desc: "Coordinate with hiring partners and candidates, schedule interviews, and screen resumes." },
+            { id: 14, title: "Emergency Food Security & Livelihoods Officer", company: "Oxfam in Nepal", location: "Kathmandu", salary: 68000, category: "Operations", type: "Full-time", desc: "Implement field-level cash transfer programming, assessments, and distributions." },
+            { id: 15, title: "Sustainable Infrastructure Specialist", company: "WWF Nepal", location: "Kathmandu", salary: 95000, category: "Engineering", type: "Full-time", desc: "Advise on green infrastructure development and environmental impact assessments." },
+            { id: 16, title: "Senior UI/UX Specialist", company: "Software Company", location: "Kathmandu", salary: 60000, category: "Design", type: "Full-time", desc: "Design engaging design systems, user journeys, and component libraries." },
+            { id: 17, title: "Virtual Teachers (STEM & English)", company: "TurnKey Development Group", location: "Kathmandu", salary: 45000, category: "Education", type: "Remote", desc: "Responsible for conducting interactive online classes across Nepal." },
+            { id: 18, title: "Operations Manager", company: "IFRC Nepal Delegation", location: "Kathmandu", salary: 110000, category: "Operations", type: "Full-time", desc: "Lead, coordinate, and oversee comprehensive humanitarian relief operations." },
+            { id: 19, title: "Marketing Manager / Sales Executive", company: "Diplomat Nepal Pvt. Ltd.", location: "Kathmandu", salary: 52000, category: "Marketing", type: "Full-time", desc: "Drive institutional sales outreach, identify emerging market opportunities, and manage campaigns." },
+            { id: 20, title: "Research & Evaluation Coordinator", company: "FAIRMED Foundation Nepal", location: "Lalitpur", salary: 80000, category: "Healthcare", type: "Full-time", desc: "Design, manage, and execute systematic Monitoring, Evaluation, and Learning (MEL) frameworks." },
+            { id: 21, title: "Part-Time Bookkeeper - Remote", company: "Andmine", location: "Kathmandu", salary: 35000, category: "Finance", type: "Part-time", desc: "Manage day-to-day accounts, bank reconciliations, and generate monthly financial reports." },
+            { id: 22, title: "Associate at a Law Firm", company: "Reputed Legal Consultancy", location: "Kathmandu", salary: 48000, category: "Legal", type: "Full-time", desc: "Conduct legal research, draft commercial agreements, and represent corporate clients." },
+            { id: 23, title: "District Project Manager", company: "Action For Nepal", location: "Kathmandu", salary: 75000, category: "Operations", type: "Full-time", desc: "Direct district-level program operations, supervise field teams, and oversee development initiatives." },
+            { id: 24, title: "Project Administration Trainee", company: "World Vision International Nepal", location: "Lalitpur", salary: 28000, category: "Operations", type: "Part-time", desc: "Hands-on learning in project coordination, community outreach, and documentation." },
+            { id: 25, title: "Client Relations & Order Processing Officer", company: "Kamal Rug", location: "Pokhara", salary: 40000, category: "Marketing", type: "Full-time", desc: "Oversee client communications, coordinate custom handicraft orders, and ensure quality delivery." }
+        ];
+
+        let currentPage = 1;
+        const recordsPerPage = 6;
+        let selectedType = "";
+
+        function parseParams() {
+            const params = new URLSearchParams(window.location.search);
+            const cat = params.get('category') || '';
+            const loc = params.get('location') || '';
+            const sal = params.get('salary') || '';
+            const srch = params.get('search') || '';
+            const sort = params.get('sortBy') || '';
+            const typ = params.get('type') || '';
+            const page = parseInt(params.get('page') || '1', 10);
+
+            if (cat) document.getElementById('filterCategory').value = cat;
+            if (loc) document.getElementById('filterLocation').value = loc;
+            if (sal) document.getElementById('filterSalary').value = sal;
+            if (srch) document.getElementById('filterSearch').value = srch;
+            if (sort) document.getElementById('filterSort').value = sort;
+
+            if (typ) {
+                selectedType = typ;
+                const r = document.querySelector(`input[name="type"][value="${typ}"]`);
+                if (r) r.checked = true;
+            } else {
+                selectedType = "";
+                document.querySelectorAll('input[name="type"]').forEach(r => r.checked = false);
+            }
+
+            currentPage = isNaN(page) ? 1 : page;
+            renderJobs();
+        }
+
+        function handleTypeClick(val) {
+            if (selectedType.toLowerCase() === val.toLowerCase()) {
+                selectedType = "";
+                document.querySelectorAll('input[name="type"]').forEach(r => r.checked = false);
+            } else {
+                selectedType = val;
+            }
+            currentPage = 1;
+            renderJobs();
+        }
+
+        function applyFilters(e) {
+            if (e) e.preventDefault();
+            currentPage = 1;
+            renderJobs();
+            return false;
+        }
+
+        function renderJobs() {
+            const category = document.getElementById('filterCategory').value.trim().toLowerCase();
+            const location = document.getElementById('filterLocation').value.trim().toLowerCase();
+            const maxSalary = parseFloat(document.getElementById('filterSalary').value) || 0;
+            const search = document.getElementById('filterSearch').value.trim().toLowerCase();
+            const sortBy = document.getElementById('filterSort').value;
+
+            let filtered = allJobs.filter(j => {
+                if (category && !j.category.toLowerCase().includes(category) && !j.title.toLowerCase().includes(category)) return false;
+                if (location && !j.location.toLowerCase().includes(location)) return false;
+                if (selectedType && j.type.toLowerCase() !== selectedType.toLowerCase()) return false;
+                if (maxSalary > 0 && j.salary > maxSalary) return false;
+                if (search) {
+                    const match = j.title.toLowerCase().includes(search) ||
+                                  j.company.toLowerCase().includes(search) ||
+                                  j.location.toLowerCase().includes(search) ||
+                                  j.desc.toLowerCase().includes(search);
+                    if (!match) return false;
+                }
+                return true;
+            });
+
+            // Sorting
+            if (sortBy === 'Salary: High to Low') {
+                filtered.sort((a, b) => b.salary - a.salary);
+            } else if (sortBy === 'Salary: Low to High') {
+                filtered.sort((a, b) => a.salary - b.salary);
+            } else if (sortBy === 'Oldest') {
+                filtered.sort((a, b) => a.id - b.id);
+            } else if (sortBy === 'Newest') {
+                filtered.sort((a, b) => b.id - a.id);
+            }
+
+            const totalRecords = filtered.length;
+            document.getElementById('pageJobCountText').innerText = 
+                `Showing ${totalRecords} verified job ${totalRecords === 1 ? 'opening' : 'openings'} across Nepal`;
+
+            const totalPages = Math.ceil(totalRecords / recordsPerPage);
+            if (currentPage > totalPages && totalPages > 0) currentPage = totalPages;
+
+            const offset = (currentPage - 1) * recordsPerPage;
+            const pageJobs = filtered.slice(offset, offset + recordsPerPage);
+
+            const container = document.getElementById('jobListingsContainer');
+
+            if (pageJobs.length === 0) {
+                container.innerHTML = `
+                    <div class="card border-0 shadow-sm p-5 text-center rounded-4 bg-white">
+                        <div class="user-avatar-badge mx-auto mb-3" style="width: 60px; height: 60px; font-size: 1.8rem; background: var(--slate-100); color: var(--slate-400);">
+                            <i class="bi bi-search"></i>
+                        </div>
+                        <h4 class="fw-bold text-slate-800">No Job Openings Found</h4>
+                        <p class="text-slate-500 max-w-md mx-auto mb-4" style="max-width: 480px;">
+                            We couldn't find any job postings matching your specific criteria. Try adjusting your search keywords, clearing filters, or checking back soon.
+                        </p>
+                        <div>
+                            <a href="findajob.html" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold">
+                                View All Available Jobs
+                            </a>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('paginationContainer').innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            pageJobs.forEach(j => {
+                let badgeClass = "bg-primary-subtle text-primary border border-primary-subtle";
+                if (j.type.toLowerCase() === 'remote') {
+                    badgeClass = "bg-info-subtle text-info border border-info-subtle";
+                } else if (j.type.toLowerCase() === 'part-time') {
+                    badgeClass = "bg-warning-subtle text-warning-emphasis border border-warning-subtle";
+                }
+
+                const formattedSalary = Number(j.salary).toLocaleString('en-US');
+
+                html += `
+                    <div class="job-card-modern">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="job-logo-box">
+                                <img src="images/job.png" alt="${j.company} Logo">
+                            </div>
+                            <div>
+                                <div class="d-flex align-items-center gap-2 flex-wrap mb-1">
+                                    <h5 class="fw-bold mb-0 text-slate-900">${j.title}</h5>
+                                    <span class="badge rounded-pill ${badgeClass} px-2 py-1 small">
+                                        ${j.type}
+                                    </span>
+                                </div>
+                                <p class="text-primary fw-semibold mb-1 small">${j.company}</p>
+                                <div class="d-flex align-items-center gap-3 text-slate-500 small flex-wrap">
+                                    <span><i class="bi bi-geo-alt-fill text-muted me-1"></i>${j.location}</span>
+                                    <span><i class="bi bi-cash-stack text-success me-1"></i>NPR ${formattedSalary} / mo</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center justify-content-between justify-content-md-end gap-3 mt-3 mt-md-0 pt-3 pt-md-0 border-top border-md-0">
+                            <div class="text-md-end d-none d-md-block">
+                                <div class="fw-bold text-slate-900">NPR ${formattedSalary}</div>
+                                <small class="text-muted">Monthly</small>
+                            </div>
+                            <a href="apply.html?jobId=${j.id}" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold shadow-sm">
+                                Apply Now <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+            });
+            container.innerHTML = html;
+
+            // Render Pagination exactly matching findajob.jsp lines 271-298
+            const pagContainer = document.getElementById('paginationContainer');
+            if (totalPages > 1) {
+                let phtml = '<nav class="mt-5"><ul class="pagination justify-content-center gap-1">';
+                if (currentPage > 1) {
+                    phtml += `
+                        <li class="page-item">
+                            <a class="page-link rounded-pill px-3" href="javascript:void(0)" onclick="goToPage(${currentPage - 1})">
+                                <i class="bi bi-chevron-left"></i> Previous
+                            </a>
+                        </li>
+                    `;
+                }
+                for (let i = 1; i <= totalPages; i++) {
+                    phtml += `
+                        <li class="page-item ${i === currentPage ? 'active' : ''}">
+                            <a class="page-link rounded-circle text-center" style="width: 38px; height: 38px; line-height: 24px;" href="javascript:void(0)" onclick="goToPage(${i})">${i}</a>
+                        </li>
+                    `;
+                }
+                if (currentPage < totalPages) {
+                    phtml += `
+                        <li class="page-item">
+                            <a class="page-link rounded-pill px-3" href="javascript:void(0)" onclick="goToPage(${currentPage + 1})">
+                                Next <i class="bi bi-chevron-right"></i>
+                            </a>
+                        </li>
+                    `;
+                }
+                phtml += '</ul></nav>';
+                pagContainer.innerHTML = phtml;
+            } else {
+                pagContainer.innerHTML = '';
+            }
+        }
+
+        function goToPage(p) {
+            currentPage = p;
+            renderJobs();
+            window.scrollTo({ top: 380, behavior: 'smooth' });
+        }
+
+        // Check login state from localStorage
+        function initNavAuth() {
+            const userStr = localStorage.getItem('elevate_user');
+            if (userStr) {
+                try {
+                    const u = JSON.parse(userStr);
+                    const initial = (u.name || u.username || 'U').charAt(0).toUpperCase();
+                    const name = u.name || u.username || 'Candidate';
+                    document.getElementById('navAuthSection').innerHTML = `
+                        <div class="dropdown">
+                            <button class="btn user-dropdown-btn dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="user-avatar-badge">${initial}</span>
+                                <span class="d-inline-block text-truncate" style="max-width: 130px;">${name}</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="userMenuButton">
+                                <li class="px-3 py-2 border-bottom mb-1">
+                                    <small class="text-muted d-block">Signed in as</small>
+                                    <strong class="text-dark">${name}</strong>
+                                </li>
+                                <li><a class="dropdown-item" href="userdashboard.html"><i class="bi bi-grid-1x2 text-primary"></i> Dashboard</a></li>
+                                <li><a class="dropdown-item" href="profile.html"><i class="bi bi-person-gear text-info"></i> Profile</a></li>
+                                <li><a class="dropdown-item" href="applications.html"><i class="bi bi-file-earmark-text text-success"></i> Applications</a></li>
+                                <li><hr class="dropdown-divider my-1"></li>
+                                <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="logoutUser()"><i class="bi bi-box-arrow-right text-danger"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    `;
+                } catch(e) {}
+            }
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('elevate_user');
+            window.location.reload();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initNavAuth();
+            parseParams();
+        });
+    </script>
 </body>
 </html>

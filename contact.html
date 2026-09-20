@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contact Us | Elevate Workforce Solutions Nepal</title>
-    <meta name="description" content="Get in touch with Elevate Workforce Solutions. We support job seekers and employers across Nepal.">
+    <title>Contact Us - Elevate Workforce Solutions</title>
+    <meta name="description" content="Get in touch with Elevate Workforce Solutions. We are here to support job seekers and employers across Nepal.">
     
     <!-- Google Fonts & Bootstrap -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     
     <!-- Modern Design System Stylesheet -->
     <link rel="stylesheet" href="css/modern-style.css">
+    <link rel="stylesheet" href="modern-style.css">
 </head>
 <body class="bg-light">
 
@@ -27,6 +28,7 @@
                 <span class="brand-badge ms-1">Nepal</span>
             </a>
 
+            <!-- Mobile Toggler -->
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <i class="bi bi-list fs-4"></i>
             </button>
@@ -49,7 +51,8 @@
                         </a>
                     </li>
 
-                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0" id="navbarAuthContainer">
+                    <!-- Dynamic Login / User Profile -->
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0" id="navAuthSection">
                         <div class="d-flex align-items-center gap-2">
                             <a href="login.html" class="btn btn-outline-primary rounded-pill px-3 py-1 fw-semibold">Login</a>
                             <a href="register.html" class="btn btn-primary rounded-pill px-3 py-1 fw-semibold shadow-sm">Register</a>
@@ -75,6 +78,9 @@
 
     <!-- Contact Section -->
     <div class="container my-5">
+        
+        <div id="contactAlertPlaceholder"></div>
+
         <div class="row g-4 justify-content-center">
             
             <!-- Left: Contact Details Card -->
@@ -128,75 +134,85 @@
                         </div>
                     </div>
 
-                    <hr class="my-4">
+                    <div class="d-flex align-items-start gap-3 mb-4">
+                        <div class="icon-box icon-box-warning flex-shrink-0" style="width: 48px; height: 48px; font-size: 1.25rem;">
+                            <i class="bi bi-clock-fill"></i>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1 text-slate-900">Support Hours</h6>
+                            <p class="text-slate-500 mb-0 small">Sunday - Friday: 9:00 AM – 6:00 PM NPT</p>
+                        </div>
+                    </div>
 
-                    <h6 class="fw-bold text-slate-900 mb-3">Operating Hours</h6>
-                    <div class="d-flex justify-content-between small text-slate-600 mb-1">
-                        <span>Sunday &ndash; Thursday:</span>
-                        <span class="fw-semibold">09:00 AM &ndash; 06:00 PM</span>
-                    </div>
-                    <div class="d-flex justify-content-between small text-slate-600 mb-1">
-                        <span>Friday:</span>
-                        <span class="fw-semibold">09:00 AM &ndash; 03:00 PM</span>
-                    </div>
-                    <div class="d-flex justify-content-between small text-slate-400">
-                        <span>Saturday:</span>
-                        <span>Closed (Online Support Open)</span>
+                    <hr class="my-4 text-slate-200">
+
+                    <h6 class="fw-bold text-slate-900 mb-3">Follow Our Channels</h6>
+                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                        <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce,%20I%20have%20an%20inquiry" target="_blank" rel="noopener noreferrer" class="btn btn-outline-success rounded-pill btn-sm px-3">
+                            <i class="bi bi-whatsapp me-1"></i> WhatsApp
+                        </a>
+                        <a href="https://www.linkedin.com/in/omprakash077?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" class="btn btn-outline-primary rounded-pill btn-sm px-3">
+                            <i class="bi bi-linkedin me-1"></i> LinkedIn
+                        </a>
+                        <a href="https://www.facebook.com/share/1E3QEKNVUz/?mibextid=wwXIfr" target="_blank" class="btn btn-outline-primary rounded-pill btn-sm px-3">
+                            <i class="bi bi-facebook me-1"></i> Facebook
+                        </a>
+                        <a href="https://www.instagram.com/shah_omey07?stkn=MTgweWZzYTFjbHFwNQ%3D%3D&utm_source=qr" target="_blank" class="btn btn-outline-primary rounded-pill btn-sm px-3">
+                            <i class="bi bi-instagram me-1"></i> Instagram
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <!-- Right: Interactive Inquiry Form -->
+            <!-- Right: Contact Form -->
             <div class="col-lg-7 col-md-6">
                 <div class="card border-0 shadow-sm rounded-4 p-4 p-lg-5 bg-white h-100">
-                    <h3 class="fw-bold text-slate-900 mb-2">Send Us a Direct Message</h3>
-                    <p class="text-slate-500 mb-4">
-                        Fill out the form below and our recruitment coordinator will respond within 24 business hours.
-                    </p>
+                    <h3 class="fw-bold text-slate-900 mb-1">Send Us a Message</h3>
+                    <p class="text-slate-500 mb-4 small">Fill out the details below and a member of our team will respond within 24 hours.</p>
 
-                    <div id="contactFormAlert" class="alert alert-success d-none rounded-4 mb-4" role="alert">
-                        <i class="bi bi-check-circle-fill me-2"></i><strong>Thank you!</strong> Your message has been sent successfully. We will be in touch shortly.
-                    </div>
-
-                    <form id="contactInquiryForm">
+                    <form id="contactForm" onsubmit="return handleContactSubmit(event)">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-slate-700">Full Name *</label>
-                                <input type="text" class="form-control rounded-3" id="contactName" required placeholder="Aayush Shrestha">
+                                <label for="name" class="form-label small fw-bold text-slate-700">Your Full Name <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-person"></i></span>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="John Doe" required>
+                                </div>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-slate-700">Email Address *</label>
-                                <input type="email" class="form-control rounded-3" id="contactEmail" required placeholder="aayush@example.com">
+                                <label for="email" class="form-label small fw-bold text-slate-700">Email Address <span class="text-danger">*</span></label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-envelope"></i></span>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="john@example.com" required>
+                                </div>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-slate-700">Contact Number</label>
-                                <input type="tel" class="form-control rounded-3" id="contactPhone" placeholder="+977 98xxxxxxxx">
+                                <label for="phone" class="form-label small fw-bold text-slate-700">Phone Number</label>
+                                <div class="input-group">
+                                    <span class="input-group-text bg-light text-muted"><i class="bi bi-telephone"></i></span>
+                                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="+977 98XXXXXXXX">
+                                </div>
                             </div>
 
                             <div class="col-md-6">
-                                <label class="form-label small fw-bold text-slate-700">Preferred Contact Method</label>
-                                <select class="form-select rounded-3" id="contactMethod">
-                                    <option value="WhatsApp">WhatsApp Message</option>
-                                    <option value="Email" selected>Email Response</option>
-                                    <option value="Phone">Phone Call</option>
+                                <label class="form-label small fw-bold text-slate-700">Preferred Contact Method <span class="text-danger">*</span></label>
+                                <select class="form-select" name="contactMethod" id="contactMethod" required>
+                                    <option value="">Select an option</option>
+                                    <option value="email">Email</option>
+                                    <option value="phone">Phone Call</option>
                                 </select>
                             </div>
 
                             <div class="col-12">
-                                <label class="form-label small fw-bold text-slate-700">Subject *</label>
-                                <input type="text" class="form-control rounded-3" id="contactSubject" required placeholder="e.g. Job Application Query / Employer Hiring Partnership">
+                                <label for="message" class="form-label small fw-bold text-slate-700">Your Message <span class="text-danger">*</span></label>
+                                <textarea class="form-control" id="message" name="message" rows="5" placeholder="How can we help you?" required></textarea>
                             </div>
 
-                            <div class="col-12">
-                                <label class="form-label small fw-bold text-slate-700">Your Message *</label>
-                                <textarea class="form-control rounded-3" id="contactMessage" rows="5" required placeholder="Provide details about your query..."></textarea>
-                            </div>
-
-                            <div class="col-12 pt-2">
-                                <button type="submit" class="btn btn-primary rounded-pill px-5 py-3 fw-bold shadow-sm" id="btnSubmitContact">
-                                    <i class="bi bi-send-fill me-1"></i> Send Inquiry
+                            <div class="col-12 mt-4">
+                                <button type="submit" id="contactSubmitBtn" class="btn btn-primary rounded-pill px-4 py-3 fw-semibold shadow-sm w-100">
+                                    <i class="bi bi-send-fill me-2"></i> Submit Inquiry
                                 </button>
                             </div>
                         </div>
@@ -206,98 +222,85 @@
 
         </div>
 
-        <!-- FAQs Section -->
-        <div class="mt-5 pt-4">
-            <div class="section-header text-center mb-4">
-                <span class="section-tag">Help Center</span>
-                <h3 class="section-title">Frequently Asked Questions</h3>
-            </div>
-
-            <div class="row justify-content-center">
-                <div class="col-lg-8">
-                    <div class="accordion accordion-flush bg-white rounded-4 shadow-sm p-3" id="faqAccordion">
-                        <div class="accordion-item border-0 border-bottom">
-                            <h2 class="accordion-header" id="faqHeading1">
-                                <button class="accordion-button collapsed fw-bold text-slate-800" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                    Is Elevate Workforce Solutions free for job seekers?
-                                </button>
-                            </h2>
-                            <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text-slate-600">
-                                    Yes, 100%! Browsing jobs, registering a candidate profile, uploading your resume, and applying for openings is completely free of charge for candidates.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border-0 border-bottom">
-                            <h2 class="accordion-header" id="faqHeading2">
-                                <button class="accordion-button collapsed fw-bold text-slate-800" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                    How are salaries listed on the platform determined?
-                                </button>
-                            </h2>
-                            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text-slate-600">
-                                    All job compensation figures are vetted directly with verified partner employers and stated in Nepalese Rupees (NPR) per month to ensure complete transparency before you apply.
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border-0">
-                            <h2 class="accordion-header" id="faqHeading3">
-                                <button class="accordion-button collapsed fw-bold text-slate-800" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                                    How do employers post new vacancies?
-                                </button>
-                            </h2>
-                            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                <div class="accordion-body text-slate-600">
-                                    Employers can connect with us directly via WhatsApp (+977 9761819137) or email (shahomprakash2004@gmail.com) to access the corporate hiring portal and post vetted job requisitions.
-                                </div>
-                            </div>
-                        </div>
+        <!-- FAQ / Why Choose Section -->
+        <div class="mt-5 pt-4 text-center">
+            <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2 mb-2">Our Commitment</span>
+            <h3 class="fw-bold text-slate-900 mb-4">Why Trust Elevate Workforce Solutions?</h3>
+            <div class="row g-4 text-start">
+                <div class="col-md-4">
+                    <div class="modern-card p-4">
+                        <i class="bi bi-shield-check fs-2 text-primary mb-3"></i>
+                        <h5>Verified Recruiters</h5>
+                        <p class="small text-slate-600">Every corporate profile is verified to prevent fraudulent recruitment activities.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="modern-card p-4">
+                        <i class="bi bi-speedometer2 fs-2 text-success mb-3"></i>
+                        <h5>Rapid Response Time</h5>
+                        <p class="small text-slate-600">Our dedicated support desk addresses user queries within 24 business hours.</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="modern-card p-4">
+                        <i class="bi bi-lock-fill fs-2 text-info mb-3"></i>
+                        <h5>Privacy Guaranteed</h5>
+                        <p class="small text-slate-600">Your contact data is securely stored and never shared with unauthorized parties.</p>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
-    <!-- Footer -->
+    <!-- Modern Footer -->
     <footer class="modern-footer">
-        <div class="container pb-4">
+        <div class="container pb-5">
             <div class="row g-4 justify-content-between">
+                
+                <!-- Column 1: Brand & Bio -->
                 <div class="col-lg-4 col-md-6 footer-brand">
                     <div class="d-flex align-items-center gap-2 mb-3">
-                        <img src="images/logo.png" alt="Elevate Workforce Logo" class="brand-logo" style="background: white; padding: 4px; border-radius: 8px; height: 40px;">
+                        <img src="images/logo.png" alt="Elevate Workforce Logo" class="brand-logo" style="background: white; padding: 4px; border-radius: 8px; height: 42px;">
                         <h4 class="mb-0 text-white fw-bold">Elevate Workforce</h4>
                     </div>
                     <p class="text-slate-400">
                         Nepal's premier workforce acceleration platform. Connecting exceptional talent with industry-leading companies across Kathmandu, Pokhara, Lalitpur, and beyond.
                     </p>
+                    <div class="d-flex align-items-center gap-2 mt-3">
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">
+                            <i class="bi bi-patch-check-fill text-primary me-1"></i> Verified Employment Platform
+                        </span>
+                    </div>
                 </div>
 
+                <!-- Column 2: Quick Navigation -->
                 <div class="col-lg-2 col-md-6 col-6">
                     <h5 class="footer-col-title">Navigation</h5>
                     <ul class="footer-links">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="findajob.html">Find a Job</a></li>
-                        <li><a href="contact.html">Contact Us</a></li>
-                        <li><a href="login.html">Candidate Login</a></li>
-                        <li><a href="register.html">Register Account</a></li>
+                        <li><a href="index.html"><i class="bi bi-chevron-right text-primary small"></i> Home</a></li>
+                        <li><a href="findajob.html"><i class="bi bi-chevron-right text-primary small"></i> Find a Job</a></li>
+                        <li><a href="contact.html"><i class="bi bi-chevron-right text-primary small"></i> Contact Us</a></li>
+                        <li><a href="login.html"><i class="bi bi-chevron-right text-primary small"></i> Candidate Login</a></li>
+                        <li><a href="register.html"><i class="bi bi-chevron-right text-primary small"></i> Register Account</a></li>
                     </ul>
                 </div>
 
+                <!-- Column 3: Popular Categories -->
                 <div class="col-lg-3 col-md-6 col-6">
                     <h5 class="footer-col-title">Job Categories</h5>
                     <ul class="footer-links">
-                        <li><a href="findajob.html?category=IT">IT & Software</a></li>
-                        <li><a href="findajob.html?category=Marketing">Marketing & Growth</a></li>
-                        <li><a href="findajob.html?category=Finance">Finance & Accounting</a></li>
-                        <li><a href="findajob.html?category=Design">UI/UX & Design</a></li>
-                        <li><a href="findajob.html?type=Remote">Remote Roles</a></li>
+                        <li><a href="findajob.html?category=IT"><i class="bi bi-code-slash text-info small"></i> IT & Software</a></li>
+                        <li><a href="findajob.html?category=Marketing"><i class="bi bi-megaphone text-warning small"></i> Marketing & Growth</a></li>
+                        <li><a href="findajob.html?category=Finance"><i class="bi bi-cash-coin text-success small"></i> Finance & Accounting</a></li>
+                        <li><a href="findajob.html?category=Design"><i class="bi bi-palette text-danger small"></i> UI/UX & Design</a></li>
+                        <li><a href="findajob.html?type=Remote"><i class="bi bi-globe2 text-primary small"></i> Remote Opportunities</a></li>
                     </ul>
                 </div>
 
+                <!-- Column 4: Contact & Socials -->
                 <div class="col-lg-3 col-md-6">
-                    <h5 class="footer-col-title">Direct Contact</h5>
+                    <h5 class="footer-col-title">Get in Touch</h5>
                     <div class="footer-contact-item">
                         <i class="bi bi-geo-alt-fill text-primary"></i>
                         <span>Kathmandu, Bagmati Province, Nepal</span>
@@ -310,24 +313,51 @@
                         <i class="bi bi-telephone-fill text-primary"></i>
                         <a href="tel:9761819137" class="text-slate-300">+977 9761819137</a>
                     </div>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-whatsapp text-success"></i>
+                        <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce,%20I%20have%20an%20inquiry" target="_blank" rel="noopener noreferrer" class="text-slate-300">WhatsApp: +977 9761819137</a>
+                    </div>
+
+                    <div class="mt-3">
+                        <span class="d-block small text-slate-400 mb-2 fw-semibold">Connect with us:</span>
+                        <div class="d-flex align-items-center">
+                            <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce,%20I%20have%20an%20inquiry" target="_blank" rel="noopener noreferrer" class="social-button social-whatsapp" aria-label="WhatsApp" title="Connect on WhatsApp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                            <a href="https://www.facebook.com/share/1E3QEKNVUz/?mibextid=wwXIfr" target="_blank" class="social-button" aria-label="Facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="https://www.instagram.com/shah_omey07?stkn=MTgweWZzYTFjbHFwNQ%3D%3D&utm_source=qr" target="_blank" class="social-button" aria-label="Instagram">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/omprakash077?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" class="social-button" aria-label="LinkedIn">
+                                <i class="bi bi-linkedin"></i>
+                            </a>
+                        </div>
+                    </div>
                 </div>
+
             </div>
         </div>
 
+        <!-- Bottom Bar -->
         <div class="footer-bottom">
             <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 text-center text-md-start">
-                <div>&copy; 2025-2026 <strong>Elevate Workforce Solutions</strong>. All rights reserved.</div>
+                <div>
+                    &copy; 2025-2026 <strong>Elevate Workforce Solutions</strong>. All rights reserved.
+                </div>
                 <div class="d-flex align-items-center gap-3">
                     <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
                         <i class="bi bi-circle-fill small me-1"></i> System Operational
                     </span>
+                    <span class="text-slate-500">Built for Nepal's Future</span>
                 </div>
             </div>
         </div>
     </footer>
 
     <!-- Floating WhatsApp Quick Connect Button -->
-    <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce%20Team,%20I%20have%20an%20inquiry." target="_blank" rel="noopener noreferrer" class="floating-whatsapp" id="whatsappFloatingBtn" aria-label="Connect with WhatsApp">
+    <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce%20Team,%20I%20have%20an%20inquiry%20regarding%20jobs%20and%20recruitment." target="_blank" rel="noopener noreferrer" class="floating-whatsapp" id="whatsappFloatingBtn" aria-label="Connect with WhatsApp" title="Chat on WhatsApp (+977 9761819137)">
         <div class="whatsapp-pulse"></div>
         <i class="bi bi-whatsapp"></i>
         <span class="whatsapp-label">Chat on WhatsApp</span>
@@ -338,35 +368,60 @@
         <i class="bi bi-chevron-up"></i>
     </button>
 
-    <!-- Bootstrap 5.3.3 JS Bundle -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    
-    <!-- Portal JavaScript Engine -->
-    <script src="js/jobs-data.js"></script>
-    <script src="js/modern-script.js"></script>
-    <script src="js/portal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="modern-script.js"></script>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const form = document.getElementById('contactInquiryForm');
-            const alertBox = document.getElementById('contactFormAlert');
-            const submitBtn = document.getElementById('btnSubmitContact');
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('contactSubmitBtn');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending...';
 
-            if (form) {
-                form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    submitBtn.disabled = true;
-                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Sending...';
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                document.getElementById('contactAlertPlaceholder').innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show text-center rounded-4 shadow-sm mb-4" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i><strong>Thank you!</strong> Your message has been sent successfully. Our support desk will reach out shortly.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                document.getElementById('contactForm').reset();
+                window.scrollTo({ top: 180, behavior: 'smooth' });
+            }, 600);
+            return false;
+        }
 
-                    setTimeout(() => {
-                        submitBtn.disabled = false;
-                        submitBtn.innerHTML = '<i class="bi bi-check2-circle me-1"></i> Sent!';
-                        alertBox.classList.remove('d-none');
-                        form.reset();
-                        window.ElevatePortal.showToast("Your inquiry has been sent to our team!", "success");
-                        alertBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 600);
-                });
+        // Check login state
+        window.addEventListener('DOMContentLoaded', () => {
+            const userStr = localStorage.getItem('elevate_user');
+            if (userStr) {
+                try {
+                    const u = JSON.parse(userStr);
+                    const initial = (u.name || u.username || 'U').charAt(0).toUpperCase();
+                    const name = u.name || u.username || 'Candidate';
+                    document.getElementById('navAuthSection').innerHTML = `
+                        <div class="dropdown">
+                            <button class="btn user-dropdown-btn dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="user-avatar-badge">${initial}</span>
+                                <span class="d-inline-block text-truncate" style="max-width: 130px;">${name}</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="userMenuButton">
+                                <li class="px-3 py-2 border-bottom mb-1">
+                                    <small class="text-muted d-block">Signed in as</small>
+                                    <strong class="text-dark">${name}</strong>
+                                </li>
+                                <li><a class="dropdown-item" href="userdashboard.html"><i class="bi bi-grid-1x2 text-primary"></i> Dashboard</a></li>
+                                <li><a class="dropdown-item" href="profile.html"><i class="bi bi-person-gear text-info"></i> Profile</a></li>
+                                <li><a class="dropdown-item" href="applications.html"><i class="bi bi-file-earmark-text text-success"></i> Applications</a></li>
+                                <li><hr class="dropdown-divider my-1"></li>
+                                <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="localStorage.removeItem('elevate_user'); window.location.reload();"><i class="bi bi-box-arrow-right text-danger"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    `;
+                } catch(e) {}
             }
         });
     </script>

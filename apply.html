@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title id="pageApplyTitle">Apply for Job | Elevate Workforce</title>
+    
+    <!-- Google Fonts & Bootstrap -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <!-- Modern Design System Stylesheet -->
+    <link rel="stylesheet" href="css/modern-style.css">
+    <link rel="stylesheet" href="modern-style.css">
+</head>
+<body class="bg-light">
+
+    <!-- Header Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-modern">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/logo.png" alt="Elevate Workforce Logo" class="brand-logo">
+                <span class="d-none d-sm-inline fw-bold text-dark ms-1">Elevate</span>
+                <span class="brand-badge ms-1">Nepal</span>
+            </a>
+
+            <!-- Mobile Toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-list fs-4"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-1 my-3 my-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">
+                            <i class="bi bi-house-door me-1 d-lg-none"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="findajob.html">
+                            <i class="bi bi-briefcase me-1 d-lg-none"></i> Find a Job
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">
+                            <i class="bi bi-envelope me-1 d-lg-none"></i> Contact
+                        </a>
+                    </li>
+
+                    <!-- Dynamic Login / User Profile -->
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0" id="navAuthSection">
+                        <div class="d-flex align-items-center gap-2">
+                            <a href="login.html" class="btn btn-outline-primary rounded-pill px-3 py-1 fw-semibold">Login</a>
+                            <a href="register.html" class="btn btn-primary rounded-pill px-3 py-1 fw-semibold shadow-sm">Register</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-md-10">
+                
+                <!-- Back Link -->
+                <div class="mb-3">
+                    <a href="findajob.html" class="text-slate-600 text-decoration-none small fw-semibold">
+                        <i class="bi bi-arrow-left me-1"></i> Back to Jobs
+                    </a>
+                </div>
+
+                <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
+                    <!-- Job Banner -->
+                    <div class="p-4 bg-primary text-white">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
+                            <span class="badge bg-white text-primary rounded-pill px-3 py-1 fw-bold" id="jobTypeBadge">
+                                Full-Time
+                            </span>
+                            <span class="badge bg-primary-subtle text-white border border-white-subtle rounded-pill px-3 py-1">
+                                <i class="bi bi-geo-alt-fill me-1"></i> <span id="jobLocationText">Kathmandu</span>
+                            </span>
+                        </div>
+                        <h3 class="fw-bold mb-1" id="jobTitleText">Full Stack Java & Web Developer</h3>
+                        <p class="mb-0 text-white-50 fs-6"><i class="bi bi-building me-1"></i> <span id="jobCompanyText">Nepal IT Solution</span></p>
+                    </div>
+
+                    <!-- Application Body -->
+                    <div class="card-body p-4 p-lg-5">
+                        <div class="alert alert-info d-flex align-items-center gap-2 rounded-3 small mb-4">
+                            <i class="bi bi-info-circle-fill fs-5 text-primary flex-shrink-0"></i>
+                            <div>
+                                Applying with your verified candidate profile. Please ensure your contact information and resume are up-to-date.
+                            </div>
+                        </div>
+
+                        <form id="applyJobForm" onsubmit="return handleApplySubmit(event)">
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-slate-700">Candidate Name</label>
+                                    <input type="text" class="form-control bg-light" id="candidateName" value="Om Prakash Sah" readonly>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-slate-700">Registered Email</label>
+                                    <input type="email" class="form-control bg-light" id="candidateEmail" value="shahomprakash2004@gmail.com" readonly>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-slate-700">Phone Number</label>
+                                    <input type="text" class="form-control bg-light" id="candidatePhone" value="+977 9761819137" readonly>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold text-slate-700">Compensation Benchmark</label>
+                                    <input type="text" class="form-control bg-light" id="jobSalaryBenchmark" value="NPR 40,000 / month" readonly>
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <label class="form-label small fw-bold text-slate-700">Attached Resume</label>
+                                    <div class="p-3 border rounded-3 bg-light d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                        <div class="d-flex align-items-center gap-2">
+                                            <i class="bi bi-file-earmark-pdf-fill text-danger fs-4"></i>
+                                            <div>
+                                                <div class="fw-semibold small text-slate-800">Resume on File</div>
+                                                <small class="text-muted">Will be shared securely with hiring partner</small>
+                                            </div>
+                                        </div>
+                                        <a href="profile.html" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                            <i class="bi bi-eye me-1"></i> Preview / Update
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 mt-4">
+                                    <button type="submit" id="submitApplyBtn" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow-sm">
+                                        <i class="bi bi-send-check-fill me-2"></i> Confirm & Submit Application
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern Footer -->
+    <footer class="modern-footer">
+        <div class="container pb-5">
+            <div class="row g-4 justify-content-between">
+                
+                <!-- Column 1: Brand & Bio -->
+                <div class="col-lg-4 col-md-6 footer-brand">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="images/logo.png" alt="Elevate Workforce Logo" class="brand-logo" style="background: white; padding: 4px; border-radius: 8px; height: 42px;">
+                        <h4 class="mb-0 text-white fw-bold">Elevate Workforce</h4>
+                    </div>
+                    <p class="text-slate-400">
+                        Nepal's premier workforce acceleration platform. Connecting exceptional talent with industry-leading companies across Kathmandu, Pokhara, Lalitpur, and beyond.
+                    </p>
+                    <div class="d-flex align-items-center gap-2 mt-3">
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">
+                            <i class="bi bi-patch-check-fill text-primary me-1"></i> Verified Employment Platform
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Column 2: Quick Navigation -->
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-col-title">Navigation</h5>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="bi bi-chevron-right text-primary small"></i> Home</a></li>
+                        <li><a href="findajob.html"><i class="bi bi-chevron-right text-primary small"></i> Find a Job</a></li>
+                        <li><a href="contact.html"><i class="bi bi-chevron-right text-primary small"></i> Contact Us</a></li>
+                        <li><a href="login.html"><i class="bi bi-chevron-right text-primary small"></i> Candidate Login</a></li>
+                        <li><a href="register.html"><i class="bi bi-chevron-right text-primary small"></i> Register Account</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Popular Categories -->
+                <div class="col-lg-3 col-md-6 col-6">
+                    <h5 class="footer-col-title">Job Categories</h5>
+                    <ul class="footer-links">
+                        <li><a href="findajob.html?category=IT"><i class="bi bi-code-slash text-info small"></i> IT & Software</a></li>
+                        <li><a href="findajob.html?category=Marketing"><i class="bi bi-megaphone text-warning small"></i> Marketing & Growth</a></li>
+                        <li><a href="findajob.html?category=Finance"><i class="bi bi-cash-coin text-success small"></i> Finance & Accounting</a></li>
+                        <li><a href="findajob.html?category=Design"><i class="bi bi-palette text-danger small"></i> UI/UX & Design</a></li>
+                        <li><a href="findajob.html?type=Remote"><i class="bi bi-globe2 text-primary small"></i> Remote Opportunities</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Contact & Socials -->
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-col-title">Get in Touch</h5>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-geo-alt-fill text-primary"></i>
+                        <span>Kathmandu, Bagmati Province, Nepal</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-envelope-fill text-primary"></i>
+                        <a href="mailto:shahomprakash2004@gmail.com" class="text-slate-300">shahomprakash2004@gmail.com</a>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-telephone-fill text-primary"></i>
+                        <a href="tel:9761819137" class="text-slate-300">+977 9761819137</a>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-whatsapp text-success"></i>
+                        <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce,%20I%20have%20an%20inquiry" target="_blank" rel="noopener noreferrer" class="text-slate-300">WhatsApp: +977 9761819137</a>
+                    </div>
+
+                    <div class="mt-3">
+                        <span class="d-block small text-slate-400 mb-2 fw-semibold">Connect with us:</span>
+                        <div class="d-flex align-items-center">
+                            <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce,%20I%20have%20an%20inquiry" target="_blank" rel="noopener noreferrer" class="social-button social-whatsapp" aria-label="WhatsApp" title="Connect on WhatsApp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                            <a href="https://www.facebook.com/share/1E3QEKNVUz/?mibextid=wwXIfr" target="_blank" class="social-button" aria-label="Facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="https://www.instagram.com/shah_omey07?stkn=MTgweWZzYTFjbHFwNQ%3D%3D&utm_source=qr" target="_blank" class="social-button" aria-label="Instagram">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/omprakash077?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" class="social-button" aria-label="LinkedIn">
+                                <i class="bi bi-linkedin"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="footer-bottom">
+            <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 text-center text-md-start">
+                <div>
+                    &copy; 2025-2026 <strong>Elevate Workforce Solutions</strong>. All rights reserved.
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
+                        <i class="bi bi-circle-fill small me-1"></i> System Operational
+                    </span>
+                    <span class="text-slate-500">Built for Nepal's Future</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Quick Connect Button -->
+    <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce%20Team,%20I%20have%20an%20inquiry%20regarding%20jobs%20and%20recruitment." target="_blank" rel="noopener noreferrer" class="floating-whatsapp" id="whatsappFloatingBtn" aria-label="Connect with WhatsApp" title="Chat on WhatsApp (+977 9761819137)">
+        <div class="whatsapp-pulse"></div>
+        <i class="bi bi-whatsapp"></i>
+        <span class="whatsapp-label">Chat on WhatsApp</span>
+    </a>
+
+    <!-- Floating Scroll to Top Button -->
+    <button id="backToTop" class="back-to-top" title="Scroll to top" aria-label="Scroll to top">
+        <i class="bi bi-chevron-up"></i>
+    </button>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="modern-script.js"></script>
+
+    <script>
+        const jobsDatabase = [
+            { id: 1, title: "Full Stack Java & Web Developer", company: "Nepal IT Solution", location: "Kathmandu", salary: 40000, type: "Full-Time" },
+            { id: 2, title: "UI/UX & Product Designer", company: "Nepal IT Solution", location: "Pokhara", salary: 50000, type: "Full-Time" },
+            { id: 4, title: "Technical Support Representative", company: "Bhagya Laxmi International Pvt. Ltd.", location: "Kathmandu", salary: 45000, type: "Full-Time" },
+            { id: 5, title: "Graphic Designer & Content Creator", company: "Himalaya Media Solutions", location: "Lalitpur", salary: 42000, type: "Full-Time" },
+            { id: 6, title: "AI-Assisted Software Engineer", company: "Robotics Association of Nepal", location: "Pokhara", salary: 75000, type: "Full-Time" },
+            { id: 7, title: "Biomedical Engineer (Sales & Service)", company: "KNS Enterprises Pvt Ltd", location: "Kathmandu", salary: 55000, type: "Full-Time" },
+            { id: 8, title: "Communication and Outreach Officer", company: "Youth Innovation Lab", location: "Lalitpur", salary: 60000, type: "Full-Time" },
+            { id: 9, title: "Data Integration Specialist (Bipad Portal)", company: "Sajag Nepal Project", location: "Kathmandu", salary: 85000, type: "Remote" },
+            { id: 10, title: "Admin and Finance Officer (AFO)", company: "SOSEC Nepal", location: "Kathmandu", salary: 50000, type: "Full-Time" },
+            { id: 11, title: "Sales Executive Officer", company: "NIP Holdings Pvt Ltd", location: "Kathmandu", salary: 38000, type: "Full-Time" },
+            { id: 12, title: "Project Coordinator", company: "National Federation of the Disabled Nepal", location: "Kathmandu", salary: 70000, type: "Full-Time" },
+            { id: 13, title: "Client Relations Officer", company: "JobsNepal Direct Recruitment", location: "Kathmandu", salary: 35000, type: "Full-Time" },
+            { id: 14, title: "Emergency Food Security & Livelihoods Officer", company: "Oxfam in Nepal", location: "Kathmandu", salary: 68000, type: "Full-Time" },
+            { id: 15, title: "Sustainable Infrastructure Specialist", company: "WWF Nepal", location: "Kathmandu", salary: 95000, type: "Full-Time" },
+            { id: 16, title: "Senior UI/UX Specialist", company: "Software Company", location: "Kathmandu", salary: 60000, type: "Full-Time" },
+            { id: 17, title: "Virtual Teachers (STEM & English)", company: "TurnKey Development Group", location: "Kathmandu", salary: 45000, type: "Remote" },
+            { id: 18, title: "Operations Manager", company: "IFRC Nepal Delegation", location: "Kathmandu", salary: 110000, type: "Full-Time" },
+            { id: 19, title: "Marketing Manager / Sales Executive", company: "Diplomat Nepal Pvt. Ltd.", location: "Kathmandu", salary: 52000, type: "Full-Time" },
+            { id: 20, title: "Research & Evaluation Coordinator", company: "FAIRMED Foundation Nepal", location: "Lalitpur", salary: 80000, type: "Full-Time" },
+            { id: 21, title: "Part-Time Bookkeeper - Remote", company: "Andmine", location: "Kathmandu", salary: 35000, type: "Part-Time" },
+            { id: 22, title: "Associate at a Law Firm", company: "Reputed Legal Consultancy", location: "Kathmandu", salary: 48000, type: "Full-Time" },
+            { id: 23, title: "District Project Manager", company: "Action For Nepal", location: "Kathmandu", salary: 75000, type: "Full-Time" },
+            { id: 24, title: "Project Administration Trainee", company: "World Vision International Nepal", location: "Lalitpur", salary: 28000, type: "Part-Time" },
+            { id: 25, title: "Client Relations & Order Processing Officer", company: "Kamal Rug", location: "Pokhara", salary: 40000, type: "Full-Time" }
+        ];
+
+        let currentJob = jobsDatabase[0];
+
+        function initApplyPage() {
+            const params = new URLSearchParams(window.location.search);
+            const jobId = parseInt(params.get('jobId') || '1', 10);
+            const found = jobsDatabase.find(j => j.id === jobId);
+            if (found) currentJob = found;
+
+            document.title = `Apply for ${currentJob.title} | Elevate Workforce`;
+            document.getElementById('jobTypeBadge').innerText = currentJob.type;
+            document.getElementById('jobLocationText').innerText = currentJob.location;
+            document.getElementById('jobTitleText').innerText = currentJob.title;
+            document.getElementById('jobCompanyText').innerText = currentJob.company;
+            document.getElementById('jobSalaryBenchmark').value = `NPR ${Number(currentJob.salary).toLocaleString('en-US')} / month`;
+
+            // Candidate data
+            const userStr = localStorage.getItem('elevate_user');
+            if (userStr) {
+                try {
+                    const u = JSON.parse(userStr);
+                    if (u.name) document.getElementById('candidateName').value = u.name;
+                    if (u.email) document.getElementById('candidateEmail').value = u.email;
+                    if (u.phone) document.getElementById('candidatePhone').value = u.phone;
+                    const initial = (u.name || 'U').charAt(0).toUpperCase();
+
+                    document.getElementById('navAuthSection').innerHTML = `
+                        <div class="dropdown">
+                            <button class="btn user-dropdown-btn dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                <span class="user-avatar-badge">${initial}</span>
+                                <span class="d-inline-block text-truncate" style="max-width: 130px;">${u.name || 'Candidate'}</span>
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="userMenuButton">
+                                <li class="px-3 py-2 border-bottom mb-1">
+                                    <small class="text-muted d-block">Signed in as</small>
+                                    <strong class="text-dark">${u.name || 'Candidate'}</strong>
+                                </li>
+                                <li><a class="dropdown-item" href="userdashboard.html"><i class="bi bi-grid-1x2 text-primary"></i> Dashboard</a></li>
+                                <li><a class="dropdown-item" href="profile.html"><i class="bi bi-person-gear text-info"></i> Profile</a></li>
+                                <li><a class="dropdown-item" href="applications.html"><i class="bi bi-file-earmark-text text-success"></i> Applications</a></li>
+                                <li><hr class="dropdown-divider my-1"></li>
+                                <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="localStorage.removeItem('elevate_user'); window.location.reload();"><i class="bi bi-box-arrow-right text-danger"></i> Logout</a></li>
+                            </ul>
+                        </div>
+                    `;
+                } catch(e) {}
+            }
+        }
+
+        function handleApplySubmit(e) {
+            e.preventDefault();
+            const btn = document.getElementById('submitApplyBtn');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting Application...';
+
+            setTimeout(() => {
+                // Add to saved applications in localStorage
+                let apps = [];
+                const saved = localStorage.getItem('elevate_applications');
+                if (saved) {
+                    try { apps = JSON.parse(saved); } catch(e) {}
+                }
+                const now = new Date();
+                const dateStr = now.toISOString().slice(0, 10) + ' ' + now.toTimeString().slice(0, 8);
+                apps.unshift({
+                    id: Date.now(),
+                    title: currentJob.title,
+                    company: currentJob.company,
+                    appliedDate: dateStr,
+                    status: "Pending"
+                });
+                localStorage.setItem('elevate_applications', JSON.stringify(apps));
+
+                alert('Application submitted successfully! Redirecting to your applications dashboard.');
+                window.location.href = 'applications.html';
+            }, 700);
+            return false;
+        }
+
+        window.addEventListener('DOMContentLoaded', initApplyPage);
+    </script>
+</body>
+</html>
