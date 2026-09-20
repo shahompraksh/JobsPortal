@@ -395,14 +395,14 @@
             <a href="<%= request.getContextPath() %>/index.jsp" class="ez-brand">
                 <img src="<%= request.getContextPath() %>/images/logo.png" alt="Elevate Workforce Logo" class="ez-brand-logo">
                 <span class="fw-bold text-dark fs-5">Elevate</span>
-                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1 small">Employer Zone</span>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1 small">Login</span>
             </a>
 
             <div class="d-flex align-items-center gap-2 gap-md-3">
                 <a href="<%= request.getContextPath() %>/findajob.jsp" class="ez-nav-link d-none d-md-inline">Job Directory</a>
                 <a href="<%= request.getContextPath() %>/contact.jsp" class="ez-nav-link d-none d-sm-inline">Contact Sales</a>
                 <a href="<%= request.getContextPath() %>/login.jsp" class="btn btn-outline-primary rounded-pill px-3 py-1 btn-sm fw-semibold">
-                    <i class="bi bi-person me-1"></i> Candidate Login
+                    <i class="bi bi-shield-lock me-1"></i> Admin Login
                 </a>
                 <a href="<%= request.getContextPath() %>/register.jsp" class="btn btn-primary rounded-pill px-3 py-1 btn-sm fw-semibold text-white shadow-sm" style="background: #0284c7; border: none;">
                     Register

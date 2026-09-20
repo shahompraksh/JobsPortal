@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Employer & Admin Zone - Elevate Workforce Solutions</title>
+    <title>Login - Elevate Workforce Solutions</title>
     
     <!-- Google Fonts & Bootstrap -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -370,14 +370,14 @@
             <a href="../index.html" class="ez-brand">
                 <img src="../images/logo.png" alt="Elevate Workforce Logo" class="ez-brand-logo">
                 <span class="fw-bold text-dark fs-5">Elevate</span>
-                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1 small">Employer Zone</span>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1 small">Login</span>
             </a>
 
             <div class="d-flex align-items-center gap-2 gap-md-3">
                 <a href="../findajob.html" class="ez-nav-link d-none d-md-inline">Job Directory</a>
                 <a href="../contact.html" class="ez-nav-link d-none d-sm-inline">Contact Sales</a>
                 <a href="../login.html" class="btn btn-outline-primary rounded-pill px-3 py-1 btn-sm fw-semibold">
-                    <i class="bi bi-person me-1"></i> Candidate Login
+                    <i class="bi bi-shield-lock me-1"></i> Admin Login
                 </a>
                 <a href="../register.html" class="btn btn-primary rounded-pill px-3 py-1 btn-sm fw-semibold text-white shadow-sm" style="background: #0284c7; border: none;">
                     Register
@@ -463,10 +463,10 @@
                 <div class="col-lg-5">
                     <div class="ez-login-card">
                         
-                        <!-- Top Tabs: Employer Login / Talk to Sales -->
+                        <!-- Top Tabs: Login / Talk to Sales -->
                         <div class="ez-tabs">
                             <div class="ez-tab-item active" id="tabEmployerLogin" onclick="switchLoginTab('login')">
-                                Employer Login
+                                Login
                             </div>
                             <div class="ez-tab-item" id="tabTalkToSales" onclick="switchLoginTab('sales')">
                                 Talk to Sales
@@ -706,6 +706,15 @@
                 );
 
                 if (matched) {
+                    const userProfile = {
+                        name: matched.name,
+                        username: matched.username,
+                        email: matched.email,
+                        phone: matched.phone || '+977 98XXXXXXXX',
+                        role: matched.role || 'Candidate'
+                    };
+                    localStorage.setItem('elevate_user', JSON.stringify(userProfile));
+
                     const adminSession = { 
                         username: matched.username, 
                         name: matched.name,
@@ -722,7 +731,11 @@
                         </div>
                     `;
                     setTimeout(() => {
-                        window.location.href = 'dashboard.html';
+                        if (matched.role === 'Candidate' && matched.username.toLowerCase() !== 'admin' && matched.username.toLowerCase() !== 'omey') {
+                            window.location.href = '../userdashboard.html';
+                        } else {
+                            window.location.href = 'dashboard.html';
+                        }
                     }, 500);
                 } else {
                     document.getElementById('adminAlertContainer').innerHTML = `
