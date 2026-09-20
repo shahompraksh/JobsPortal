@@ -637,18 +637,25 @@
             }
         }
 
-        // Authorized Administrator Accounts Only
+        // Authorized Administrator Account Only (Omey / Omey1234)
         const defaultAdminAccounts = [
-            { name: "Om Prakash Sah", username: "Omey", email: "kit24i.ops@ismt.edu.np", phone: "+977 9827750314", password: "Omey1234", role: "admin" },
-            { name: "System Administrator", username: "admin", email: "shahomprakash2004@gmail.com", phone: "+977 9761819137", password: "admin", role: "admin" }
+            { name: "Om Prakash Sah", username: "Omey", email: "kit24i.ops@ismt.edu.np", phone: "+977 9827750314", password: "Omey1234", role: "admin" }
         ];
 
         function getAdminAccounts() {
             const saved = localStorage.getItem('elevate_admin_accounts');
             if (saved) {
                 try {
-                    const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                    let parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) {
+                        // Strip out removed 'admin' account and ensure Omey is present
+                        parsed = parsed.filter(a => a.username && a.username.toLowerCase() !== 'admin');
+                        if (!parsed.some(a => a.username && a.username.toLowerCase() === 'omey')) {
+                            parsed.push(defaultAdminAccounts[0]);
+                        }
+                        localStorage.setItem('elevate_admin_accounts', JSON.stringify(parsed));
+                        return parsed;
+                    }
                 } catch(e) {}
             }
             localStorage.setItem('elevate_admin_accounts', JSON.stringify(defaultAdminAccounts));
