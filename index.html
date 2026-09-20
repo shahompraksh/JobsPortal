@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Elevate Workforce Solutions | Connecting Talent Across Nepal</title>
+    <meta name="description" content="Nepal's premier workforce and job portal. Find verified jobs in IT, Marketing, Finance, Design, and more across Kathmandu, Pokhara, and Lalitpur.">
+    
+    <!-- Google Fonts & Bootstrap -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    
+    <!-- Modern Design System Stylesheet -->
+    <link rel="stylesheet" href="css/modern-style.css">
+</head>
+<body>
+
+    <!-- ==========================================================================
+         Modern Glassmorphic Sticky Navigation
+         ========================================================================== -->
+    <nav class="navbar navbar-expand-lg navbar-modern">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="images/logo.png" alt="Elevate Workforce Logo" class="brand-logo">
+                <span class="d-none d-sm-inline fw-bold text-dark ms-1">Elevate</span>
+                <span class="brand-badge ms-1">Nepal</span>
+            </a>
+
+            <!-- Mobile Toggler -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <i class="bi bi-list fs-4"></i>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-1 my-3 my-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">
+                            <i class="bi bi-house-door me-1 d-lg-none"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="findajob.html">
+                            <i class="bi bi-briefcase me-1 d-lg-none"></i> Find a Job
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">
+                            <i class="bi bi-envelope me-1 d-lg-none"></i> Contact
+                        </a>
+                    </li>
+
+                    <!-- Dynamic Login / Profile Container -->
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0" id="navbarAuthContainer">
+                        <div class="d-flex align-items-center gap-2">
+                            <a href="login.html" class="btn btn-outline-primary rounded-pill px-3 py-1 fw-semibold">Login</a>
+                            <a href="register.html" class="btn btn-primary rounded-pill px-3 py-1 fw-semibold shadow-sm">Register</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ==========================================================================
+         Hero Section with Background Image, Gradient Overlay & Parallax Feel
+         ========================================================================== -->
+    <section class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="hero-glow-1"></div>
+        <div class="hero-glow-2"></div>
+
+        <!-- Floating Stat Badges for Desktop -->
+        <div class="floating-stat-badge badge-top-left">
+            <div class="user-avatar-badge" style="background: var(--success); width: 36px; height: 36px; font-size: 1.1rem;">
+                <i class="bi bi-briefcase-fill"></i>
+            </div>
+            <div>
+                <div class="fw-bold fs-6">5,000+ Active Jobs</div>
+                <small class="text-slate-300">Verified Companies</small>
+            </div>
+        </div>
+
+        <div class="floating-stat-badge badge-bottom-right">
+            <div class="user-avatar-badge" style="background: var(--accent); width: 36px; height: 36px; font-size: 1.1rem;">
+                <i class="bi bi-star-fill"></i>
+            </div>
+            <div>
+                <div class="fw-bold fs-6">99.2% Match Rate</div>
+                <small class="text-slate-300">Top-Tier Placements</small>
+            </div>
+        </div>
+
+        <div class="container hero-content text-center">
+            <!-- Pill Tag -->
+            <div class="reveal-item">
+                <span class="hero-pill-tag">
+                    <span class="pill-pulse"></span>
+                    <span>Nepal's #1 Trusted Employment Network</span>
+                </span>
+            </div>
+
+            <!-- Main Heading -->
+            <h1 class="hero-title reveal-item">
+                Connecting Exceptional Talent with <br class="d-none d-md-inline">
+                <span class="text-gradient">Extraordinary Opportunities</span>
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="hero-subtitle reveal-item">
+                Elevate Workforce Solutions bridges the gap between ambitious professionals and visionary companies across Nepal. Find verified jobs, transparent salaries, and advance your career today.
+            </p>
+
+            <!-- Action Buttons -->
+            <div class="hero-btn-group reveal-item">
+                <a href="findajob.html" class="btn btn-primary-modern">
+                    <i class="bi bi-search"></i> Explore All Jobs
+                </a>
+                <a href="register.html" class="btn btn-secondary-modern">
+                    <i class="bi bi-person-plus"></i> Join as Candidate
+                </a>
+            </div>
+
+            <!-- Quick Search Card -->
+            <div class="hero-search-card reveal-item text-start">
+                <form action="findajob.html" method="get">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-lg-5 col-md-12">
+                            <label class="form-label small fw-bold text-slate-600 mb-1">
+                                <i class="bi bi-search text-primary me-1"></i> Job Title or Keywords
+                            </label>
+                            <input type="text" class="form-control" name="search" placeholder="e.g. Software Engineer, Designer, Manager...">
+                        </div>
+                        <div class="col-lg-3 col-md-6">
+                            <label class="form-label small fw-bold text-slate-600 mb-1">
+                                <i class="bi bi-grid text-primary me-1"></i> Category
+                            </label>
+                            <select name="category" class="form-select">
+                                <option value="">All Categories</option>
+                                <option value="IT">IT & Software</option>
+                                <option value="Marketing">Marketing & Growth</option>
+                                <option value="Finance">Finance & Accounting</option>
+                                <option value="Design">UI/UX & Design</option>
+                                <option value="Operations">Operations & Field</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-6">
+                            <label class="form-label small fw-bold text-slate-600 mb-1">
+                                <i class="bi bi-geo-alt text-primary me-1"></i> Location
+                            </label>
+                            <select name="location" class="form-select">
+                                <option value="">Anywhere</option>
+                                <option value="Kathmandu">Kathmandu</option>
+                                <option value="Pokhara">Pokhara</option>
+                                <option value="Lalitpur">Lalitpur</option>
+                                <option value="Remote">Remote</option>
+                            </select>
+                        </div>
+                        <div class="col-lg-2 col-md-12 d-flex align-items-end">
+                            <button type="submit" class="btn btn-primary w-100 search-btn">
+                                <i class="bi bi-arrow-right-circle-fill"></i> Search
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         Top Employers Running Marquee Ticker
+         ========================================================================== -->
+    <div class="top-employers-ticker-wrapper">
+        <div class="container">
+            <div class="top-employers-container">
+                
+                <div class="top-employers-label">
+                    <span class="live-pulse"></span>
+                    <span>Top Employers</span>
+                </div>
+
+                <div class="ticker-content-mask">
+                    <div class="ticker-track">
+                        <a href="findajob.html?search=WorldLink" class="employer-card-item" title="View jobs at WorldLink">
+                            <div class="emp-logo-box" style="background: #0066cc;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <circle cx="20" cy="20" r="13" fill="none" stroke="white" stroke-width="3"/>
+                                    <path d="M12 20 Q20 8 28 20 Q20 32 12 20 Z" fill="none" stroke="white" stroke-width="2.5"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #0066cc;">WorldLink</span>
+                        </a>
+
+                        <a href="findajob.html?search=Teach+For+Nepal" class="employer-card-item" title="View jobs at Teach For Nepal">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #e11d48;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <circle cx="20" cy="13" r="4" fill="#e11d48"/>
+                                    <path d="M13 27 C13 20 27 20 27 27" fill="#e11d48"/>
+                                    <circle cx="30" cy="16" r="3" fill="#e11d48"/>
+                                    <circle cx="10" cy="16" r="3" fill="#e11d48"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name text-uppercase" style="color: #e11d48; font-size: 0.82rem; letter-spacing: 0.3px;">Teach For Nepal</span>
+                        </a>
+
+                        <a href="findajob.html?search=WebSurfer" class="employer-card-item" title="View jobs at WebSurfer">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #ea580c;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M8 26 C16 10 26 12 32 23 C25 23 18 25 8 26 Z" fill="#ea580c"/>
+                                    <circle cx="27" cy="13" r="3.5" fill="#ea580c"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #ea580c;">WebSurfer</span>
+                        </a>
+
+                        <a href="findajob.html?search=Sterling+Wells" class="employer-card-item" title="View jobs at Sterling Wells">
+                            <div class="emp-logo-box" style="background: #0f172a;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M10 13 L16 27 L20 18 L24 25 L29 13" fill="none" stroke="#ef4444" stroke-width="3.5" stroke-linecap="round"/>
+                                    <path d="M14 13 L18 24 L22 17" fill="none" stroke="#3b82f6" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #0f172a;">Sterling Wells</span>
+                        </a>
+
+                        <a href="findajob.html?search=Saurabh" class="employer-card-item" title="View jobs at Saurabh Group">
+                            <div class="emp-logo-box" style="background: #f8fafc; border: 1.5px solid #cbd5e1;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <polygon points="20,8 32,28 8,28" fill="#f97316"/>
+                                    <polygon points="20,13 28,26 12,26" fill="#fff"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name text-uppercase" style="color: #f97316; font-size: 0.84rem; letter-spacing: 0.5px;">Saurabh Group</span>
+                        </a>
+
+                        <a href="findajob.html?search=Safa" class="employer-card-item" title="View jobs at Safa Network">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #16a34a;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M10 26 C10 14 30 12 30 26 C22 26 18 19 10 26 Z" fill="#16a34a"/>
+                                    <circle cx="20" cy="12" r="3" fill="#16a34a"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #16a34a; letter-spacing: 1px;">SAFA NETWORK</span>
+                        </a>
+
+                        <a href="findajob.html?search=Malax" class="employer-card-item" title="View jobs at Malax Media">
+                            <div class="emp-logo-box" style="background: #0284c7;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M11 27 L11 13 L17 22 L22 15 L28 27" fill="none" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #0284c7;">malax</span>
+                        </a>
+
+                        <a href="findajob.html?search=Tacmed" class="employer-card-item" title="View jobs at Tacmed Solutions">
+                            <div class="emp-logo-box" style="background: #fff; border: 1.5px solid #0284c7;">
+                                <svg width="22" height="22" viewBox="0 0 40 40">
+                                    <path d="M14 20 L26 20 M20 14 L20 26" stroke="#0284c7" stroke-width="4" stroke-linecap="round"/>
+                                    <circle cx="20" cy="20" r="10" fill="none" stroke="#0ea5e9" stroke-width="1.5" stroke-dasharray="2 3"/>
+                                </svg>
+                            </div>
+                            <span class="emp-name" style="color: #0369a1;">Tacmed</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================================================
+         Key Features Section
+         ========================================================================== -->
+    <section class="section-padding bg-white">
+        <div class="container">
+            <div class="section-header reveal-item">
+                <span class="section-tag">Platform Features</span>
+                <h2 class="section-title">Built for Faster, Smarter Hiring</h2>
+                <p class="section-description">Everything you need to discover verified roles, submit clean applications, and elevate your career trajectory.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <div class="modern-card">
+                        <div class="icon-box icon-box-primary">
+                            <i class="bi bi-patch-check-fill"></i>
+                        </div>
+                        <h4>100% Verified Listings</h4>
+                        <p>Every job posted on Elevate is vetted and authentic. Say goodbye to spam listings, outdated roles, and ghost recruiters.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <div class="modern-card">
+                        <div class="icon-box icon-box-accent">
+                            <i class="bi bi-lightning-fill"></i>
+                        </div>
+                        <h4>1-Click Quick Apply</h4>
+                        <p>Store your updated resume and professional profile securely to apply for multiple high-paying roles in just a single click.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <div class="modern-card">
+                        <div class="icon-box icon-box-success">
+                            <i class="bi bi-cash-stack"></i>
+                        </div>
+                        <h4>Transparent Salary Insights</h4>
+                        <p>Clear compensation figures provided upfront in NPR. Know your market value and filter jobs based on your expected salary.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <div class="modern-card">
+                        <div class="icon-box icon-box-warning">
+                            <i class="bi bi-kanban-fill"></i>
+                        </div>
+                        <h4>Real-Time Application Tracking</h4>
+                        <p>Never wonder about your status again. Monitor each application in real time—from Pending to Shortlisted or Hired.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <div class="modern-card">
+                        <div class="icon-box icon-box-primary">
+                            <i class="bi bi-funnel-fill"></i>
+                        </div>
+                        <h4>Multi-Parameter Filtering</h4>
+                        <p>Pinpoint the exact role for you with intelligent filters: Job Category, Location, Employment Type, and Maximum Salary.</p>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <div class="modern-card">
+                        <div class="icon-box icon-box-accent">
+                            <i class="bi bi-shield-lock-fill"></i>
+                        </div>
+                        <h4>Enterprise Privacy & Security</h4>
+                        <p>Your personal data and uploaded resumes are safeguarded with industry-standard session management and data protection.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         Popular Categories Section
+         ========================================================================== -->
+    <section class="section-padding bg-light">
+        <div class="container">
+            <div class="section-header reveal-item">
+                <span class="section-tag">Explore Opportunities</span>
+                <h2 class="section-title">Browse by In-Demand Categories</h2>
+                <p class="section-description">Discover high-growth career openings categorized across top industry domains in Nepal.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <a href="findajob.html?category=IT" class="category-card">
+                        <div class="category-icon">
+                            <i class="bi bi-code-slash"></i>
+                        </div>
+                        <div class="category-info">
+                            <h5>IT & Software Development</h5>
+                            <span>Full-Stack, Cloud, Mobile, QA</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <a href="findajob.html?category=Marketing" class="category-card">
+                        <div class="category-icon">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <div class="category-info">
+                            <h5>Marketing & Growth</h5>
+                            <span>SEO, Social Media, Content, Ads</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <a href="findajob.html?category=Finance" class="category-card">
+                        <div class="category-icon">
+                            <i class="bi bi-wallet2"></i>
+                        </div>
+                        <div class="category-info">
+                            <h5>Finance & Banking</h5>
+                            <span>Accounting, Auditing, Analysis</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <a href="findajob.html?category=Design" class="category-card">
+                        <div class="category-icon">
+                            <i class="bi bi-bezier2"></i>
+                        </div>
+                        <div class="category-info">
+                            <h5>UI/UX & Creative Design</h5>
+                            <span>Product Design, Figma, Branding</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <a href="findajob.html?type=Remote" class="category-card">
+                        <div class="category-icon">
+                            <i class="bi bi-laptop"></i>
+                        </div>
+                        <div class="category-info">
+                            <h5>Remote & Hybrid Roles</h5>
+                            <span>Work from Anywhere in Nepal</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <a href="findajob.html?type=Full-time" class="category-card">
+                        <div class="category-icon">
+                            <i class="bi bi-briefcase"></i>
+                        </div>
+                        <div class="category-info">
+                            <h5>Full-Time Corporate Roles</h5>
+                            <span>Permanent Careers with Benefits</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <div class="text-center mt-5 reveal-item">
+                <a href="findajob.html" class="btn btn-outline-primary rounded-pill px-4 py-2 fw-semibold">
+                    View All Open Jobs <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         About Us Section
+         ========================================================================== -->
+    <section class="section-padding bg-white">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                
+                <div class="col-lg-6 reveal-item">
+                    <div class="about-visual-wrapper pe-lg-4">
+                        <img src="images/about-team.jpg" alt="Elevate Workforce Team Collaboration" class="about-img-main">
+                        <div class="about-floating-card">
+                            <div class="badge-icon">
+                                <i class="bi bi-trophy-fill"></i>
+                            </div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Decade of Excellence</h6>
+                                <p class="small text-slate-500 mb-0">Empowering Nepal's workforce</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 reveal-item">
+                    <span class="section-tag">About Elevate</span>
+                    <h2 class="section-title">Pioneering the Future of Employment in Nepal</h2>
+                    <p class="text-slate-600 mt-3">
+                        Elevate Workforce Solutions is Nepal's leading human capital and employment acceleration platform. 
+                        We specialize in connecting ambitious, highly skilled individuals with reputable companies across diverse industries.
+                    </p>
+                    <p class="text-slate-600">
+                        Through modern digital transformation and intuitive user workflows, we bridge the gap between corporate hiring demands and aspiring professionals seeking fulfilling careers.
+                    </p>
+
+                    <ul class="about-feature-list">
+                        <li>
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span><strong>Inclusive Opportunities:</strong> Dedicated to equal-opportunity employment across Kathmandu, Pokhara, and regional hubs.</span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span><strong>Direct Recruiter Reach:</strong> Cut out third-party middleman delays with verified direct employer listings.</span>
+                        </li>
+                        <li>
+                            <i class="bi bi-check-circle-fill"></i>
+                            <span><strong>Career Advancement:</strong> Comprehensive tools for resume storage, job tracking, and professional growth.</span>
+                        </li>
+                    </ul>
+
+                    <div class="d-flex align-items-center gap-3">
+                        <a href="contact.html" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold">
+                            Get in Touch <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                        <a href="findajob.html" class="btn btn-outline-secondary rounded-pill px-4 py-2 fw-semibold">
+                            Browse Jobs
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         Live Statistics Section with Animated Counters
+         ========================================================================== -->
+    <section class="section-padding stats-section">
+        <div class="container">
+            <div class="section-header text-center mb-5 reveal-item">
+                <span class="section-tag" style="background: rgba(37, 99, 235, 0.25); color: #93c5fd;">Our Track Record</span>
+                <h2 class="section-title text-white">Proven Impact Across Nepal's Job Market</h2>
+                <p class="section-description" style="color: #94a3b8;">Real numbers representing our commitment to empowering both job seekers and hiring companies.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-3 col-6 reveal-item">
+                    <div class="stat-item-card">
+                        <div class="stat-number" data-counter="5200" data-suffix="+">0</div>
+                        <p class="stat-label">Jobs Posted</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6 reveal-item">
+                    <div class="stat-item-card">
+                        <div class="stat-number" data-counter="18500" data-suffix="+">0</div>
+                        <p class="stat-label">Candidates Registered</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6 reveal-item">
+                    <div class="stat-item-card">
+                        <div class="stat-number" data-counter="850" data-suffix="+">0</div>
+                        <p class="stat-label">Partner Employers</p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-6 reveal-item">
+                    <div class="stat-item-card">
+                        <div class="stat-number" data-counter="99.2" data-suffix="%" data-decimal="true">0</div>
+                        <p class="stat-label">Satisfaction Rate</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         How It Works (3-Step Guide)
+         ========================================================================== -->
+    <section class="section-padding bg-light">
+        <div class="container">
+            <div class="section-header reveal-item">
+                <span class="section-tag">Simple Process</span>
+                <h2 class="section-title">How It Works for Candidates</h2>
+                <p class="section-description">Take 3 simple steps to find and secure your next role on Elevate Workforce Solutions.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-md-4 reveal-item">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <h4>Create Your Account</h4>
+                        <p>Register in less than a minute. Complete your profile details and upload your PDF/DOCX resume for recruiters.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal-item">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <h4>Discover & Filter Roles</h4>
+                        <p>Search through thousands of live openings. Filter by industry category, salary benchmark, and city location.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 reveal-item">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <h4>Apply & Track Progress</h4>
+                        <p>Submit applications with a single click and monitor your review status straight from your personal dashboard.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         Testimonials Section
+         ========================================================================== -->
+    <section class="section-padding bg-white">
+        <div class="container">
+            <div class="section-header reveal-item">
+                <span class="section-tag">Success Stories</span>
+                <h2 class="section-title">What Our Candidates & Employers Say</h2>
+                <p class="section-description">Hear directly from the professionals and hiring managers who found their match through Elevate.</p>
+            </div>
+
+            <div class="row g-4">
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <div class="testimonial-card">
+                        <div>
+                            <div class="testimonial-rating">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="testimonial-quote">
+                                "Within two weeks of uploading my resume on Elevate, I landed a Senior Software Engineer position with a top tech firm in Kathmandu. The transparency in salary was refreshing!"
+                            </p>
+                        </div>
+                        <div class="testimonial-user">
+                            <div class="testimonial-avatar">A</div>
+                            <div class="testimonial-info">
+                                <h6>Aayush Shrestha</h6>
+                                <p>Full-Stack Developer, Kathmandu</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <div class="testimonial-card">
+                        <div>
+                            <div class="testimonial-rating">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="testimonial-quote">
+                                "Elevate transformed our recruitment pipeline. We hired 4 qualified marketing specialists in one month. The candidate profiles were verified and perfectly aligned with our needs."
+                            </p>
+                        </div>
+                        <div class="testimonial-user">
+                            <div class="testimonial-avatar" style="background: linear-gradient(135deg, #10b981, #06b6d4);">P</div>
+                            <div class="testimonial-info">
+                                <h6>Pooja Thapa</h6>
+                                <p>HR Director, Himalayan Media</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 reveal-item">
+                    <div class="testimonial-card">
+                        <div>
+                            <div class="testimonial-rating">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                            </div>
+                            <p class="testimonial-quote">
+                                "The application tracking dashboard is super clean and easy to use. I loved receiving clear updates on my application status instead of being left in the dark."
+                            </p>
+                        </div>
+                        <div class="testimonial-user">
+                            <div class="testimonial-avatar" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">R</div>
+                            <div class="testimonial-info">
+                                <h6>Rohan Regmi</h6>
+                                <p>Product Designer, Pokhara</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         Call to Action (CTA) Section
+         ========================================================================== -->
+    <section class="container my-5 reveal-item">
+        <div class="cta-section">
+            <h2 class="cta-title">Ready to Elevate Your Professional Career?</h2>
+            <p class="cta-subtitle">
+                Join over 18,000 ambitious professionals who have accelerated their career through Elevate Workforce Solutions.
+            </p>
+            <div class="d-flex flex-wrap justify-content-center gap-3">
+                <a href="findajob.html" class="btn btn-light text-primary fw-bold px-4 py-3 rounded-pill shadow">
+                    <i class="bi bi-briefcase-fill me-1"></i> Browse Open Positions
+                </a>
+                <a href="register.html" class="btn btn-outline-light fw-bold px-4 py-3 rounded-pill">
+                    <i class="bi bi-person-plus-fill me-1"></i> Create Free Account
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==========================================================================
+         Modern Footer
+         ========================================================================== -->
+    <footer class="modern-footer">
+        <div class="container pb-5">
+            <div class="row g-4 justify-content-between">
+                
+                <div class="col-lg-4 col-md-6 footer-brand">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <img src="images/logo.png" alt="Elevate Workforce Logo" class="brand-logo" style="background: white; padding: 4px; border-radius: 8px; height: 42px;">
+                        <h4 class="mb-0 text-white fw-bold">Elevate Workforce</h4>
+                    </div>
+                    <p class="text-slate-400">
+                        Nepal's premier workforce acceleration platform. Connecting exceptional talent with industry-leading companies across Kathmandu, Pokhara, Lalitpur, and beyond.
+                    </p>
+                    <div class="d-flex align-items-center gap-2 mt-3">
+                        <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-3 py-2">
+                            <i class="bi bi-patch-check-fill text-primary me-1"></i> Verified Employment Platform
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-6 col-6">
+                    <h5 class="footer-col-title">Navigation</h5>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="bi bi-chevron-right text-primary small"></i> Home</a></li>
+                        <li><a href="findajob.html"><i class="bi bi-chevron-right text-primary small"></i> Find a Job</a></li>
+                        <li><a href="contact.html"><i class="bi bi-chevron-right text-primary small"></i> Contact Us</a></li>
+                        <li><a href="login.html"><i class="bi bi-chevron-right text-primary small"></i> Candidate Login</a></li>
+                        <li><a href="register.html"><i class="bi bi-chevron-right text-primary small"></i> Register Account</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6 col-6">
+                    <h5 class="footer-col-title">Job Categories</h5>
+                    <ul class="footer-links">
+                        <li><a href="findajob.html?category=IT"><i class="bi bi-code-slash text-info small"></i> IT & Software</a></li>
+                        <li><a href="findajob.html?category=Marketing"><i class="bi bi-megaphone text-warning small"></i> Marketing & Growth</a></li>
+                        <li><a href="findajob.html?category=Finance"><i class="bi bi-cash-coin text-success small"></i> Finance & Accounting</a></li>
+                        <li><a href="findajob.html?category=Design"><i class="bi bi-palette text-danger small"></i> UI/UX & Design</a></li>
+                        <li><a href="findajob.html?type=Remote"><i class="bi bi-globe2 text-primary small"></i> Remote Opportunities</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-lg-3 col-md-6">
+                    <h5 class="footer-col-title">Get in Touch</h5>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-geo-alt-fill text-primary"></i>
+                        <span>Kathmandu, Bagmati Province, Nepal</span>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-envelope-fill text-primary"></i>
+                        <a href="mailto:shahomprakash2004@gmail.com" class="text-slate-300">shahomprakash2004@gmail.com</a>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-telephone-fill text-primary"></i>
+                        <a href="tel:9761819137" class="text-slate-300">+977 9761819137</a>
+                    </div>
+                    <div class="footer-contact-item">
+                        <i class="bi bi-whatsapp text-success"></i>
+                        <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce,%20I%20have%20an%20inquiry" target="_blank" rel="noopener noreferrer" class="text-slate-300">WhatsApp: +977 9761819137</a>
+                    </div>
+
+                    <div class="mt-3">
+                        <span class="d-block small text-slate-400 mb-2 fw-semibold">Connect with us:</span>
+                        <div class="d-flex align-items-center">
+                            <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce,%20I%20have%20an%20inquiry" target="_blank" rel="noopener noreferrer" class="social-button social-whatsapp" aria-label="WhatsApp" title="Connect on WhatsApp">
+                                <i class="bi bi-whatsapp"></i>
+                            </a>
+                            <a href="https://www.facebook.com/share/1E3QEKNVUz/?mibextid=wwXIfr" target="_blank" class="social-button" aria-label="Facebook">
+                                <i class="bi bi-facebook"></i>
+                            </a>
+                            <a href="https://www.instagram.com/shah_omey07?stkn=MTgweWZzYTFjbHFwNQ%3D%3D&utm_source=qr" target="_blank" class="social-button" aria-label="Instagram">
+                                <i class="bi bi-instagram"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/omprakash077?utm_source=share_via&utm_content=profile&utm_medium=member_ios" target="_blank" class="social-button" aria-label="LinkedIn">
+                                <i class="bi bi-linkedin"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 text-center text-md-start">
+                <div>
+                    &copy; 2025-2026 <strong>Elevate Workforce Solutions</strong>. All rights reserved.
+                </div>
+                <div class="d-flex align-items-center gap-3">
+                    <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill">
+                        <i class="bi bi-circle-fill small me-1"></i> System Operational
+                    </span>
+                    <span class="text-slate-500">Built for Nepal's Future</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Quick Connect Button -->
+    <a href="https://wa.me/9779761819137?text=Hello%20Elevate%20Workforce%20Team,%20I%20have%20an%20inquiry%20regarding%20jobs%20and%20recruitment." target="_blank" rel="noopener noreferrer" class="floating-whatsapp" id="whatsappFloatingBtn" aria-label="Connect with WhatsApp" title="Chat on WhatsApp (+977 9761819137)">
+        <div class="whatsapp-pulse"></div>
+        <i class="bi bi-whatsapp"></i>
+        <span class="whatsapp-label">Chat on WhatsApp</span>
+    </a>
+
+    <!-- Floating Scroll to Top Button -->
+    <button id="backToTop" class="back-to-top" title="Scroll to top" aria-label="Scroll to top">
+        <i class="bi bi-chevron-up"></i>
+    </button>
+
+    <!-- Bootstrap 5.3.3 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Portal JavaScript Engine -->
+    <script src="js/jobs-data.js"></script>
+    <script src="js/modern-script.js"></script>
+    <script src="js/portal.js"></script>
+</body>
+</html>
