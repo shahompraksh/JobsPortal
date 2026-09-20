@@ -52,7 +52,7 @@
             <ul class="sidebar-nav">
                 <li class="sidebar-heading">Core</li>
                 <li class="nav-item">
-                    <a href="dashboard.html" class="nav-link active" onclick="switchSection('candidates', event); return false;">
+                    <a href="dashboard.html" class="nav-link active" id="sidebarNavDashboard" onclick="switchSection('candidates', event); return false;">
                         <i class="bi bi-grid-1x2-fill"></i>
                         <span>Dashboard</span>
                     </a>
@@ -60,31 +60,31 @@
 
                 <li class="sidebar-heading">Data & Management</li>
                 <li class="nav-item">
-                    <a href="#candidatesSection" class="nav-link" id="navLinkCandidates" onclick="switchSection('candidates', event); return false;">
+                    <a href="#candidatesSection" class="nav-link" id="sidebarNavCandidates" onclick="switchSection('candidates', event); return false;">
                         <i class="bi bi-people-fill"></i>
                         <span>Candidate Users</span>
-                        <span class="badge bg-primary-subtle text-primary rounded-pill ms-auto">11</span>
+                        <span class="badge bg-primary-subtle text-primary rounded-pill ms-auto" id="sidebarBadgeCandidates">11</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#applicationsSection" class="nav-link" id="navLinkApps" onclick="switchSection('applications', event); return false;">
+                    <a href="#applicationsSection" class="nav-link" id="sidebarNavApps" onclick="switchSection('applications', event); return false;">
                         <i class="bi bi-file-earmark-person-fill"></i>
                         <span>Applications</span>
-                        <span class="badge bg-success-subtle text-success rounded-pill ms-auto">9</span>
+                        <span class="badge bg-success-subtle text-success rounded-pill ms-auto" id="sidebarBadgeApps">9</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#jobsSection" class="nav-link" id="navLinkJobs" onclick="switchSection('jobs', event); return false;">
+                    <a href="#jobsSection" class="nav-link" id="sidebarNavJobs" onclick="switchSection('jobs', event); return false;">
                         <i class="bi bi-briefcase-fill"></i>
                         <span>Job Postings</span>
-                        <span class="badge bg-info-subtle text-info rounded-pill ms-auto">24</span>
+                        <span class="badge bg-info-subtle text-info rounded-pill ms-auto" id="sidebarBadgeJobs">24</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#messagesSection" class="nav-link" id="navLinkMsgs" onclick="switchSection('messages', event); return false;">
+                    <a href="#messagesSection" class="nav-link" id="sidebarNavMsgs" onclick="switchSection('messages', event); return false;">
                         <i class="bi bi-chat-left-dots-fill"></i>
                         <span>Contact Inquiries</span>
-                        <span class="badge bg-danger rounded-pill ms-auto">5</span>
+                        <span class="badge bg-danger rounded-pill ms-auto" id="sidebarBadgeMsgs">5</span>
                     </a>
                 </li>
 
@@ -189,7 +189,7 @@
                                 <span class="text-muted small fw-semibold">Active Jobs</span>
                                 <div class="p-2 rounded-3 bg-primary-subtle text-primary"><i class="bi bi-briefcase fs-5"></i></div>
                             </div>
-                            <h3 class="fw-bold mb-1">24</h3>
+                            <h3 class="fw-bold mb-1" id="kpiActiveJobs">24</h3>
                             <span class="badge bg-success-subtle text-success small rounded-pill">100% Verified</span>
                         </div>
                     </div>
@@ -200,7 +200,7 @@
                                 <span class="text-muted small fw-semibold">Registered Candidates</span>
                                 <div class="p-2 rounded-3 bg-info-subtle text-info"><i class="bi bi-people fs-5"></i></div>
                             </div>
-                            <h3 class="fw-bold mb-1">11</h3>
+                            <h3 class="fw-bold mb-1" id="kpiCandidates">11</h3>
                             <span class="badge bg-info-subtle text-info small rounded-pill">Active Talent Pool</span>
                         </div>
                     </div>
@@ -211,8 +211,8 @@
                                 <span class="text-muted small fw-semibold">Applications Filed</span>
                                 <div class="p-2 rounded-3 bg-warning-subtle text-warning"><i class="bi bi-file-earmark-text fs-5"></i></div>
                             </div>
-                            <h3 class="fw-bold mb-1">9</h3>
-                            <span class="badge bg-warning-subtle text-warning small rounded-pill">2 Shortlisted</span>
+                            <h3 class="fw-bold mb-1" id="kpiApplications">9</h3>
+                            <span class="badge bg-warning-subtle text-warning small rounded-pill" id="kpiShortlistedBadge">2 Shortlisted</span>
                         </div>
                     </div>
 
@@ -222,8 +222,8 @@
                                 <span class="text-muted small fw-semibold">Successful Hires</span>
                                 <div class="p-2 rounded-3 bg-success-subtle text-success"><i class="bi bi-patch-check fs-5"></i></div>
                             </div>
-                            <h3 class="fw-bold mb-1">5</h3>
-                            <span class="badge bg-success-subtle text-success small rounded-pill">55% Placement Rate</span>
+                            <h3 class="fw-bold mb-1" id="kpiHires">5</h3>
+                            <span class="badge bg-success-subtle text-success small rounded-pill" id="kpiHireRateBadge">55% Placement Rate</span>
                         </div>
                     </div>
                 </div>
@@ -253,13 +253,24 @@
                         </li>
                     </ul>
 
-                    <!-- SECTION 1: CANDIDATE / EMPLOYEE DATA (Requested by User) -->
+                    <!-- SECTION 1: CANDIDATE / EMPLOYEE DATA -->
                     <div id="section-candidates" class="tab-content-panel">
-                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
-                            <h5 class="fw-bold mb-0 text-slate-900">
-                                <i class="bi bi-person-lines-fill text-primary me-2"></i>Registered Candidate Records
-                            </h5>
-                            <div class="text-muted small" id="candidateCountDisplay">Showing 11 candidates</div>
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+                            <div>
+                                <h5 class="fw-bold mb-0 text-slate-900">
+                                    <i class="bi bi-person-lines-fill text-primary me-2"></i>Registered Candidate Records
+                                </h5>
+                                <div class="text-muted small" id="candidateCountDisplay">Showing 11 registered candidates</div>
+                            </div>
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <div class="input-group input-group-sm" style="max-width: 240px;">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                                    <input type="text" id="candidateSearchInput" class="form-control border-start-0" placeholder="Search candidate..." oninput="filterCandidatesTable(this.value)">
+                                </div>
+                                <button onclick="exportCandidatesCSV()" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                    <i class="bi bi-download me-1"></i> Export CSV
+                                </button>
+                            </div>
                         </div>
 
                         <div class="table-responsive">
@@ -282,17 +293,50 @@
                         </div>
                     </div>
 
-                    <!-- SECTION 2: JOB APPLICATIONS -->
+                    <!-- SECTION 2: JOB APPLICATIONS (Enhanced with Status Filter & Hire/Shortlist/Reject Buttons) -->
                     <div id="section-applications" class="tab-content-panel d-none">
-                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
-                            <h5 class="fw-bold mb-0 text-slate-900">
-                                <i class="bi bi-file-earmark-text-fill text-success me-2"></i>Job Applications Pipeline
-                            </h5>
-                            <div class="text-muted small">Real-time candidate submissions</div>
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+                            <div>
+                                <h5 class="fw-bold mb-0 text-slate-900">
+                                    <i class="bi bi-file-earmark-text-fill text-success me-2"></i>Job Applications Pipeline
+                                </h5>
+                                <div class="text-muted small" id="applicationsCountDisplay">Review applications and update candidate hiring status</div>
+                            </div>
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <div class="input-group input-group-sm" style="max-width: 260px;">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                                    <input type="text" id="appFilterSearch" class="form-control border-start-0" placeholder="Search applicant, job, company..." oninput="handleAppFilterSearch(this.value)">
+                                </div>
+                                <button onclick="exportApplicationsCSV()" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                    <i class="bi bi-download me-1"></i> Export CSV
+                                </button>
+                            </div>
                         </div>
 
+                        <!-- Status Filter Buttons / Pills -->
+                        <div class="d-flex flex-wrap gap-2 mb-3 pb-2 border-bottom" id="appStatusFilterGroup">
+                            <button class="btn btn-sm rounded-pill px-3 fw-semibold btn-primary" id="pill-all" onclick="filterApplicationsByStatus('All', this)">
+                                All Applications <span class="badge bg-white text-primary ms-1" id="badgeCountAll">9</span>
+                            </button>
+                            <button class="btn btn-sm rounded-pill px-3 fw-semibold btn-outline-warning" id="pill-pending" onclick="filterApplicationsByStatus('Pending', this)">
+                                <i class="bi bi-clock me-1"></i> Pending <span class="badge bg-warning text-dark ms-1" id="badgeCountPending">2</span>
+                            </button>
+                            <button class="btn btn-sm rounded-pill px-3 fw-semibold btn-outline-info" id="pill-shortlisted" onclick="filterApplicationsByStatus('Shortlisted', this)">
+                                <i class="bi bi-star me-1"></i> Shortlisted <span class="badge bg-info text-dark ms-1" id="badgeCountShortlisted">2</span>
+                            </button>
+                            <button class="btn btn-sm rounded-pill px-3 fw-semibold btn-outline-success" id="pill-hired" onclick="filterApplicationsByStatus('Hired', this)">
+                                <i class="bi bi-check-circle me-1"></i> Hired <span class="badge bg-success text-white ms-1" id="badgeCountHired">3</span>
+                            </button>
+                            <button class="btn btn-sm rounded-pill px-3 fw-semibold btn-outline-danger" id="pill-rejected" onclick="filterApplicationsByStatus('Rejected', this)">
+                                <i class="bi bi-x-circle me-1"></i> Rejected <span class="badge bg-danger text-white ms-1" id="badgeCountRejected">2</span>
+                            </button>
+                        </div>
+
+                        <!-- Live Action Toast / Alert Container -->
+                        <div id="adminActionAlertContainer"></div>
+
                         <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
+                            <table class="table table-hover align-middle mb-0" id="applicationsTable">
                                 <thead class="table-light">
                                     <tr>
                                         <th class="ps-3">#</th>
@@ -300,11 +344,13 @@
                                         <th>Applied Role</th>
                                         <th>Company</th>
                                         <th>Application Date</th>
-                                        <th>Status</th>
+                                        <th>Resume / CV</th>
+                                        <th>Current Status</th>
+                                        <th class="pe-3 text-end">Update Status (Actions)</th>
                                     </tr>
                                 </thead>
                                 <tbody id="applicationsTableBody">
-                                    <!-- Populated via JS -->
+                                    <!-- Populated via JS with action buttons -->
                                 </tbody>
                             </table>
                         </div>
@@ -312,23 +358,41 @@
 
                     <!-- SECTION 3: JOB POSTINGS -->
                     <div id="section-jobs" class="tab-content-panel d-none">
-                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
-                            <h5 class="fw-bold mb-0 text-slate-900">
-                                <i class="bi bi-briefcase-fill text-info me-2"></i>Verified Job Listings Database
-                            </h5>
-                            <div class="text-muted small">24 Active Postings</div>
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+                            <div>
+                                <h5 class="fw-bold mb-0 text-slate-900">
+                                    <i class="bi bi-briefcase-fill text-info me-2"></i>Verified Job Listings Database
+                                </h5>
+                                <div class="text-muted small" id="jobsCountDisplay">24 Active Postings across Nepal</div>
+                            </div>
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <div class="input-group input-group-sm" style="max-width: 240px;">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                                    <input type="text" id="jobSearchInput" class="form-control border-start-0" placeholder="Search job title, company..." oninput="filterJobsTable(this.value)">
+                                </div>
+                                <button onclick="openPostJobModal()" class="btn btn-sm btn-primary rounded-pill px-3 shadow-sm">
+                                    <i class="bi bi-plus-circle me-1"></i> Post New Job
+                                </button>
+                                <button onclick="exportJobsCSV()" class="btn btn-sm btn-outline-secondary rounded-pill px-3">
+                                    <i class="bi bi-download me-1"></i> Export CSV
+                                </button>
+                            </div>
                         </div>
 
+                        <!-- Live Job Alert Container -->
+                        <div id="adminJobAlertContainer"></div>
+
                         <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
+                            <table class="table table-hover align-middle mb-0" id="jobsTable">
                                 <thead class="table-light">
                                     <tr>
                                         <th class="ps-3">ID</th>
                                         <th>Job Title</th>
                                         <th>Hiring Company</th>
                                         <th>Location</th>
-                                        <th>Employment Type</th>
+                                        <th>Type</th>
                                         <th>Salary (NPR/mo)</th>
+                                        <th class="pe-3 text-end">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="jobsTableBody">
@@ -340,15 +404,26 @@
 
                     <!-- SECTION 4: CONTACT INQUIRIES -->
                     <div id="section-messages" class="tab-content-panel d-none">
-                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-3">
-                            <h5 class="fw-bold mb-0 text-slate-900">
-                                <i class="bi bi-envelope-fill text-danger me-2"></i>Inquiries &amp; Recruiter Messages
-                            </h5>
-                            <div class="text-muted small">5 Inquiries Received</div>
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-3">
+                            <div>
+                                <h5 class="fw-bold mb-0 text-slate-900">
+                                    <i class="bi bi-envelope-fill text-danger me-2"></i>Inquiries &amp; Recruiter Messages
+                                </h5>
+                                <div class="text-muted small" id="messagesCountDisplay">5 Inquiries Received</div>
+                            </div>
+                            <div class="d-flex flex-wrap align-items-center gap-2">
+                                <div class="input-group input-group-sm" style="max-width: 240px;">
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                                    <input type="text" id="msgSearchInput" class="form-control border-start-0" placeholder="Search messages..." oninput="filterMessagesTable(this.value)">
+                                </div>
+                            </div>
                         </div>
 
+                        <!-- Live Message Alert Container -->
+                        <div id="adminMsgAlertContainer"></div>
+
                         <div class="table-responsive">
-                            <table class="table table-hover align-middle mb-0">
+                            <table class="table table-hover align-middle mb-0" id="messagesTable">
                                 <thead class="table-light">
                                     <tr>
                                         <th class="ps-3">Sender Name</th>
@@ -356,6 +431,7 @@
                                         <th>Phone</th>
                                         <th>Message Preview</th>
                                         <th>Status</th>
+                                        <th class="pe-3 text-end">Action</th>
                                     </tr>
                                 </thead>
                                 <tbody id="messagesTableBody">
@@ -371,11 +447,207 @@
         </div>
     </div>
 
+    <!-- ==========================================================================
+         MODALS: Candidate Dossier, Resume Viewer, Post New Job & View Message
+         ========================================================================== -->
+
+    <!-- Modal 1: Candidate Dossier -->
+    <div class="modal fade" id="candidateModal" tabindex="-1" aria-labelledby="candidateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom px-4 py-3 bg-light rounded-top-4">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="admin-avatar" id="modalCandidateAvatar" style="width: 44px; height: 44px; font-size: 1.1rem;">U</div>
+                        <div>
+                            <h5 class="modal-title fw-bold text-slate-900 mb-0" id="modalCandidateName">Candidate Dossier</h5>
+                            <small class="text-muted" id="modalCandidateUsername">@username</small>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="row g-3 mb-4">
+                        <div class="col-sm-6">
+                            <label class="small text-muted fw-bold text-uppercase d-block mb-1">Email Address</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-envelope text-primary"></i>
+                                <span class="fw-semibold text-slate-800" id="modalCandidateEmail">-</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="small text-muted fw-bold text-uppercase d-block mb-1">Phone Number</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <i class="bi bi-telephone text-success"></i>
+                                <span class="fw-semibold text-slate-800" id="modalCandidatePhone">-</span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="small text-muted fw-bold text-uppercase d-block mb-1">System Status</label>
+                            <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1" id="modalCandidateStatus">Verified</span>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="small text-muted fw-bold text-uppercase d-block mb-1">Resume Document</label>
+                            <span class="badge bg-success-subtle text-success rounded-pill px-3 py-1" id="modalCandidateResume">Attached (PDF)</span>
+                        </div>
+                    </div>
+
+                    <h6 class="fw-bold text-slate-900 mb-2"><i class="bi bi-briefcase text-primary me-2"></i>Application History</h6>
+                    <div id="modalCandidateAppsList" class="list-group rounded-3 shadow-none border">
+                        <!-- Populated dynamically -->
+                    </div>
+                </div>
+                <div class="modal-footer border-top px-4 py-3 bg-light rounded-bottom-4 justify-content-between">
+                    <div class="d-flex gap-2">
+                        <a href="#" id="modalEmailBtn" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+                            <i class="bi bi-envelope me-1"></i> Send Email
+                        </a>
+                        <a href="#" id="modalWhatsAppBtn" target="_blank" class="btn btn-sm btn-outline-success rounded-pill px-3">
+                            <i class="bi bi-whatsapp me-1"></i> WhatsApp
+                        </a>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-secondary rounded-pill px-3" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 2: Resume / CV Viewer -->
+    <div class="modal fade" id="resumeModal" tabindex="-1" aria-labelledby="resumeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom px-4 py-3 bg-light rounded-top-4">
+                    <h5 class="modal-title fw-bold text-slate-900" id="resumeModalTitle">
+                        <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i>Curriculum Vitae / Resume Preview
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-light border rounded-3 d-flex align-items-center justify-content-between mb-4">
+                        <div>
+                            <strong class="d-block text-slate-900" id="resumeCandidateName">Candidate Name</strong>
+                            <small class="text-muted" id="resumeAppliedRole">Role applied</small>
+                        </div>
+                        <span class="badge bg-success-subtle text-success rounded-pill px-3 py-2" id="resumeCurrentStatus">Status</span>
+                    </div>
+
+                    <div class="p-4 rounded-3 border bg-light text-center my-3">
+                        <div class="user-avatar-badge mx-auto mb-3" style="width: 64px; height: 64px; font-size: 1.8rem; background: var(--adm-primary-subtle); color: var(--adm-primary);">
+                            <i class="bi bi-file-earmark-text"></i>
+                        </div>
+                        <h6 class="fw-bold text-slate-800 mb-1">Standard Verified Candidate Profile Document</h6>
+                        <p class="text-muted small mb-3">Includes educational credentials, skills summary, references, and verified contact information.</p>
+                        <div class="d-inline-flex gap-2">
+                            <button class="btn btn-primary rounded-pill btn-sm px-4 shadow-sm" onclick="alert('Downloading CV document in PDF format...');">
+                                <i class="bi bi-cloud-arrow-down-fill me-1"></i> Download Verified PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top px-4 py-3 bg-light rounded-bottom-4">
+                    <button type="button" class="btn btn-sm btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Close Preview</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Post New Job -->
+    <div class="modal fade" id="postJobModal" tabindex="-1" aria-labelledby="postJobModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom px-4 py-3 bg-light rounded-top-4">
+                    <h5 class="modal-title fw-bold text-slate-900">
+                        <i class="bi bi-plus-circle-fill text-primary me-2"></i>Post New Verified Job Vacancy
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="postJobForm" onsubmit="return handlePostJobSubmit(event)">
+                    <div class="modal-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-7">
+                                <label class="form-label small fw-bold text-slate-700">Job Title <span class="text-danger">*</span></label>
+                                <input type="text" id="newJobTitle" class="form-control" placeholder="e.g. Senior Full Stack Java Engineer" required>
+                            </div>
+                            <div class="col-md-5">
+                                <label class="form-label small fw-bold text-slate-700">Hiring Company <span class="text-danger">*</span></label>
+                                <input type="text" id="newJobCompany" class="form-control" placeholder="e.g. Nepal IT Solution" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-slate-700">Location <span class="text-danger">*</span></label>
+                                <select id="newJobLocation" class="form-select" required>
+                                    <option value="Kathmandu" selected>Kathmandu</option>
+                                    <option value="Pokhara">Pokhara</option>
+                                    <option value="Lalitpur">Lalitpur</option>
+                                    <option value="Biratnagar">Biratnagar</option>
+                                    <option value="Remote">Remote (Nepal)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-slate-700">Job Type <span class="text-danger">*</span></label>
+                                <select id="newJobType" class="form-select" required>
+                                    <option value="Full-Time" selected>Full-Time</option>
+                                    <option value="Part-Time">Part-Time</option>
+                                    <option value="Remote">Remote</option>
+                                    <option value="Contract">Contract</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label small fw-bold text-slate-700">Monthly Salary (NPR) <span class="text-danger">*</span></label>
+                                <input type="number" id="newJobSalary" class="form-control" placeholder="e.g. 65000" min="10000" step="1000" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer border-top px-4 py-3 bg-light rounded-bottom-4">
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-sm btn-primary rounded-pill px-4 shadow-sm" id="submitJobBtn">
+                            <i class="bi bi-check-circle me-1"></i> Publish Job Listing
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: View Contact Message -->
+    <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg rounded-4">
+                <div class="modal-header border-bottom px-4 py-3 bg-light rounded-top-4">
+                    <h5 class="modal-title fw-bold text-slate-900">
+                        <i class="bi bi-chat-left-text-fill text-danger me-2"></i>Inquiry Message
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">Sender</label>
+                        <h6 class="fw-bold text-slate-900 mb-0" id="msgSenderName">Sender</h6>
+                        <small class="text-muted" id="msgSenderContact">email | phone</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="small text-muted fw-bold text-uppercase d-block mb-1">Message Content</label>
+                        <div class="p-3 bg-light rounded-3 text-slate-800 border" id="msgFullText">
+                            Message text...
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-top px-4 py-3 bg-light rounded-bottom-4">
+                    <a href="#" id="msgReplyEmailBtn" class="btn btn-sm btn-primary rounded-pill px-3">
+                        <i class="bi bi-reply-fill me-1"></i> Reply via Email
+                    </a>
+                    <button type="button" class="btn btn-sm btn-secondary rounded-pill px-3" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bootstrap 5.3.3 Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Authentic candidate records from database/production_init.sql
-        const candidates = [
+        // ==========================================================================
+        // DATA STORES (Persisted in localStorage with Authentic SQL Database Records)
+        // ==========================================================================
+
+        const defaultCandidates = [
             { id: 1, name: "Ram Sharma", email: "ram@gmail.com", username: "ram", phone: "+977 9099999999", resume: "Attached (PDF)", apps: 2, status: "Active Candidate" },
             { id: 3, name: "Om Prakash Sah", email: "shahomprakash2004@gmail.com", username: "admin", phone: "+977 9761819137", resume: "Attached (PDF)", apps: 4, status: "Lead Engineer" },
             { id: 5, name: "Dhirendra Kumar Gupta", email: "dhirendragupta572@gmail.com", username: "login", phone: "+977 9820960396", resume: "Attached (PDF)", apps: 1, status: "Active Candidate" },
@@ -389,8 +661,7 @@
             { id: 16, name: "Apple Candidate", email: "apple.candidate@elevate.local", username: "applecandidate", phone: "+977 9801234504", resume: "Uploaded", apps: 0, status: "Apple OAuth" }
         ];
 
-        // Authentic application records
-        const applications = [
+        const defaultApplications = [
             { id: 1, applicant: "Ram Sharma", job: "Full Stack Java & Web Developer", company: "Nepal IT Solution", date: "2026-09-16 19:44", status: "Hired" },
             { id: 2, applicant: "Ram Sharma", job: "UI/UX & Product Designer", company: "Nepal IT Solution", date: "2026-09-10 11:33", status: "Hired" },
             { id: 4, applicant: "Dhirendra Kumar Gupta", job: "Client Relations Officer", company: "JobsNepal Direct Recruitment", date: "2026-09-15 23:56", status: "Hired" },
@@ -399,11 +670,12 @@
             { id: 7, applicant: "Om Prakash Sah", job: "Senior UI/UX Specialist", company: "Software Company", date: "2026-09-16 10:09", status: "Hired" },
             { id: 9, applicant: "Om Prakash Sah", job: "Emergency Food Security Officer", company: "Oxfam in Nepal", date: "2026-09-16 19:52", status: "Shortlisted" },
             { id: 10, applicant: "Ram Sharma", job: "Associate at a Law Firm", company: "Reputed Legal Consultancy", date: "2026-09-17 07:27", status: "Rejected" },
-            { id: 11, applicant: "Ram Sharma", job: "Order Processing Officer", company: "Kamal Rug", date: "2026-09-17 11:21", status: "Shortlisted" }
+            { id: 11, applicant: "Ram Sharma", job: "Order Processing Officer", company: "Kamal Rug", date: "2026-09-17 11:21", status: "Shortlisted" },
+            { id: 12, applicant: "Google Verified Candidate", job: "Data Integration Specialist (Bipad)", company: "Sajag Nepal Project", date: "2026-09-18 14:10", status: "Pending" },
+            { id: 13, applicant: "LinkedIn Professional", job: "AI-Assisted Software Engineer", company: "Robotics Association of Nepal", date: "2026-09-19 09:30", status: "Pending" }
         ];
 
-        // Jobs Database
-        const jobs = [
+        const defaultJobs = [
             { id: 1, title: "Full Stack Java & Web Developer", company: "Nepal IT Solution", location: "Kathmandu", type: "Full-Time", salary: 40000 },
             { id: 2, title: "UI/UX & Product Designer", company: "Nepal IT Solution", location: "Pokhara", type: "Full-Time", salary: 50000 },
             { id: 4, title: "Technical Support Representative", company: "Bhagya Laxmi International", location: "Kathmandu", type: "Full-Time", salary: 45000 },
@@ -430,8 +702,7 @@
             { id: 25, title: "Order Processing Officer", company: "Kamal Rug", location: "Pokhara", type: "Full-Time", salary: 40000 }
         ];
 
-        // Messages Database
-        const messages = [
+        const defaultMessages = [
             { id: 1, name: "Binod Acharya", email: "binod.acharya@everesttech.np", phone: "+977-9841234567", text: "Looking to post 10+ Senior Engineering vacancies this quarter.", status: "Unread" },
             { id: 2, name: "Sunita Maharjan", email: "sunita.m@gmail.com", phone: "+977-9801234567", text: "Inquiry regarding candidate phone number privacy masking.", status: "Unread" },
             { id: 3, name: "Kiran Karki", email: "kiran@vertexlabs.io", phone: "+977-9856012345", text: "Partnering for Hackathon and Tech Career Fair in Pokhara.", status: "Read" },
@@ -439,8 +710,308 @@
             { id: 5, name: "Om Prakash Sah", email: "shahomprakash2004@gmail.com", phone: "+977-9761819137", text: "Direct corporate verification check.", status: "Read" }
         ];
 
+        // State variables
+        let candidates = [];
+        let applications = [];
+        let jobs = [];
+        let messages = [];
+        let activeAppStatusFilter = 'All';
+
+        function loadData() {
+            try {
+                const savedApps = localStorage.getItem('elevate_admin_applications');
+                applications = savedApps ? JSON.parse(savedApps) : defaultApplications;
+            } catch(e) { applications = defaultApplications; }
+
+            try {
+                const savedJobs = localStorage.getItem('elevate_jobs');
+                jobs = savedJobs ? JSON.parse(savedJobs) : defaultJobs;
+            } catch(e) { jobs = defaultJobs; }
+
+            try {
+                const savedMsgs = localStorage.getItem('elevate_messages');
+                messages = savedMsgs ? JSON.parse(savedMsgs) : defaultMessages;
+            } catch(e) { messages = defaultMessages; }
+
+            candidates = defaultCandidates;
+        }
+
+        function saveApplications() {
+            localStorage.setItem('elevate_admin_applications', JSON.stringify(applications));
+        }
+
+        function saveJobs() {
+            localStorage.setItem('elevate_jobs', JSON.stringify(jobs));
+        }
+
+        function saveMessages() {
+            localStorage.setItem('elevate_messages', JSON.stringify(messages));
+        }
+
+        // ==========================================================================
+        // APPLICATIONS MANAGEMENT (Hire, Shortlist, Reject, Set Pending)
+        // ==========================================================================
+
+        function renderApplications(listToRender) {
+            const list = listToRender || getFilteredApplications();
+            const tbody = document.getElementById('applicationsTableBody');
+            if (!tbody) return;
+
+            if (list.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="text-center py-5 text-muted">
+                            <i class="bi bi-inbox fs-3 d-block mb-2 text-slate-400"></i>
+                            No applications found matching the selected filter.
+                        </td>
+                    </tr>
+                `;
+                updateKPICounters();
+                return;
+            }
+
+            let html = '';
+            list.forEach(a => {
+                let badgeClass = "badge-pending";
+                if (a.status === 'Hired') badgeClass = "badge-hired";
+                else if (a.status === 'Shortlisted') badgeClass = "badge-shortlisted";
+                else if (a.status === 'Rejected') badgeClass = "badge-rejected";
+
+                html += `
+                    <tr>
+                        <td class="ps-3 fw-bold text-muted">#${a.id}</td>
+                        <td>
+                            <a href="javascript:void(0)" onclick="viewCandidateByName('${a.applicant}')" class="fw-bold text-slate-900 text-decoration-none text-primary-hover d-inline-block">
+                                ${a.applicant} <i class="bi bi-box-arrow-up-right small ms-1 text-muted"></i>
+                            </a>
+                            <small class="text-muted d-block"><i class="bi bi-envelope me-1"></i>${a.applicant.toLowerCase().replace(/\s+/g, '')}@elevate.np</small>
+                        </td>
+                        <td>
+                            <span class="fw-semibold text-primary">${a.job}</span>
+                        </td>
+                        <td>
+                            <span class="text-muted"><i class="bi bi-building me-1"></i>${a.company}</span>
+                        </td>
+                        <td>
+                            <small class="text-slate-500">${a.date}</small>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary rounded-pill px-2 py-1 small" 
+                                    onclick="viewApplicantResume('${a.applicant}', '${a.job}', '${a.status}')" 
+                                    title="Preview Candidate Resume">
+                                <i class="bi bi-file-earmark-pdf me-1"></i> View CV
+                            </button>
+                        </td>
+                        <td>
+                            <span class="badge-status ${badgeClass}">${a.status}</span>
+                        </td>
+                        <td class="pe-3 text-end text-nowrap">
+                            <!-- Quick Action Buttons for User Request -->
+                            <div class="btn-group btn-group-sm me-1" role="group">
+                                <button type="button" class="btn btn-sm ${a.status === 'Hired' ? 'btn-success text-white' : 'btn-outline-success'}" 
+                                        onclick="updateApplicationStatus(${a.id}, 'Hired')" 
+                                        title="Mark Candidate as Hired">
+                                    <i class="bi bi-check-lg"></i> Hire
+                                </button>
+                                <button type="button" class="btn btn-sm ${a.status === 'Shortlisted' ? 'btn-info text-white' : 'btn-outline-info'}" 
+                                        onclick="updateApplicationStatus(${a.id}, 'Shortlisted')" 
+                                        title="Shortlist Candidate">
+                                    <i class="bi bi-star"></i> Shortlist
+                                </button>
+                                <button type="button" class="btn btn-sm ${a.status === 'Rejected' ? 'btn-danger text-white' : 'btn-outline-danger'}" 
+                                        onclick="updateApplicationStatus(${a.id}, 'Rejected')" 
+                                        title="Reject Application">
+                                    <i class="bi bi-x-lg"></i> Reject
+                                </button>
+                            </div>
+
+                            <!-- More Dropdown -->
+                            <div class="dropdown d-inline-block">
+                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle rounded-pill px-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    More
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-3 p-2">
+                                    <li>
+                                        <a class="dropdown-item rounded-2 py-1 text-warning" href="javascript:void(0)" onclick="updateApplicationStatus(${a.id}, 'Pending')">
+                                            <i class="bi bi-clock me-2"></i> Set Pending
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item rounded-2 py-1" href="javascript:void(0)" onclick="viewCandidateByName('${a.applicant}')">
+                                            <i class="bi bi-file-earmark-person me-2 text-primary"></i> View Dossier
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider my-1"></li>
+                                    <li>
+                                        <a class="dropdown-item rounded-2 py-1 text-danger" href="javascript:void(0)" onclick="deleteApplication(${a.id})">
+                                            <i class="bi bi-trash me-2"></i> Delete Application
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tbody.innerHTML = html;
+            updateKPICounters();
+        }
+
+        function getFilteredApplications() {
+            if (activeAppStatusFilter === 'All') return applications;
+            return applications.filter(a => a.status.toLowerCase() === activeAppStatusFilter.toLowerCase());
+        }
+
+        function filterApplicationsByStatus(status, btnEl) {
+            activeAppStatusFilter = status;
+            
+            // Update active pill button UI
+            const group = document.getElementById('appStatusFilterGroup');
+            if (group) {
+                const btns = group.querySelectorAll('button');
+                btns.forEach(b => {
+                    b.className = b.className.replace(/btn-(primary|warning|info|success|danger)\b/g, 'btn-outline-$1');
+                });
+                if (btnEl) {
+                    btnEl.className = btnEl.className.replace(/btn-outline-(primary|warning|info|success|danger)/g, 'btn-$1');
+                }
+            }
+
+            renderApplications();
+        }
+
+        function handleAppFilterSearch(q) {
+            const query = q.trim().toLowerCase();
+            const currentList = getFilteredApplications();
+            const searched = currentList.filter(a => 
+                a.applicant.toLowerCase().includes(query) ||
+                a.job.toLowerCase().includes(query) ||
+                a.company.toLowerCase().includes(query)
+            );
+            renderApplications(searched);
+        }
+
+        function updateApplicationStatus(id, newStatus) {
+            const app = applications.find(a => a.id === id);
+            if (!app) return;
+
+            const oldStatus = app.status;
+            app.status = newStatus;
+            saveApplications();
+
+            // Sync with candidate's local applications if present
+            try {
+                const candidateAppsStr = localStorage.getItem('elevate_applications');
+                if (candidateAppsStr) {
+                    let candidateApps = JSON.parse(candidateAppsStr);
+                    let matched = candidateApps.find(ca => ca.title === app.job || ca.id === app.id);
+                    if (matched) {
+                        matched.status = newStatus;
+                        localStorage.setItem('elevate_applications', JSON.stringify(candidateApps));
+                    }
+                }
+            } catch(e) {}
+
+            renderApplications();
+
+            // Display Toast Alert
+            const alertContainer = document.getElementById('adminActionAlertContainer');
+            if (alertContainer) {
+                const badgeColor = newStatus === 'Hired' ? 'success' : (newStatus === 'Shortlisted' ? 'info' : (newStatus === 'Rejected' ? 'danger' : 'warning'));
+                alertContainer.innerHTML = `
+                    <div class="alert alert-${badgeColor} alert-dismissible fade show rounded-3 small py-2 px-3 mb-3 shadow-sm border-0 d-flex align-items-center justify-content-between" role="alert">
+                        <div>
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            Application <strong>#${id}</strong> (${app.applicant} for <em>${app.job}</em>) marked as <strong>${newStatus}</strong>!
+                        </div>
+                        <button type="button" class="btn-close py-2" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                `;
+                setTimeout(() => {
+                    if (alertContainer.firstChild) alertContainer.innerHTML = '';
+                }, 4000);
+            }
+        }
+
+        function deleteApplication(id) {
+            const app = applications.find(a => a.id === id);
+            const name = app ? app.applicant : 'this';
+            if (confirm(`Are you sure you want to remove the application for ${name}?`)) {
+                applications = applications.filter(a => a.id !== id);
+                saveApplications();
+                renderApplications();
+
+                const alertContainer = document.getElementById('adminActionAlertContainer');
+                if (alertContainer) {
+                    alertContainer.innerHTML = `
+                        <div class="alert alert-secondary alert-dismissible fade show rounded-3 small py-2 px-3 mb-3 shadow-sm border-0" role="alert">
+                            <i class="bi bi-trash me-2 text-danger"></i> Application #${id} deleted successfully.
+                            <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function viewApplicantResume(name, job, status) {
+            document.getElementById('resumeCandidateName').innerText = name;
+            document.getElementById('resumeAppliedRole').innerText = `Applied for: ${job}`;
+            document.getElementById('resumeCurrentStatus').innerText = `Status: ${status}`;
+            const modal = new bootstrap.Modal(document.getElementById('resumeModal'));
+            modal.show();
+        }
+
+        function viewCandidateByName(name) {
+            const c = candidates.find(cand => cand.name.toLowerCase() === name.toLowerCase());
+            if (c) {
+                viewCandidateDetails(c.id);
+            } else {
+                // Synthesize dossier for external candidate
+                document.getElementById('modalCandidateAvatar').innerText = name.charAt(0).toUpperCase();
+                document.getElementById('modalCandidateName').innerText = name;
+                document.getElementById('modalCandidateUsername').innerText = `@${name.toLowerCase().replace(/\s+/g, '')} • Elevated Applicant`;
+                document.getElementById('modalCandidateEmail').innerText = `${name.toLowerCase().replace(/\s+/g, '')}@elevate.np`;
+                document.getElementById('modalCandidatePhone').innerText = '+977-98' + Math.floor(10000000 + Math.random() * 90000000);
+                document.getElementById('modalCandidateStatus').innerText = 'Active Applicant';
+                document.getElementById('modalCandidateResume').innerText = 'Verified PDF';
+                document.getElementById('modalEmailBtn').href = `mailto:${name.toLowerCase().replace(/\s+/g, '')}@elevate.np`;
+                document.getElementById('modalWhatsAppBtn').href = `https://wa.me/9779801234567`;
+
+                const candApps = applications.filter(a => a.applicant.toLowerCase() === name.toLowerCase());
+                const appsListEl = document.getElementById('modalCandidateAppsList');
+                if (candApps.length === 0) {
+                    appsListEl.innerHTML = '<div class="p-3 text-muted small text-center">No recorded applications in current pipeline.</div>';
+                } else {
+                    let appHtml = '';
+                    candApps.forEach(ca => {
+                        let badgeColor = ca.status === 'Hired' ? 'success' : (ca.status === 'Shortlisted' ? 'info' : (ca.status === 'Rejected' ? 'danger' : 'warning'));
+                        appHtml += `
+                            <div class="list-group-item d-flex align-items-center justify-content-between p-3">
+                                <div>
+                                    <div class="fw-bold text-slate-900">${ca.job}</div>
+                                    <small class="text-muted">${ca.company} • Applied on ${ca.date}</small>
+                                </div>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge bg-${badgeColor}-subtle text-${badgeColor} rounded-pill px-3 py-1">${ca.status}</span>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    appsListEl.innerHTML = appHtml;
+                }
+                const modal = new bootstrap.Modal(document.getElementById('candidateModal'));
+                modal.show();
+            }
+        }
+
+        // ==========================================================================
+        // CANDIDATES SECTION
+        // ==========================================================================
+
         function renderCandidates(list) {
             const tbody = document.getElementById('candidatesTableBody');
+            if (!tbody) return;
             if (!list || list.length === 0) {
                 tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No matching candidate records found.</td></tr>';
                 return;
@@ -473,62 +1044,190 @@
                             </span>
                         </td>
                         <td class="pe-3 text-end">
-                            <button class="btn btn-sm btn-outline-primary rounded-pill px-2 py-1" onclick="alert('Viewing candidate dossier for ${c.name}')" title="View Profile">
-                                <i class="bi bi-eye"></i> View
+                            <button class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1" onclick="viewCandidateDetails(${c.id})" title="View Candidate Dossier">
+                                <i class="bi bi-person-badge me-1"></i> Dossier
                             </button>
                         </td>
                     </tr>
                 `;
             });
             tbody.innerHTML = html;
-            document.getElementById('candidateCountDisplay').innerText = `Showing ${list.length} candidate(s)`;
+            const countDisp = document.getElementById('candidateCountDisplay');
+            if (countDisp) countDisp.innerText = `Showing ${list.length} candidate(s)`;
         }
 
-        function renderApplications() {
-            const tbody = document.getElementById('applicationsTableBody');
-            let html = '';
-            applications.forEach(a => {
-                let badgeClass = "bg-warning-subtle text-warning-emphasis border border-warning-subtle";
-                if (a.status === 'Hired') badgeClass = "bg-success-subtle text-success border border-success-subtle";
-                if (a.status === 'Shortlisted') badgeClass = "bg-info-subtle text-info border border-info-subtle";
-                if (a.status === 'Rejected') badgeClass = "bg-danger-subtle text-danger border border-danger-subtle";
-
-                html += `
-                    <tr>
-                        <td class="ps-3 fw-bold text-muted">#${a.id}</td>
-                        <td class="fw-semibold text-slate-900">${a.applicant}</td>
-                        <td class="fw-bold text-primary">${a.job}</td>
-                        <td class="text-muted">${a.company}</td>
-                        <td class="small text-slate-500">${a.date}</td>
-                        <td><span class="badge rounded-pill ${badgeClass} px-3 py-1">${a.status}</span></td>
-                    </tr>
-                `;
-            });
-            tbody.innerHTML = html;
+        function filterCandidatesTable(q) {
+            const query = q.trim().toLowerCase();
+            const filtered = candidates.filter(c => 
+                c.name.toLowerCase().includes(query) ||
+                c.email.toLowerCase().includes(query) ||
+                c.username.toLowerCase().includes(query) ||
+                c.phone.includes(query)
+            );
+            renderCandidates(filtered);
         }
 
-        function renderJobs() {
+        function viewCandidateDetails(id) {
+            const c = candidates.find(cand => cand.id === id);
+            if (!c) return;
+
+            document.getElementById('modalCandidateAvatar').innerText = c.name.charAt(0).toUpperCase();
+            document.getElementById('modalCandidateName').innerText = c.name;
+            document.getElementById('modalCandidateUsername').innerText = `@${c.username} • Candidate ID #${c.id}`;
+            document.getElementById('modalCandidateEmail').innerText = c.email;
+            document.getElementById('modalCandidatePhone').innerText = c.phone;
+            document.getElementById('modalCandidateStatus').innerText = c.status;
+            document.getElementById('modalCandidateResume').innerText = c.resume;
+            document.getElementById('modalEmailBtn').href = `mailto:${c.email}`;
+            document.getElementById('modalWhatsAppBtn').href = `https://wa.me/${c.phone.replace(/[^0-9]/g, '')}`;
+
+            // Candidate applications
+            const candApps = applications.filter(a => a.applicant.toLowerCase() === c.name.toLowerCase());
+            const appsListEl = document.getElementById('modalCandidateAppsList');
+            if (candApps.length === 0) {
+                appsListEl.innerHTML = '<div class="p-3 text-muted small text-center">No recorded applications in current pipeline.</div>';
+            } else {
+                let appHtml = '';
+                candApps.forEach(ca => {
+                    let badgeColor = ca.status === 'Hired' ? 'success' : (ca.status === 'Shortlisted' ? 'info' : (ca.status === 'Rejected' ? 'danger' : 'warning'));
+                    appHtml += `
+                        <div class="list-group-item d-flex align-items-center justify-content-between p-3">
+                            <div>
+                                <div class="fw-bold text-slate-900">${ca.job}</div>
+                                <small class="text-muted">${ca.company} • Applied on ${ca.date}</small>
+                            </div>
+                            <div class="d-flex align-items-center gap-2">
+                                <span class="badge bg-${badgeColor}-subtle text-${badgeColor} rounded-pill px-3 py-1">${ca.status}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                appsListEl.innerHTML = appHtml;
+            }
+
+            const modal = new bootstrap.Modal(document.getElementById('candidateModal'));
+            modal.show();
+        }
+
+        // ==========================================================================
+        // JOBS POSTING MANAGEMENT
+        // ==========================================================================
+
+        function renderJobs(listToRender) {
+            const list = listToRender || jobs;
             const tbody = document.getElementById('jobsTableBody');
+            if (!tbody) return;
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-4 text-muted">No matching job listings found.</td></tr>';
+                return;
+            }
+
             let html = '';
-            jobs.forEach(j => {
+            list.forEach(j => {
                 html += `
                     <tr>
                         <td class="ps-3 fw-bold text-muted">#${j.id}</td>
                         <td class="fw-semibold text-slate-900">${j.title}</td>
-                        <td><span class="text-primary">${j.company}</span></td>
+                        <td><span class="text-primary fw-semibold">${j.company}</span></td>
                         <td><i class="bi bi-geo-alt text-muted me-1"></i>${j.location}</td>
                         <td><span class="badge bg-light text-dark border rounded-pill">${j.type}</span></td>
-                        <td class="fw-bold text-success">NPR ${j.salary.toLocaleString('en-US')}</td>
+                        <td class="fw-bold text-success">NPR ${Number(j.salary).toLocaleString('en-US')}</td>
+                        <td class="pe-3 text-end">
+                            <button class="btn btn-sm btn-outline-danger rounded-pill px-2 py-1" onclick="deleteJob(${j.id})" title="Delete Job">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
                     </tr>
                 `;
             });
             tbody.innerHTML = html;
+            const countDisp = document.getElementById('jobsCountDisplay');
+            if (countDisp) countDisp.innerText = `${list.length} Active Postings across Nepal`;
         }
 
-        function renderMessages() {
+        function filterJobsTable(q) {
+            const query = q.trim().toLowerCase();
+            const filtered = jobs.filter(j => 
+                j.title.toLowerCase().includes(query) ||
+                j.company.toLowerCase().includes(query) ||
+                j.location.toLowerCase().includes(query) ||
+                j.type.toLowerCase().includes(query)
+            );
+            renderJobs(filtered);
+        }
+
+        function openPostJobModal() {
+            const modal = new bootstrap.Modal(document.getElementById('postJobModal'));
+            modal.show();
+        }
+
+        function handlePostJobSubmit(e) {
+            e.preventDefault();
+            const title = document.getElementById('newJobTitle').value.trim();
+            const company = document.getElementById('newJobCompany').value.trim();
+            const location = document.getElementById('newJobLocation').value;
+            const type = document.getElementById('newJobType').value;
+            const salary = parseInt(document.getElementById('newJobSalary').value, 10);
+
+            const newJob = {
+                id: Date.now(),
+                title: title,
+                company: company,
+                location: location,
+                type: type,
+                salary: salary
+            };
+
+            jobs.unshift(newJob);
+            saveJobs();
+            renderJobs();
+
+            const modalEl = document.getElementById('postJobModal');
+            const modalInstance = bootstrap.Modal.getInstance(modalEl);
+            if (modalInstance) modalInstance.hide();
+            document.getElementById('postJobForm').reset();
+
+            const alertContainer = document.getElementById('adminJobAlertContainer');
+            if (alertContainer) {
+                alertContainer.innerHTML = `
+                    <div class="alert alert-success alert-dismissible fade show rounded-3 small py-2 px-3 mb-3 shadow-sm border-0" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i> New job listing <strong>${title}</strong> published successfully!
+                        <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                    </div>
+                `;
+            }
+            updateKPICounters();
+            return false;
+        }
+
+        function deleteJob(id) {
+            const j = jobs.find(job => job.id === id);
+            const title = j ? j.title : 'this job';
+            if (confirm(`Are you sure you want to delete "${title}"?`)) {
+                jobs = jobs.filter(job => job.id !== id);
+                saveJobs();
+                renderJobs();
+                updateKPICounters();
+            }
+        }
+
+        // ==========================================================================
+        // MESSAGES / CONTACT INQUIRIES
+        // ==========================================================================
+
+        function renderMessages(listToRender) {
+            const list = listToRender || messages;
             const tbody = document.getElementById('messagesTableBody');
+            if (!tbody) return;
+
+            if (list.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="text-center py-4 text-muted">No inquiry messages found.</td></tr>';
+                return;
+            }
+
             let html = '';
-            messages.forEach(m => {
+            list.forEach(m => {
                 const unread = m.status === 'Unread';
                 html += `
                     <tr class="${unread ? 'table-light fw-semibold' : ''}">
@@ -539,38 +1238,198 @@
                         <td>
                             <span class="badge ${unread ? 'bg-danger' : 'bg-secondary'} rounded-pill">${m.status}</span>
                         </td>
+                        <td class="pe-3 text-end text-nowrap">
+                            <button class="btn btn-sm btn-outline-primary rounded-pill px-2 py-1" onclick="viewMessage(${m.id})" title="View Full Message">
+                                <i class="bi bi-eye"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary rounded-pill px-2 py-1" onclick="toggleMessageStatus(${m.id})" title="Toggle Read/Unread">
+                                <i class="bi ${unread ? 'bi-check2' : 'bi-envelope'}"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger rounded-pill px-2 py-1" onclick="deleteMessage(${m.id})" title="Delete Message">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </td>
                     </tr>
                 `;
             });
             tbody.innerHTML = html;
         }
 
+        function filterMessagesTable(q) {
+            const query = q.trim().toLowerCase();
+            const filtered = messages.filter(m => 
+                m.name.toLowerCase().includes(query) ||
+                m.email.toLowerCase().includes(query) ||
+                m.phone.includes(query) ||
+                m.text.toLowerCase().includes(query)
+            );
+            renderMessages(filtered);
+        }
+
+        function viewMessage(id) {
+            const m = messages.find(msg => msg.id === id);
+            if (!m) return;
+            m.status = 'Read';
+            saveMessages();
+            renderMessages();
+
+            document.getElementById('msgSenderName').innerText = m.name;
+            document.getElementById('msgSenderContact').innerText = `${m.email} • ${m.phone}`;
+            document.getElementById('msgFullText').innerText = m.text;
+            document.getElementById('msgReplyEmailBtn').href = `mailto:${m.email}?subject=Regarding your inquiry at Elevate Workforce`;
+
+            const modal = new bootstrap.Modal(document.getElementById('messageModal'));
+            modal.show();
+        }
+
+        function toggleMessageStatus(id) {
+            const m = messages.find(msg => msg.id === id);
+            if (!m) return;
+            m.status = m.status === 'Unread' ? 'Read' : 'Unread';
+            saveMessages();
+            renderMessages();
+            updateKPICounters();
+        }
+
+        function deleteMessage(id) {
+            if (confirm('Delete this inquiry message?')) {
+                messages = messages.filter(m => m.id !== id);
+                saveMessages();
+                renderMessages();
+                updateKPICounters();
+            }
+        }
+
+        // ==========================================================================
+        // KPI COUNTERS & STATS
+        // ==========================================================================
+
+        function updateKPICounters() {
+            // Count metrics
+            const totalApps = applications.length;
+            const hiredCount = applications.filter(a => a.status === 'Hired').length;
+            const shortlistedCount = applications.filter(a => a.status === 'Shortlisted').length;
+            const pendingCount = applications.filter(a => a.status === 'Pending').length;
+            const rejectedCount = applications.filter(a => a.status === 'Rejected').length;
+            const unreadMsgs = messages.filter(m => m.status === 'Unread').length;
+
+            // Update top KPI cards
+            const kpiJobs = document.getElementById('kpiActiveJobs');
+            if (kpiJobs) kpiJobs.innerText = jobs.length;
+
+            const kpiCands = document.getElementById('kpiCandidates');
+            if (kpiCands) kpiCands.innerText = candidates.length;
+
+            const kpiApps = document.getElementById('kpiApplications');
+            if (kpiApps) kpiApps.innerText = totalApps;
+
+            const kpiHires = document.getElementById('kpiHires');
+            if (kpiHires) kpiHires.innerText = hiredCount;
+
+            const kpiShortlisted = document.getElementById('kpiShortlistedBadge');
+            if (kpiShortlisted) kpiShortlisted.innerText = `${shortlistedCount} Shortlisted`;
+
+            const kpiHireRate = document.getElementById('kpiHireRateBadge');
+            if (kpiHireRate) {
+                const rate = totalApps > 0 ? Math.round((hiredCount / totalApps) * 100) : 0;
+                kpiHireRate.innerText = `${rate}% Placement Rate`;
+            }
+
+            // Update status filter badges in applications section
+            const badgeAll = document.getElementById('badgeCountAll');
+            if (badgeAll) badgeAll.innerText = totalApps;
+            const badgePen = document.getElementById('badgeCountPending');
+            if (badgePen) badgePen.innerText = pendingCount;
+            const badgeShort = document.getElementById('badgeCountShortlisted');
+            if (badgeShort) badgeShort.innerText = shortlistedCount;
+            const badgeHire = document.getElementById('badgeCountHired');
+            if (badgeHire) badgeHire.innerText = hiredCount;
+            const badgeRej = document.getElementById('badgeCountRejected');
+            if (badgeRej) badgeRej.innerText = rejectedCount;
+
+            // Sidebar badges
+            const sbCands = document.getElementById('sidebarBadgeCandidates');
+            if (sbCands) sbCands.innerText = candidates.length;
+            const sbApps = document.getElementById('sidebarBadgeApps');
+            if (sbApps) sbApps.innerText = totalApps;
+            const sbJobs = document.getElementById('sidebarBadgeJobs');
+            if (sbJobs) sbJobs.innerText = jobs.length;
+            const sbMsgs = document.getElementById('sidebarBadgeMsgs');
+            if (sbMsgs) sbMsgs.innerText = unreadMsgs || messages.length;
+        }
+
+        // ==========================================================================
+        // NAVIGATION & TABS
+        // ==========================================================================
+
         function switchSection(sec, event) {
             if (event) event.preventDefault();
             const sections = ['candidates', 'applications', 'jobs', 'messages'];
+            
             sections.forEach(s => {
                 const el = document.getElementById('section-' + s);
-                const btn = document.getElementById('tab-' + s + '-btn');
+                const tabBtn = document.getElementById('tab-' + s + '-btn');
                 if (s === sec) {
-                    el.classList.remove('d-none');
-                    if (btn) btn.classList.add('active');
+                    if (el) el.classList.remove('d-none');
+                    if (tabBtn) tabBtn.classList.add('active');
                 } else {
-                    el.classList.add('d-none');
-                    if (btn) btn.classList.remove('active');
+                    if (el) el.classList.add('d-none');
+                    if (tabBtn) tabBtn.classList.remove('active');
                 }
             });
+
+            // Update sidebar nav items
+            const sidebarMap = {
+                'candidates': 'sidebarNavCandidates',
+                'applications': 'sidebarNavApps',
+                'jobs': 'sidebarNavJobs',
+                'messages': 'sidebarNavMsgs'
+            };
+            const allSidebarNavs = ['sidebarNavDashboard', 'sidebarNavCandidates', 'sidebarNavApps', 'sidebarNavJobs', 'sidebarNavMsgs'];
+            allSidebarNavs.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.remove('active');
+            });
+            const activeNavId = sidebarMap[sec] || 'sidebarNavDashboard';
+            const activeNav = document.getElementById(activeNavId);
+            if (activeNav) activeNav.classList.add('active');
+
+            // Close mobile sidebar if open
+            if (window.innerWidth < 992) {
+                const sidebar = document.getElementById('adminSidebar');
+                const overlay = document.getElementById('sidebarOverlay');
+                if (sidebar) sidebar.classList.remove('show');
+                if (overlay) overlay.classList.remove('show');
+            }
+
+            // Sync URL hash
+            window.location.hash = sec;
         }
 
         function handleGlobalSearch(q) {
             const query = q.trim().toLowerCase();
-            const filtered = candidates.filter(c => 
-                c.name.toLowerCase().includes(query) ||
-                c.email.toLowerCase().includes(query) ||
-                c.username.toLowerCase().includes(query) ||
-                c.phone.includes(query)
-            );
-            renderCandidates(filtered);
-            switchSection('candidates');
+            if (!query) {
+                renderCandidates(candidates);
+                renderApplications();
+                renderJobs();
+                renderMessages();
+                return;
+            }
+
+            // Search in currently active section or smart auto-switch
+            const matchingApps = applications.filter(a => a.applicant.toLowerCase().includes(query) || a.job.toLowerCase().includes(query));
+            const matchingCands = candidates.filter(c => c.name.toLowerCase().includes(query) || c.email.toLowerCase().includes(query));
+            const matchingJobs = jobs.filter(j => j.title.toLowerCase().includes(query) || j.company.toLowerCase().includes(query));
+
+            renderCandidates(matchingCands);
+            renderApplications(matchingApps);
+            renderJobs(matchingJobs);
+
+            if (matchingApps.length > 0 && matchingCands.length === 0) {
+                switchSection('applications');
+            } else if (matchingJobs.length > 0 && matchingCands.length === 0 && matchingApps.length === 0) {
+                switchSection('jobs');
+            }
         }
 
         function toggleSidebar() {
@@ -583,7 +1442,8 @@
             const current = html.getAttribute('data-theme') || 'light';
             const next = current === 'light' ? 'dark' : 'light';
             html.setAttribute('data-theme', next);
-            document.getElementById('themeIcon').className = next === 'dark' ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill';
+            document.getElementById('themeIcon').className = next === 'dark' ? 'bi bi-sun-fill text-warning' : 'bi bi-moon-stars-fill';
+            localStorage.setItem('admin-theme', next);
         }
 
         function updateLiveClock() {
@@ -594,15 +1454,39 @@
             }
         }
 
+        // ==========================================================================
+        // CSV EXPORTS
+        // ==========================================================================
+
         function exportCandidatesCSV() {
-            let csv = "ID,Candidate Name,Email,Username,Phone,Resume Status,Applications Filed\n";
+            let csv = "Candidate ID,Full Name,Email Address,Username,Phone,Resume Status,System Status\n";
             candidates.forEach(c => {
-                csv += `"${c.id}","${c.name}","${c.email}","${c.username}","${c.phone}","${c.resume}","${c.apps}"\n`;
+                csv += `"${c.id}","${c.name}","${c.email}","${c.username}","${c.phone}","${c.resume}","${c.status}"\n`;
             });
-            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            downloadCSV(csv, "elevate_candidates_roster.csv");
+        }
+
+        function exportApplicationsCSV() {
+            let csv = "Application ID,Applicant Name,Applied Role,Company,Applied Date,Current Status\n";
+            applications.forEach(a => {
+                csv += `"${a.id}","${a.applicant}","${a.job}","${a.company}","${a.date}","${a.status}"\n`;
+            });
+            downloadCSV(csv, "elevate_applications_pipeline.csv");
+        }
+
+        function exportJobsCSV() {
+            let csv = "Job ID,Job Title,Company,Location,Employment Type,Monthly Salary (NPR)\n";
+            jobs.forEach(j => {
+                csv += `"${j.id}","${j.title}","${j.company}","${j.location}","${j.type}","${j.salary}"\n`;
+            });
+            downloadCSV(csv, "elevate_jobs_database.csv");
+        }
+
+        function downloadCSV(csvContent, filename) {
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
             const link = document.createElement("a");
             link.href = URL.createObjectURL(blob);
-            link.setAttribute("download", "elevate_candidates_export.csv");
+            link.setAttribute("download", filename);
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
@@ -614,14 +1498,30 @@
             window.location.href = 'login.html';
         }
 
+        // Check URL on load for direct tab navigation (e.g. #applications or ?section=applications)
+        function checkInitialTab() {
+            const hash = window.location.hash.replace('#', '').toLowerCase();
+            const params = new URLSearchParams(window.location.search);
+            const sectionParam = params.get('section') || params.get('tab');
+
+            const targetSection = sectionParam || hash;
+            if (['applications', 'jobs', 'messages', 'candidates'].includes(targetSection)) {
+                switchSection(targetSection);
+            }
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
+            loadData();
             renderCandidates(candidates);
             renderApplications();
             renderJobs();
             renderMessages();
+            updateKPICounters();
             updateLiveClock();
             setInterval(updateLiveClock, 1000);
+            checkInitialTab();
         });
     </script>
 </body>
 </html>
+
