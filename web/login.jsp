@@ -22,7 +22,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Admin Login — Elevate Workforce Solutions</title>
+    <title>Candidate Login — Elevate Workforce Solutions</title>
     <meta name="description" content="Sign in to your Elevate Workforce candidate account and discover your next career.">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -588,13 +588,13 @@
                 <img src="images/logo.png" alt="Elevate Workforce Logo" class="ez-brand-logo"
                      onerror="this.style.display='none'">
                 <span class="fw-bold text-dark fs-5">Elevate</span>
-                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1 small">Admin Zone</span>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1 small">Candidate Zone</span>
             </a>
             <div class="d-flex align-items-center gap-2 gap-md-3">
                 <a href="<%= request.getContextPath() %>/findajob.jsp" class="ez-nav-link d-none d-md-inline">Browse Jobs</a>
                 <a href="<%= request.getContextPath() %>/contact.jsp"  class="ez-nav-link d-none d-sm-inline">Contact</a>
                 <a href="<%= request.getContextPath() %>/admin/login.jsp" class="btn btn-outline-primary rounded-pill px-3 py-1 btn-sm fw-semibold">
-                    <i class="bi bi-box-arrow-in-right me-1"></i> Login
+                    <i class="bi bi-shield-lock me-1"></i> Admin Login
                 </a>
                 <a href="<%= request.getContextPath() %>/register.jsp" class="btn btn-primary rounded-pill px-3 py-1 btn-sm fw-semibold text-white shadow-sm">
                     Register Free
@@ -685,7 +685,7 @@
                         <!-- Tabs -->
                         <div class="ez-tabs">
                             <div class="ez-tab-item active" id="tabSignIn" onclick="switchTab('signin')">
-                                Admin Login
+                                Candidate Login
                             </div>
                             <div class="ez-tab-item" id="tabHelp" onclick="switchTab('help')">
                                 Need Help?

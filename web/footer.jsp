@@ -29,7 +29,8 @@
                     <li><a href="index.jsp"><i class="bi bi-chevron-right text-primary small"></i> Home</a></li>
                     <li><a href="findajob.jsp"><i class="bi bi-chevron-right text-primary small"></i> Find a Job</a></li>
                     <li><a href="contact.jsp"><i class="bi bi-chevron-right text-primary small"></i> Contact Us</a></li>
-                    <li><a href="login.jsp"><i class="bi bi-chevron-right text-primary small"></i> Admin Login</a></li>
+                    <li><a href="login.jsp"><i class="bi bi-chevron-right text-primary small"></i> Candidate Login</a></li>
+                    <li><a href="admin/login.jsp"><i class="bi bi-chevron-right text-primary small"></i> Admin Login</a></li>
                     <li><a href="register.jsp"><i class="bi bi-chevron-right text-primary small"></i> Register Account</a></li>
                 </ul>
             </div>

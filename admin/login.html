@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login - Elevate Workforce Solutions</title>
+    <title>Admin Login — Elevate Workforce Solutions</title>
     
     <!-- Google Fonts & Bootstrap -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -370,14 +370,14 @@
             <a href="../index.html" class="ez-brand">
                 <img src="../images/logo.png" alt="Elevate Workforce Logo" class="ez-brand-logo">
                 <span class="fw-bold text-dark fs-5">Elevate</span>
-                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1 small">Login</span>
+                <span class="badge bg-primary-subtle text-primary border border-primary-subtle rounded-pill px-2 py-1 small">Admin Zone</span>
             </a>
 
             <div class="d-flex align-items-center gap-2 gap-md-3">
                 <a href="../findajob.html" class="ez-nav-link d-none d-md-inline">Job Directory</a>
                 <a href="../contact.html" class="ez-nav-link d-none d-sm-inline">Contact Sales</a>
                 <a href="../login.html" class="btn btn-outline-primary rounded-pill px-3 py-1 btn-sm fw-semibold">
-                    <i class="bi bi-shield-lock me-1"></i> Admin Login
+                    <i class="bi bi-person me-1"></i> Candidate Login
                 </a>
                 <a href="../register.html" class="btn btn-primary rounded-pill px-3 py-1 btn-sm fw-semibold text-white shadow-sm" style="background: #0284c7; border: none;">
                     Register
@@ -463,10 +463,10 @@
                 <div class="col-lg-5">
                     <div class="ez-login-card">
                         
-                        <!-- Top Tabs: Login / Talk to Sales -->
+                        <!-- Top Tabs: Admin Login / Talk to Sales -->
                         <div class="ez-tabs">
                             <div class="ez-tab-item active" id="tabEmployerLogin" onclick="switchLoginTab('login')">
-                                Login
+                                Admin Login
                             </div>
                             <div class="ez-tab-item" id="tabTalkToSales" onclick="switchLoginTab('sales')">
                                 Talk to Sales
@@ -477,7 +477,7 @@
 
                         <!-- Login Form View -->
                         <div id="loginFormSection">
-                            <p class="text-muted small mb-3">Login with your registered Email &amp; Password</p>
+                            <p class="text-muted small mb-3">Sign in with your Administrator credentials</p>
 
                             <form id="adminLoginForm" onsubmit="return handleAdminLoginSubmit(event)">
                                 <div class="mb-3">
@@ -507,7 +507,7 @@
 
                                 <div class="d-grid mb-3">
                                     <button id="loginSubmitBtn" type="submit" class="btn ez-btn-primary">
-                                        <span id="btnText">Login</span>
+                                        <span id="btnText">Admin Login</span>
                                         <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
                                     </button>
                                 </div>
@@ -696,7 +696,7 @@
 
             setTimeout(() => {
                 submitBtn.disabled = false;
-                btnText.textContent = 'Login';
+                btnText.textContent = 'Admin Login';
                 btnSpinner.classList.add('d-none');
 
                 const accounts = getRegisteredAccounts();

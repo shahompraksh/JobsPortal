@@ -590,7 +590,7 @@
                 <a href="findajob.html" class="ez-nav-link d-none d-md-inline">Find a Job</a>
                 <a href="contact.html"  class="ez-nav-link d-none d-sm-inline">Contact</a>
                 <a href="login.html" class="btn btn-outline-primary rounded-pill px-3 py-1 btn-sm fw-semibold">
-                    Login
+                    Candidate Login
                 </a>
                 <a href="register.html" class="btn btn-primary rounded-pill px-3 py-1 btn-sm fw-semibold text-white shadow-sm">
                     Register
@@ -974,7 +974,8 @@
             const name = document.getElementById('regName') ? document.getElementById('regName').value.trim() : 'Candidate';
             const email = document.getElementById('regEmail') ? document.getElementById('regEmail').value.trim() : '';
             const phone = document.getElementById('regPhone') ? document.getElementById('regPhone').value.trim() : '';
-            const un = document.getElementById('regUsername') ? document.getElementById('regUsername').value.trim() : (email.split('@')[0] || 'user');
+            const unInput = document.getElementById('regUser') || document.getElementById('regUsername');
+            const un = (unInput && unInput.value.trim()) ? unInput.value.trim() : (email.split('@')[0] || 'user');
             const pw = document.getElementById('regPass') ? document.getElementById('regPass').value : '';
 
             regBtn.disabled = true;
@@ -1028,17 +1029,18 @@
 
             localStorage.setItem('elevate_accounts', JSON.stringify(accounts));
 
-            // Set current candidate session
+            // Set candidate profile
             const newUser = {
                 name: name,
                 username: un,
                 email: email,
-                phone: phone
+                phone: phone,
+                role: 'Candidate'
             };
             localStorage.setItem('elevate_user', JSON.stringify(newUser));
 
             setTimeout(() => {
-                window.location.href = 'userdashboard.html';
+                window.location.href = 'login.html?registered=true&user=' + encodeURIComponent(un);
             }, 600);
         }
 
