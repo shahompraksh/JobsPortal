@@ -1612,7 +1612,25 @@
             }
         }
 
+        function verifyAdminAccess() {
+            const adminRaw = sessionStorage.getItem('elevate_admin') || localStorage.getItem('elevate_admin');
+            if (adminRaw) {
+                try {
+                    const session = JSON.parse(adminRaw);
+                    if (session && session.role === 'Candidate' && session.username && 
+                        session.username.toLowerCase() !== 'admin' && session.username.toLowerCase() !== 'omey') {
+                        sessionStorage.removeItem('elevate_admin');
+                        localStorage.removeItem('elevate_admin');
+                        window.location.href = 'login.html';
+                        return false;
+                    }
+                } catch(e) {}
+            }
+            return true;
+        }
+
         window.addEventListener('DOMContentLoaded', () => {
+            if (!verifyAdminAccess()) return;
             loadData();
             renderCandidates(candidates);
             renderApplications();

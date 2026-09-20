@@ -706,14 +706,19 @@
                 );
 
                 if (matched) {
-                    const userProfile = {
-                        name: matched.name,
-                        username: matched.username,
-                        email: matched.email,
-                        phone: matched.phone || '+977 98XXXXXXXX',
-                        role: matched.role || 'Candidate'
-                    };
-                    localStorage.setItem('elevate_user', JSON.stringify(userProfile));
+                    const isCandidate = (matched.role === 'Candidate' || (!matched.role && matched.username.toLowerCase() !== 'admin' && matched.username.toLowerCase() !== 'omey')) && 
+                                        matched.username.toLowerCase() !== 'admin' && 
+                                        matched.username.toLowerCase() !== 'omey';
+
+                    if (isCandidate) {
+                        document.getElementById('adminAlertContainer').innerHTML = `
+                            <div class="alert alert-danger alert-dismissible fade show rounded-3 small py-2 mb-3 shadow-sm" role="alert">
+                                <i class="bi bi-shield-x me-1"></i> <strong>Access Denied:</strong> Candidate accounts are not permitted to access the Admin Panel. Please use <a href="../login.html" class="fw-bold text-danger text-decoration-underline">Candidate Login</a>.
+                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                            </div>
+                        `;
+                        return;
+                    }
 
                     const adminSession = { 
                         username: matched.username, 
@@ -726,16 +731,12 @@
                     localStorage.setItem('elevate_admin', JSON.stringify(adminSession));
 
                     document.getElementById('adminAlertContainer').innerHTML = `
-                        <div class="alert alert-success alert-dismissible fade show rounded-3 small py-2 mb-3" role="alert">
+                        <div class="alert alert-success alert-dismissible fade show rounded-3 small py-2 mb-3 shadow-sm" role="alert">
                             <i class="bi bi-check-circle-fill me-1"></i> Authentication successful! Access granted to ${matched.name}.
                         </div>
                     `;
                     setTimeout(() => {
-                        if (matched.role === 'Candidate' && matched.username.toLowerCase() !== 'admin' && matched.username.toLowerCase() !== 'omey') {
-                            window.location.href = '../userdashboard.html';
-                        } else {
-                            window.location.href = 'dashboard.html';
-                        }
+                        window.location.href = 'dashboard.html';
                     }, 500);
                 } else {
                     document.getElementById('adminAlertContainer').innerHTML = `
