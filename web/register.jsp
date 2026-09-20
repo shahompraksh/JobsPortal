@@ -327,6 +327,7 @@
             transition: border-color 0.2s, box-shadow 0.2s;
             outline: none;
             -webkit-appearance: none;
+            appearance: none;
         }
         .ez-form-control::placeholder { color: #b0b7c3; }
         .ez-form-control:focus {
