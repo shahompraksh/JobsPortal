@@ -359,13 +359,28 @@
                 }
                 const now = new Date();
                 const dateStr = now.toISOString().slice(0, 10) + ' ' + now.toTimeString().slice(0, 8);
-                apps.unshift({
+
+                // Get logged-in candidate info for admin visibility
+                let applicantName = 'Registered Candidate';
+                let applicantEmail = '';
+                try {
+                    const sess = JSON.parse(sessionStorage.getItem('elevate_candidate_session') || localStorage.getItem('elevate_candidate_session') || '{}');
+                    if (sess && sess.name) applicantName = sess.name;
+                    if (sess && sess.email) applicantEmail = sess.email;
+                } catch(e) {}
+
+                const appEntry = {
                     id: Date.now(),
                     title: currentJob.title,
+                    job: currentJob.title,       // alias for admin panel
                     company: currentJob.company,
                     appliedDate: dateStr,
+                    date: dateStr,               // alias for admin panel
+                    applicant: applicantName,
+                    applicantEmail: applicantEmail,
                     status: "Pending"
-                });
+                };
+                apps.unshift(appEntry);
                 localStorage.setItem('elevate_applications', JSON.stringify(apps));
 
                 const companyEl = document.getElementById('successCompanyName');

@@ -768,6 +768,32 @@
             try {
                 const savedApps = localStorage.getItem('elevate_admin_applications');
                 applications = savedApps ? JSON.parse(savedApps) : defaultApplications;
+
+                // Merge in candidate-submitted applications from elevate_applications
+                try {
+                    const candidateAppsStr = localStorage.getItem('elevate_applications');
+                    if (candidateAppsStr) {
+                        const candidateApps = JSON.parse(candidateAppsStr);
+                        if (Array.isArray(candidateApps)) {
+                            candidateApps.forEach(ca => {
+                                const alreadyExists = applications.find(a => String(a.id) === String(ca.id));
+                                if (!alreadyExists) {
+                                    applications.unshift({
+                                        id: ca.id,
+                                        applicant: ca.applicant || 'Registered Candidate',
+                                        applicantEmail: ca.applicantEmail || '',
+                                        job: ca.job || ca.title || 'Unknown Position',
+                                        company: ca.company || 'Unknown Company',
+                                        date: ca.date || ca.appliedDate || '',
+                                        status: ca.status || 'Pending'
+                                    });
+                                }
+                            });
+                            // Save merged list back so status changes persist
+                            localStorage.setItem('elevate_admin_applications', JSON.stringify(applications));
+                        }
+                    }
+                } catch(e) {}
             } catch(e) { applications = defaultApplications; }
 
             try {
