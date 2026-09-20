@@ -916,8 +916,8 @@
                 if (normalizedUn === 'admin' || normalizedUn === 'omey') {
                     if (alertBox) {
                         alertBox.innerHTML = `
-                            <div class="alert alert-warning alert-dismissible fade show rounded-3 small py-2 mb-3 shadow-sm" role="alert">
-                                <i class="bi bi-shield-exclamation me-1"></i> <strong>Admin Portal Required:</strong> This portal is for Candidate access only. Administrators please use <a href="admin/login.html" class="fw-bold text-dark text-decoration-underline">Admin Login</a>.
+                            <div class="alert alert-danger alert-dismissible fade show rounded-3 small py-2 mb-3 shadow-sm" role="alert">
+                                <i class="bi bi-exclamation-circle me-1"></i> Invalid username or password.
                                 <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
                             </div>
                         `;
