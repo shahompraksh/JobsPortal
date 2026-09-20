@@ -694,15 +694,27 @@
                             <div id="registerSection">
                                 <p class="text-muted small mb-3">Fill out your details to create your secure candidate profile</p>
 
+                                <div id="regAlertContainer"></div>
+
                                 <form id="registerForm" onsubmit="handleRegisterSubmit(event)">
 
-                                    <!-- Full Name -->
-                                    <div class="mb-3">
-                                        <label class="ez-input-label" for="regName">Full Name <span class="text-danger">*</span></label>
-                                        <div class="ez-input-group">
-                                            <i class="bi bi-person ez-input-icon"></i>
-                                            <input type="text" id="regName" name="name" class="ez-form-control"
-                                                   placeholder="e.g. Aayush Sharma" required autofocus autocomplete="name">
+                                    <!-- Full Name & Username row -->
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-sm-6">
+                                            <label class="ez-input-label" for="regName">Full Name <span class="text-danger">*</span></label>
+                                            <div class="ez-input-group">
+                                                <i class="bi bi-person ez-input-icon"></i>
+                                                <input type="text" id="regName" name="name" class="ez-form-control"
+                                                       placeholder="e.g. Aayush Sharma" required autofocus autocomplete="name">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <label class="ez-input-label" for="regUser">Username <span class="text-danger">*</span></label>
+                                            <div class="ez-input-group">
+                                                <i class="bi bi-at ez-input-icon"></i>
+                                                <input type="text" id="regUser" name="username" class="ez-form-control"
+                                                       placeholder="Choose username" required autocomplete="username">
+                                            </div>
                                         </div>
                                     </div>
 
@@ -726,31 +738,35 @@
                                         </div>
                                     </div>
 
-                                    <!-- Username & Password row -->
+                                    <!-- Password & Confirm Password row -->
                                     <div class="row g-2 mb-3">
-                                        <div class="col-sm-6">
-                                            <label class="ez-input-label" for="regUser">Username <span class="text-danger">*</span></label>
-                                            <div class="ez-input-group">
-                                                <i class="bi bi-at ez-input-icon"></i>
-                                                <input type="text" id="regUser" name="username" class="ez-form-control"
-                                                       placeholder="Choose username" required autocomplete="username">
-                                            </div>
-                                        </div>
                                         <div class="col-sm-6">
                                             <label class="ez-input-label" for="regPass">Password <span class="text-danger">*</span></label>
                                             <div class="ez-input-group pw-wrap">
                                                 <i class="bi bi-lock ez-input-icon"></i>
                                                 <input type="password" id="regPass" name="password" class="ez-form-control"
-                                                       placeholder="Strong password" required autocomplete="new-password">
+                                                       placeholder="Min. 6 characters" required autocomplete="new-password">
                                                 <button type="button" class="pw-eye" id="eyeBtn" title="Toggle password visibility">
                                                     <i class="bi bi-eye" id="eyeIco"></i>
                                                 </button>
                                             </div>
                                         </div>
+                                        <div class="col-sm-6">
+                                            <label class="ez-input-label" for="regConfirmPass">Confirm Password <span class="text-danger">*</span></label>
+                                            <div class="ez-input-group pw-wrap">
+                                                <i class="bi bi-shield-check ez-input-icon"></i>
+                                                <input type="password" id="regConfirmPass" name="confirmPassword" class="ez-form-control"
+                                                       placeholder="Re-enter password" required autocomplete="new-password">
+                                                <button type="button" class="pw-eye" id="eyeConfirmBtn" title="Toggle password visibility">
+                                                    <i class="bi bi-eye" id="eyeConfirmIco"></i>
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
 
-                                    <!-- Password strength meter -->
+                                    <!-- Password match indicator & strength meter -->
                                     <div class="mb-3">
+                                        <div id="pwMatchFeedback" class="small mb-2 d-none"></div>
                                         <div class="strength-meter" id="strengthMeter">
                                             <div class="strength-bar" id="strengthBar"></div>
                                         </div>
@@ -909,7 +925,7 @@
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Password eye toggle
+        // Password eye toggles
         const eyeBtn = document.getElementById('eyeBtn');
         const eyeIco = document.getElementById('eyeIco');
         const regPass = document.getElementById('regPass');
@@ -919,6 +935,41 @@
                 regPass.type = show ? 'text' : 'password';
                 eyeIco.className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
             });
+        }
+
+        const eyeConfirmBtn = document.getElementById('eyeConfirmBtn');
+        const eyeConfirmIco = document.getElementById('eyeConfirmIco');
+        const regConfirmPass = document.getElementById('regConfirmPass');
+        if (eyeConfirmBtn && regConfirmPass) {
+            eyeConfirmBtn.addEventListener('click', () => {
+                const show = regConfirmPass.type === 'password';
+                regConfirmPass.type = show ? 'text' : 'password';
+                eyeConfirmIco.className = show ? 'bi bi-eye-slash' : 'bi bi-eye';
+            });
+        }
+
+        // Real-time password match feedback
+        const pwMatchFeedback = document.getElementById('pwMatchFeedback');
+        function checkPasswordMatch() {
+            if (!pwMatchFeedback || !regPass || !regConfirmPass) return;
+            const p1 = regPass.value;
+            const p2 = regConfirmPass.value;
+            if (!p2) {
+                pwMatchFeedback.className = 'small mb-2 d-none';
+                return;
+            }
+            pwMatchFeedback.classList.remove('d-none');
+            if (p1 === p2) {
+                pwMatchFeedback.className = 'small mb-2 text-success fw-semibold';
+                pwMatchFeedback.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i> Passwords match';
+            } else {
+                pwMatchFeedback.className = 'small mb-2 text-danger fw-semibold';
+                pwMatchFeedback.innerHTML = '<i class="bi bi-x-circle-fill me-1"></i> Passwords do not match';
+            }
+        }
+        if (regPass && regConfirmPass) {
+            regPass.addEventListener('input', checkPasswordMatch);
+            regConfirmPass.addEventListener('input', checkPasswordMatch);
         }
 
         // Real-time password strength meter
@@ -964,80 +1015,123 @@
             });
         }
 
-        // Submit spinner & redirect
+        function showRegisterAlert(message, type = 'danger') {
+            const container = document.getElementById('regAlertContainer');
+            if (!container) return;
+            container.innerHTML = `
+                <div class="alert alert-${type} alert-dismissible fade show rounded-3 small py-2 mb-3 shadow-sm" role="alert">
+                    <i class="bi bi-${type === 'success' ? 'check-circle-fill' : 'exclamation-triangle-fill'} me-1"></i>
+                    ${message}
+                    <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+        }
+
+        // Candidate Seed Accounts (Never contains Admin credentials)
+        const defaultCandidateAccounts = [
+            { id: 101, name: "Ram Sharma", username: "ram", email: "ram@gmail.com", phone: "+977 9099999999", password: "ram", role: "candidate", status: "Active Candidate" },
+            { id: 102, name: "Dhirendra Kumar Gupta", username: "login", email: "dhirendragupta572@gmail.com", phone: "+977 9820960396", password: "login", role: "candidate", status: "Active Candidate" },
+            { id: 103, name: "Sabin Mandal", username: "Sabin", email: "sabinmandal189@gmail.com", phone: "+977 9811002233", password: "Sabin", role: "candidate", status: "Active Candidate" },
+            { id: 104, name: "Arbind Yadav", username: "Arbind", email: "yadavarbind0205@gmail.com", phone: "+977 9814820942", password: "Arbind", role: "candidate", status: "Active Candidate" },
+            { id: 105, name: "Shyam Sundar", username: "shyam", email: "shyam@gmail.com", phone: "+977 9801234567", password: "shyam", role: "candidate", status: "Active Candidate" }
+        ];
+
+        function getCandidateAccounts() {
+            const saved = localStorage.getItem('elevate_candidate_accounts');
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+                } catch(e) {}
+            }
+            localStorage.setItem('elevate_candidate_accounts', JSON.stringify(defaultCandidateAccounts));
+            return defaultCandidateAccounts;
+        }
+
+        // Submit registration & redirect to login
         function handleRegisterSubmit(e) {
             e.preventDefault();
             const regBtn      = document.getElementById('registerBtn');
             const regBtnText  = document.getElementById('regBtnText');
             const regSpinner  = document.getElementById('regSpinner');
 
-            const name = document.getElementById('regName') ? document.getElementById('regName').value.trim() : 'Candidate';
+            const name = document.getElementById('regName') ? document.getElementById('regName').value.trim() : '';
+            const unInput = document.getElementById('regUser');
+            const un = (unInput && unInput.value.trim()) ? unInput.value.trim() : '';
             const email = document.getElementById('regEmail') ? document.getElementById('regEmail').value.trim() : '';
             const phone = document.getElementById('regPhone') ? document.getElementById('regPhone').value.trim() : '';
-            const unInput = document.getElementById('regUser') || document.getElementById('regUsername');
-            const un = (unInput && unInput.value.trim()) ? unInput.value.trim() : (email.split('@')[0] || 'user');
             const pw = document.getElementById('regPass') ? document.getElementById('regPass').value : '';
+            const confirmPw = document.getElementById('regConfirmPass') ? document.getElementById('regConfirmPass').value : '';
 
-            regBtn.disabled = true;
-            regBtnText.textContent = 'Creating Account...';
-            regSpinner.classList.remove('d-none');
-
-            // Default seed accounts
-            const defaultAccounts = [
-                { name: "Om Prakash Sah", username: "Omey", email: "kit24i.ops@ismt.edu.np", phone: "+977 9827750314", password: "Omey1234", role: "Candidate", status: "Active" },
-                { name: "Om Prakash Sah", username: "admin", email: "shahomprakash2004@gmail.com", phone: "+977 9761819137", password: "admin", role: "Administrator", status: "Active" },
-                { name: "Ram Sharma", username: "ram", email: "ram@gmail.com", phone: "+977 9099999999", password: "ram", role: "Candidate", status: "Active" },
-                { name: "Shyam Sundar", username: "shyam", email: "shyam@gmail.com", phone: "+977 9801234567", password: "shyam", role: "Employer", status: "Active" },
-                { name: "Dhirendra Kumar Gupta", username: "login", email: "dhirendragupta572@gmail.com", phone: "+977 9820960396", password: "login", role: "Candidate", status: "Active" },
-                { name: "Sabin Mandal", username: "Sabin", email: "sabinmandal189@gmail.com", phone: "+977 9811002233", password: "Sabin", role: "Candidate", status: "Active" },
-                { name: "Arbind Yadav", username: "Arbind", email: "yadavarbind0205@gmail.com", phone: "+977 9814820942", password: "Arbind", role: "Candidate", status: "Active" }
-            ];
-
-            let accounts = defaultAccounts;
-            const savedAccounts = localStorage.getItem('elevate_accounts');
-            if (savedAccounts) {
-                try {
-                    const parsed = JSON.parse(savedAccounts);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        accounts = parsed;
-                    }
-                } catch(err) {}
+            // Validation
+            if (!name || !un || !email || !pw || !confirmPw) {
+                showRegisterAlert('Please fill in all required fields marked with *');
+                return;
             }
 
-            const existingIdx = accounts.findIndex(a => 
+            if (pw.length < 6) {
+                showRegisterAlert('Password must be at least 6 characters long.');
+                return;
+            }
+
+            if (pw !== confirmPw) {
+                showRegisterAlert('Passwords do not match. Please verify and re-enter matching passwords.');
+                return;
+            }
+
+            // Guard against admin username collision
+            if (un.toLowerCase() === 'admin' || un.toLowerCase() === 'administrator') {
+                showRegisterAlert('This username is reserved. Please choose a different username for your candidate profile.');
+                return;
+            }
+
+            regBtn.disabled = true;
+            regBtnText.textContent = 'Registering Candidate...';
+            regSpinner.classList.remove('d-none');
+
+            const candidateAccounts = getCandidateAccounts();
+
+            const existingIdx = candidateAccounts.findIndex(a => 
                 (a.username && a.username.toLowerCase() === un.toLowerCase()) || 
                 (a.email && a.email.toLowerCase() === email.toLowerCase())
             );
 
-            const newAccount = {
+            const newCandidate = {
                 id: Date.now(),
                 name: name,
                 username: un,
                 email: email,
                 phone: phone,
                 password: pw,
-                role: 'Candidate',
-                resume: 'Uploaded',
-                status: 'Active Candidate'
+                role: 'candidate',
+                status: 'Active Candidate',
+                registeredAt: new Date().toISOString()
             };
 
             if (existingIdx >= 0) {
-                accounts[existingIdx] = Object.assign(accounts[existingIdx], newAccount);
+                candidateAccounts[existingIdx] = Object.assign(candidateAccounts[existingIdx], newCandidate);
             } else {
-                accounts.push(newAccount);
+                candidateAccounts.push(newCandidate);
             }
 
-            localStorage.setItem('elevate_accounts', JSON.stringify(accounts));
+            localStorage.setItem('elevate_candidate_accounts', JSON.stringify(candidateAccounts));
 
-            // Set candidate profile
-            const newUser = {
-                name: name,
-                username: un,
-                email: email,
-                phone: phone,
-                role: 'Candidate'
-            };
-            localStorage.setItem('elevate_user', JSON.stringify(newUser));
+            // Sync into general accounts list
+            let generalAccounts = [];
+            try {
+                const ga = localStorage.getItem('elevate_accounts');
+                if (ga) generalAccounts = JSON.parse(ga);
+            } catch(e) {}
+            const gaIdx = generalAccounts.findIndex(a => a.username && a.username.toLowerCase() === un.toLowerCase());
+            if (gaIdx >= 0) generalAccounts[gaIdx] = Object.assign(generalAccounts[gaIdx], newCandidate);
+            else generalAccounts.push(newCandidate);
+            localStorage.setItem('elevate_accounts', JSON.stringify(generalAccounts));
+
+            // Clean any previous session so user starts fresh on login
+            sessionStorage.removeItem('elevate_candidate_session');
+            localStorage.removeItem('elevate_candidate_session');
+            sessionStorage.removeItem('elevate_user');
+            localStorage.removeItem('elevate_user');
 
             setTimeout(() => {
                 window.location.href = 'login.html?registered=true&user=' + encodeURIComponent(un);

@@ -74,17 +74,12 @@ public class doUserRegister extends HttpServlet {
             return;
         }
 
-        // ── Auto-authorize and auto-login newly registered user ────────
+        // ── Verify newly registered user in DB ────────
         DaoUser.setUserVerified(newUser.getId());
 
-        HttpSession session = request.getSession(true);
-        session.setAttribute("username",  newUser.getUsername());
-        session.setAttribute("userId",    newUser.getId());
-        session.setAttribute("userEmail", newUser.getEmail());
-        session.setAttribute("userName",  newUser.getName());
-        session.setMaxInactiveInterval(60 * 60);
-
-        redirect(response, request, "index.jsp?msg=Account+registered+successfully!+Welcome+to+Elevate!");
+        // Do not auto-login; redirect candidate to candidate login page
+        String encodedUser = java.net.URLEncoder.encode(newUser.getUsername(), java.nio.charset.StandardCharsets.UTF_8);
+        redirect(response, request, "login.jsp?registered=true&user=" + encodedUser);
     }
 
     private static String trim(String s) { return s == null ? "" : s.trim(); }

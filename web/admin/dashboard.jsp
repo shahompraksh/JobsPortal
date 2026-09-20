@@ -1,12 +1,17 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.sql.*, dbHelper.MyConnect, DAO.DaoMessage"%>
 <%
-    String username = (String) session.getAttribute("un");
+    String username = (String) session.getAttribute("admin_un");
     if (username == null) {
-        username = (String) session.getAttribute("username");
+        username = (String) session.getAttribute("un");
     }
-    if (username == null) {
-        response.sendRedirect("login.jsp");
+    String role = (String) session.getAttribute("role");
+    if (username == null || !"admin".equalsIgnoreCase(role)) {
+        if ("candidate".equalsIgnoreCase(role)) {
+            response.sendRedirect(request.getContextPath() + "/userdashboard.jsp");
+            return;
+        }
+        response.sendRedirect(request.getContextPath() + "/admin/login.jsp");
         return;
     }
 

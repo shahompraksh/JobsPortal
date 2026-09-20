@@ -24,6 +24,12 @@ public class doUserLogin extends HttpServlet {
             return;
         }
 
+        // ── Block administrator credentials on candidate login ─────────
+        if ("admin".equalsIgnoreCase(username) || "omey".equalsIgnoreCase(username)) {
+            forward(request, response, "This portal is for Candidate access only. Administrators please use Admin Login.");
+            return;
+        }
+
         // ── Look up user by username (or email) ───────────────────────
         User user = DaoUser.getUserByUsername(username);
         if (user == null && username.contains("@")) {
@@ -56,15 +62,18 @@ public class doUserLogin extends HttpServlet {
             System.out.println("[Login] Migrated plain-text password to PBKDF2 for user: " + user.getUsername());
         }
 
-        // ── Success — create session ───────────────────────────────────
+        // ── Success — create candidate session ────────────────────────
         HttpSession session = request.getSession(true);
         session.setAttribute("username",  user.getUsername());
         session.setAttribute("userId",    user.getId());
         session.setAttribute("userEmail", user.getEmail());
         session.setAttribute("userName",  user.getName());
+        session.setAttribute("role",      "candidate");
+        session.removeAttribute("admin_un");
+        session.removeAttribute("admin_role");
         session.setMaxInactiveInterval(60 * 60); // 1 hour
 
-        response.sendRedirect(request.getContextPath() + "/index.jsp");
+        response.sendRedirect(request.getContextPath() + "/userdashboard.jsp");
     }
 
     private static String trim(String s) { return s == null ? "" : s.trim(); }

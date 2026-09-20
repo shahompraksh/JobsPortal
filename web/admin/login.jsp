@@ -404,9 +404,6 @@
                 <a href="<%= request.getContextPath() %>/login.jsp" class="btn btn-outline-primary rounded-pill px-3 py-1 btn-sm fw-semibold">
                     <i class="bi bi-person me-1"></i> Candidate Login
                 </a>
-                <a href="<%= request.getContextPath() %>/register.jsp" class="btn btn-primary rounded-pill px-3 py-1 btn-sm fw-semibold text-white shadow-sm" style="background: #0284c7; border: none;">
-                    Register
-                </a>
             </div>
         </div>
     </header>
@@ -553,13 +550,13 @@
 
                                 <div class="d-grid mb-3">
                                     <button id="loginSubmitBtn" type="submit" class="btn ez-btn-primary">
-                                        <span id="btnText">Login</span>
+                                        <span id="btnText">Admin Login</span>
                                         <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status"></span>
                                     </button>
                                 </div>
 
                                 <div class="text-center small text-muted">
-                                    Don't have an account? <a href="<%= request.getContextPath() %>/register.jsp" class="fw-bold text-decoration-none" style="color: var(--ez-blue);">Register Now</a>
+                                    <i class="bi bi-shield-lock-fill text-primary me-1"></i> Authorized Administrative Personnel Only
                                 </div>
                             </form>
                         </div>

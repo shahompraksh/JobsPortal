@@ -14,6 +14,36 @@
     
     <!-- Modern Admin Stylesheet -->
     <link rel="stylesheet" href="admin-modern.css">
+
+    <!-- Strict Admin Route Guard (Executes Immediately) -->
+    <script>
+        (function() {
+            var adminRaw = sessionStorage.getItem('elevate_admin_session') || localStorage.getItem('elevate_admin_session') || sessionStorage.getItem('elevate_admin') || localStorage.getItem('elevate_admin');
+            if (!adminRaw) {
+                var candRaw = sessionStorage.getItem('elevate_candidate_session') || localStorage.getItem('elevate_candidate_session');
+                if (candRaw) {
+                    window.location.replace('../userdashboard.html');
+                } else {
+                    window.location.replace('login.html');
+                }
+                return;
+            }
+            try {
+                var sess = JSON.parse(adminRaw);
+                var un = (sess && sess.username ? sess.username : '').toLowerCase();
+                var role = (sess && sess.role ? sess.role : '').toLowerCase();
+                if ((un !== 'admin' && un !== 'omey') || (role !== 'admin' && role !== 'administrator')) {
+                    sessionStorage.removeItem('elevate_admin_session');
+                    localStorage.removeItem('elevate_admin_session');
+                    sessionStorage.removeItem('elevate_admin');
+                    localStorage.removeItem('elevate_admin');
+                    window.location.replace('login.html');
+                }
+            } catch(e) {
+                window.location.replace('login.html');
+            }
+        })();
+    </script>
     <style>
         .nav-tabs .nav-link {
             font-weight: 600;
@@ -1595,9 +1625,11 @@
         }
 
         function logoutAdmin() {
+            sessionStorage.removeItem('elevate_admin_session');
+            localStorage.removeItem('elevate_admin_session');
             sessionStorage.removeItem('elevate_admin');
             localStorage.removeItem('elevate_admin');
-            window.location.href = 'login.html';
+            window.location.replace('login.html');
         }
 
         // Check URL on load for direct tab navigation (e.g. #applications or ?section=applications)
@@ -1613,18 +1645,31 @@
         }
 
         function verifyAdminAccess() {
-            const adminRaw = sessionStorage.getItem('elevate_admin') || localStorage.getItem('elevate_admin');
-            if (adminRaw) {
-                try {
-                    const session = JSON.parse(adminRaw);
-                    if (session && session.role === 'Candidate' && session.username && 
-                        session.username.toLowerCase() !== 'admin' && session.username.toLowerCase() !== 'omey') {
-                        sessionStorage.removeItem('elevate_admin');
-                        localStorage.removeItem('elevate_admin');
-                        window.location.href = 'login.html';
-                        return false;
-                    }
-                } catch(e) {}
+            const adminRaw = sessionStorage.getItem('elevate_admin_session') || localStorage.getItem('elevate_admin_session') || sessionStorage.getItem('elevate_admin') || localStorage.getItem('elevate_admin');
+            if (!adminRaw) {
+                const candRaw = sessionStorage.getItem('elevate_candidate_session') || localStorage.getItem('elevate_candidate_session');
+                if (candRaw) {
+                    window.location.replace('../userdashboard.html');
+                } else {
+                    window.location.replace('login.html');
+                }
+                return false;
+            }
+            try {
+                const session = JSON.parse(adminRaw);
+                const un = (session && session.username ? session.username : '').toLowerCase();
+                const role = (session && session.role ? session.role : '').toLowerCase();
+                if ((un !== 'admin' && un !== 'omey') || (role !== 'admin' && role !== 'administrator')) {
+                    sessionStorage.removeItem('elevate_admin_session');
+                    localStorage.removeItem('elevate_admin_session');
+                    sessionStorage.removeItem('elevate_admin');
+                    localStorage.removeItem('elevate_admin');
+                    window.location.replace('login.html');
+                    return false;
+                }
+            } catch(e) {
+                window.location.replace('login.html');
+                return false;
             }
             return true;
         }

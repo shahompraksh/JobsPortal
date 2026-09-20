@@ -379,9 +379,6 @@
                 <a href="../login.html" class="btn btn-outline-primary rounded-pill px-3 py-1 btn-sm fw-semibold">
                     <i class="bi bi-person me-1"></i> Candidate Login
                 </a>
-                <a href="../register.html" class="btn btn-primary rounded-pill px-3 py-1 btn-sm fw-semibold text-white shadow-sm" style="background: #0284c7; border: none;">
-                    Register
-                </a>
             </div>
         </div>
     </header>
@@ -513,7 +510,7 @@
                                 </div>
 
                                 <div class="text-center small text-muted">
-                                    Don't have an account? <a href="../register.html" class="fw-bold text-decoration-none" style="color: var(--ez-blue);">Register Now</a>
+                                    <i class="bi bi-shield-lock-fill text-primary me-1"></i> Authorized Administrative Personnel Only
                                 </div>
                             </form>
                         </div>
@@ -640,46 +637,22 @@
             }
         }
 
-        const defaultAccounts = [
-            { name: "Om Prakash Sah", username: "Omey", email: "kit24i.ops@ismt.edu.np", phone: "+977 9827750314", password: "Omey1234", role: "Administrator", status: "Active" },
-            { name: "Om Prakash Sah", username: "admin", email: "shahomprakash2004@gmail.com", phone: "+977 9761819137", password: "admin", role: "Administrator", status: "Active" },
-            { name: "Ram Sharma", username: "ram", email: "ram@gmail.com", phone: "+977 9099999999", password: "ram", role: "Candidate", status: "Active" },
-            { name: "Shyam Sundar", username: "shyam", email: "shyam@gmail.com", phone: "+977 9801234567", password: "shyam", role: "Employer", status: "Active" },
-            { name: "Dhirendra Kumar Gupta", username: "login", email: "dhirendragupta572@gmail.com", phone: "+977 9820960396", password: "login", role: "Candidate", status: "Active" },
-            { name: "Sabin Mandal", username: "Sabin", email: "sabinmandal189@gmail.com", phone: "+977 9811002233", password: "Sabin", role: "Candidate", status: "Active" },
-            { name: "Arbind Yadav", username: "Arbind", email: "yadavarbind0205@gmail.com", phone: "+977 9814820942", password: "Arbind", role: "Candidate", status: "Active" }
+        // Authorized Administrator Accounts Only
+        const defaultAdminAccounts = [
+            { name: "Om Prakash Sah", username: "Omey", email: "kit24i.ops@ismt.edu.np", phone: "+977 9827750314", password: "Omey1234", role: "admin" },
+            { name: "System Administrator", username: "admin", email: "shahomprakash2004@gmail.com", phone: "+977 9761819137", password: "admin", role: "admin" }
         ];
 
-        function getRegisteredAccounts() {
-            const saved = localStorage.getItem('elevate_accounts');
-            let accounts = defaultAccounts;
+        function getAdminAccounts() {
+            const saved = localStorage.getItem('elevate_admin_accounts');
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        accounts = parsed;
-                    }
+                    if (Array.isArray(parsed) && parsed.length > 0) return parsed;
                 } catch(e) {}
             }
-
-            // Always ensure Omey / Omey1234 is present and updated
-            const omeyIdx = accounts.findIndex(a => a.username && a.username.toLowerCase() === 'omey');
-            if (omeyIdx >= 0) {
-                accounts[omeyIdx].password = 'Omey1234';
-            } else {
-                accounts.unshift({
-                    name: "Om Prakash Sah",
-                    username: "Omey",
-                    email: "kit24i.ops@ismt.edu.np",
-                    phone: "+977 9827750314",
-                    password: "Omey1234",
-                    role: "Administrator",
-                    status: "Active"
-                });
-            }
-
-            localStorage.setItem('elevate_accounts', JSON.stringify(accounts));
-            return accounts;
+            localStorage.setItem('elevate_admin_accounts', JSON.stringify(defaultAdminAccounts));
+            return defaultAdminAccounts;
         }
 
         function handleAdminLoginSubmit(e) {
@@ -687,8 +660,14 @@
             const submitBtn = document.getElementById('loginSubmitBtn');
             const btnText = document.getElementById('btnText');
             const btnSpinner = document.getElementById('btnSpinner');
-            const un = document.getElementById('adminUsername').value.trim();
-            const pw = document.getElementById('adminPassword').value.trim();
+            const unInput = document.getElementById('adminUsername');
+            const pwInput = document.getElementById('adminPassword');
+            const remInput = document.getElementById('rememberMe');
+            const alertBox = document.getElementById('adminAlertContainer');
+
+            const un = unInput ? unInput.value.trim() : '';
+            const pw = pwInput ? pwInput.value.trim() : '';
+            const rem = remInput ? remInput.checked : false;
 
             submitBtn.disabled = true;
             btnText.textContent = 'Authenticating...';
@@ -699,52 +678,81 @@
                 btnText.textContent = 'Admin Login';
                 btnSpinner.classList.add('d-none');
 
-                const accounts = getRegisteredAccounts();
-                const matched = accounts.find(acc => 
-                    (acc.username.toLowerCase() === un.toLowerCase() || acc.email.toLowerCase() === un.toLowerCase()) && 
-                    acc.password === pw
+                const normalizedUn = un.toLowerCase();
+
+                // Check if candidate credentials are being used on Admin login
+                let candidateAccounts = [];
+                try {
+                    const ca = localStorage.getItem('elevate_candidate_accounts');
+                    if (ca) candidateAccounts = JSON.parse(ca);
+                } catch(e) {}
+
+                const isCandidateAccount = candidateAccounts.some(c => 
+                    (c.username && c.username.toLowerCase() === normalizedUn) || 
+                    (c.email && c.email.toLowerCase() === normalizedUn)
                 );
 
-                if (matched) {
-                    const isCandidate = (matched.role === 'Candidate' || (!matched.role && matched.username.toLowerCase() !== 'admin' && matched.username.toLowerCase() !== 'omey')) && 
-                                        matched.username.toLowerCase() !== 'admin' && 
-                                        matched.username.toLowerCase() !== 'omey';
-
-                    if (isCandidate) {
-                        document.getElementById('adminAlertContainer').innerHTML = `
+                if (isCandidateAccount) {
+                    if (alertBox) {
+                        alertBox.innerHTML = `
                             <div class="alert alert-danger alert-dismissible fade show rounded-3 small py-2 mb-3 shadow-sm" role="alert">
                                 <i class="bi bi-shield-x me-1"></i> <strong>Access Denied:</strong> Candidate accounts are not permitted to access the Admin Panel. Please use <a href="../login.html" class="fw-bold text-danger text-decoration-underline">Candidate Login</a>.
                                 <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
                             </div>
                         `;
-                        return;
                     }
+                    return;
+                }
 
+                const adminAccounts = getAdminAccounts();
+                const matched = adminAccounts.find(acc => 
+                    (acc.username.toLowerCase() === normalizedUn || acc.email.toLowerCase() === normalizedUn) && 
+                    acc.password === pw
+                );
+
+                if (matched) {
                     const adminSession = { 
                         username: matched.username, 
                         name: matched.name,
-                        role: matched.role || 'Administrator', 
+                        role: 'admin', 
                         email: matched.email, 
                         loginTime: new Date().toISOString() 
                     };
+
+                    sessionStorage.setItem('elevate_admin_session', JSON.stringify(adminSession));
+                    if (rem) {
+                        localStorage.setItem('elevate_admin_session', JSON.stringify(adminSession));
+                    } else {
+                        localStorage.removeItem('elevate_admin_session');
+                    }
                     sessionStorage.setItem('elevate_admin', JSON.stringify(adminSession));
                     localStorage.setItem('elevate_admin', JSON.stringify(adminSession));
 
-                    document.getElementById('adminAlertContainer').innerHTML = `
-                        <div class="alert alert-success alert-dismissible fade show rounded-3 small py-2 mb-3 shadow-sm" role="alert">
-                            <i class="bi bi-check-circle-fill me-1"></i> Authentication successful! Access granted to ${matched.name}.
-                        </div>
-                    `;
+                    // Clear any active candidate session to avoid cross-contamination
+                    sessionStorage.removeItem('elevate_candidate_session');
+                    localStorage.removeItem('elevate_candidate_session');
+                    sessionStorage.removeItem('elevate_user');
+                    localStorage.removeItem('elevate_user');
+
+                    if (alertBox) {
+                        alertBox.innerHTML = `
+                            <div class="alert alert-success alert-dismissible fade show rounded-3 small py-2 mb-3 shadow-sm" role="alert">
+                                <i class="bi bi-check-circle-fill me-1"></i> Authentication successful! Access granted to ${matched.name}.
+                            </div>
+                        `;
+                    }
                     setTimeout(() => {
                         window.location.href = 'dashboard.html';
                     }, 500);
                 } else {
-                    document.getElementById('adminAlertContainer').innerHTML = `
-                        <div class="alert alert-danger alert-dismissible fade show rounded-3 small py-2 mb-3" role="alert">
-                            <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid username or password. Access is granted only to registered accounts.
-                            <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
-                        </div>
-                    `;
+                    if (alertBox) {
+                        alertBox.innerHTML = `
+                            <div class="alert alert-danger alert-dismissible fade show rounded-3 small py-2 mb-3" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid administrator credentials. Access is restricted to authorized personnel.
+                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                            </div>
+                        `;
+                    }
                 }
             }, 500);
             return false;

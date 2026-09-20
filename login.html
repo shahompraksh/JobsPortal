@@ -865,46 +865,27 @@
             }
         }
 
-        const defaultAccounts = [
-            { name: "Om Prakash Sah", username: "Omey", email: "kit24i.ops@ismt.edu.np", phone: "+977 9827750314", password: "Omey1234", role: "Candidate", status: "Active" },
-            { name: "Om Prakash Sah", username: "admin", email: "shahomprakash2004@gmail.com", phone: "+977 9761819137", password: "admin", role: "Administrator", status: "Active" },
-            { name: "Ram Sharma", username: "ram", email: "ram@gmail.com", phone: "+977 9099999999", password: "ram", role: "Candidate", status: "Active" },
-            { name: "Shyam Sundar", username: "shyam", email: "shyam@gmail.com", phone: "+977 9801234567", password: "shyam", role: "Employer", status: "Active" },
-            { name: "Dhirendra Kumar Gupta", username: "login", email: "dhirendragupta572@gmail.com", phone: "+977 9820960396", password: "login", role: "Candidate", status: "Active" },
-            { name: "Sabin Mandal", username: "Sabin", email: "sabinmandal189@gmail.com", phone: "+977 9811002233", password: "Sabin", role: "Candidate", status: "Active" },
-            { name: "Arbind Yadav", username: "Arbind", email: "yadavarbind0205@gmail.com", phone: "+977 9814820942", password: "Arbind", role: "Candidate", status: "Active" }
+        // Candidate Seed Accounts (Never contains Admin credentials)
+        const defaultCandidateAccounts = [
+            { id: 101, name: "Ram Sharma", username: "ram", email: "ram@gmail.com", phone: "+977 9099999999", password: "ram", role: "candidate", status: "Active Candidate" },
+            { id: 102, name: "Dhirendra Kumar Gupta", username: "login", email: "dhirendragupta572@gmail.com", phone: "+977 9820960396", password: "login", role: "candidate", status: "Active Candidate" },
+            { id: 103, name: "Sabin Mandal", username: "Sabin", email: "sabinmandal189@gmail.com", phone: "+977 9811002233", password: "Sabin", role: "candidate", status: "Active Candidate" },
+            { id: 104, name: "Arbind Yadav", username: "Arbind", email: "yadavarbind0205@gmail.com", phone: "+977 9814820942", password: "Arbind", role: "candidate", status: "Active Candidate" },
+            { id: 105, name: "Shyam Sundar", username: "shyam", email: "shyam@gmail.com", phone: "+977 9801234567", password: "shyam", role: "candidate", status: "Active Candidate" }
         ];
 
-        function getRegisteredAccounts() {
-            const saved = localStorage.getItem('elevate_accounts');
-            let accounts = defaultAccounts;
+        function getCandidateAccounts() {
+            const saved = localStorage.getItem('elevate_candidate_accounts');
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
                     if (Array.isArray(parsed) && parsed.length > 0) {
-                        accounts = parsed;
+                        return parsed;
                     }
                 } catch(e) {}
             }
-
-            // Always ensure Omey / Omey1234 is present and up-to-date
-            const omeyIdx = accounts.findIndex(a => a.username && a.username.toLowerCase() === 'omey');
-            if (omeyIdx >= 0) {
-                accounts[omeyIdx].password = 'Omey1234';
-            } else {
-                accounts.unshift({
-                    name: "Om Prakash Sah",
-                    username: "Omey",
-                    email: "kit24i.ops@ismt.edu.np",
-                    phone: "+977 9827750314",
-                    password: "Omey1234",
-                    role: "Candidate",
-                    status: "Active"
-                });
-            }
-
-            localStorage.setItem('elevate_accounts', JSON.stringify(accounts));
-            return accounts;
+            localStorage.setItem('elevate_candidate_accounts', JSON.stringify(defaultCandidateAccounts));
+            return defaultCandidateAccounts;
         }
 
         function handleLoginSubmit(e) {
@@ -915,67 +896,87 @@
             const unInput = document.getElementById('un');
             const pwInput = document.getElementById('pw');
             const remInput = document.getElementById('rem');
+            const alertBox = document.getElementById('loginAlertContainer');
 
             const un = unInput ? unInput.value.trim() : '';
             const pw = pwInput ? pwInput.value : '';
             const rem = remInput ? remInput.checked : false;
 
             btn.disabled = true;
-            text.textContent = 'Signing in...';
+            text.textContent = 'Verifying...';
             spinner.classList.remove('d-none');
 
             setTimeout(() => {
-                const accounts = getRegisteredAccounts();
-                const matched = accounts.find(a => 
-                    ((a.username && a.username.toLowerCase() === un.toLowerCase()) || 
-                     (a.email && a.email.toLowerCase() === un.toLowerCase())) &&
-                    (a.password === pw || (un.toLowerCase() === 'omey' && pw === 'Omey1234'))
+                btn.disabled = false;
+                text.textContent = 'Login';
+                spinner.classList.add('d-none');
+
+                // Check if user is attempting to login with Admin credentials on candidate portal
+                const normalizedUn = un.toLowerCase();
+                if (normalizedUn === 'admin' || normalizedUn === 'omey') {
+                    if (alertBox) {
+                        alertBox.innerHTML = `
+                            <div class="alert alert-warning alert-dismissible fade show rounded-3 small py-2 mb-3 shadow-sm" role="alert">
+                                <i class="bi bi-shield-exclamation me-1"></i> <strong>Admin Portal Required:</strong> This portal is for Candidate access only. Administrators please use <a href="admin/login.html" class="fw-bold text-dark text-decoration-underline">Admin Login</a>.
+                                <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+                            </div>
+                        `;
+                    }
+                    return;
+                }
+
+                const candidateAccounts = getCandidateAccounts();
+                const matched = candidateAccounts.find(a => 
+                    ((a.username && a.username.toLowerCase() === normalizedUn) || 
+                     (a.email && a.email.toLowerCase() === normalizedUn)) &&
+                    a.password === pw
                 );
 
                 if (matched) {
-                    const userProfile = {
-                        name: matched.name,
+                    const candidateSession = {
+                        id: matched.id || Date.now(),
+                        name: matched.name || 'Candidate',
                         username: matched.username,
                         email: matched.email,
                         phone: matched.phone || '+977 98XXXXXXXX',
-                        role: matched.role || 'Administrator'
+                        role: 'candidate',
+                        loginTime: new Date().toISOString()
                     };
 
-                    localStorage.setItem('elevate_user', JSON.stringify(userProfile));
-
-                    const adminSession = { 
-                        username: matched.username, 
-                        name: matched.name,
-                        role: matched.role || 'Administrator', 
-                        email: matched.email, 
-                        loginTime: new Date().toISOString() 
-                    };
-                    sessionStorage.setItem('elevate_admin', JSON.stringify(adminSession));
-                    localStorage.setItem('elevate_admin', JSON.stringify(adminSession));
-
+                    // Candidate session strictly saved in elevate_candidate_session
+                    sessionStorage.setItem('elevate_candidate_session', JSON.stringify(candidateSession));
                     if (rem) {
+                        localStorage.setItem('elevate_candidate_session', JSON.stringify(candidateSession));
                         localStorage.setItem('elevate_remember', 'true');
                         localStorage.setItem('elevate_remembered_user', un);
                     } else {
                         localStorage.removeItem('elevate_remember');
                         localStorage.removeItem('elevate_remembered_user');
                     }
+                    localStorage.setItem('elevate_user', JSON.stringify(candidateSession));
 
-                    if (matched.role === 'Administrator' || matched.username.toLowerCase() === 'admin' || matched.username.toLowerCase() === 'omey') {
-                        window.location.href = 'admin/dashboard.html';
-                    } else {
-                        window.location.href = 'userdashboard.html';
-                    }
-                } else {
-                    btn.disabled = false;
-                    text.textContent = 'Login';
-                    spinner.classList.add('d-none');
+                    // Never allow candidate session to bleed into admin session
+                    sessionStorage.removeItem('elevate_admin_session');
+                    localStorage.removeItem('elevate_admin_session');
+                    sessionStorage.removeItem('elevate_admin');
+                    localStorage.removeItem('elevate_admin');
 
-                    const alertBox = document.getElementById('loginAlertContainer');
                     if (alertBox) {
                         alertBox.innerHTML = `
-                            <div class="alert alert-danger alert-dismissible fade show rounded-3 small py-2 mb-3" role="alert">
-                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid username or password. Please check your credentials and try again.
+                            <div class="alert alert-success alert-dismissible fade show rounded-3 small py-2 mb-3 shadow-sm" role="alert">
+                                <i class="bi bi-check-circle-fill me-1"></i> Welcome back, ${matched.name}! Redirecting to your dashboard...
+                            </div>
+                        `;
+                    }
+
+                    setTimeout(() => {
+                        window.location.href = 'userdashboard.html';
+                    }, 500);
+                } else {
+                    if (alertBox) {
+                        alertBox.innerHTML = `
+                            <div class="alert alert-danger alert-dismissible fade show rounded-3 small py-2 mb-3 shadow-sm" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-1"></i> Invalid username or password. Please check your candidate credentials and try again.
                                 <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
                             </div>
                         `;

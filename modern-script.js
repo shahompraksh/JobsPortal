@@ -165,13 +165,15 @@ function initMobileNavEnhancements() {
  */
 function initGlobalAuth() {
     const authContainer = document.getElementById('navAuthSection');
-    const userStr = localStorage.getItem('elevate_user');
+    const userStr = sessionStorage.getItem('elevate_candidate_session') || localStorage.getItem('elevate_candidate_session') || localStorage.getItem('elevate_user');
     
     if (!authContainer) return;
 
     if (userStr) {
         try {
             const user = JSON.parse(userStr);
+            // Only render if role is candidate
+            if (user && user.role && user.role !== 'candidate' && user.role !== 'Candidate') return;
             const name = user.name || user.username || 'Candidate';
             const initial = name.charAt(0).toUpperCase();
 
@@ -201,6 +203,9 @@ function initGlobalAuth() {
 }
 
 function logoutUser() {
+    sessionStorage.removeItem('elevate_candidate_session');
+    localStorage.removeItem('elevate_candidate_session');
+    sessionStorage.removeItem('elevate_user');
     localStorage.removeItem('elevate_user');
     window.location.href = 'login.html';
 }

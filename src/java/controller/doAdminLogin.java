@@ -18,15 +18,31 @@ public class doAdminLogin extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
+        if (username == null || username.isBlank() || password == null || password.isBlank()) {
+            response.sendRedirect(request.getContextPath() + "/admin/login.jsp?error=Please+enter+credentials");
+            return;
+        }
+
+        // Check if candidate credentials are being used
+        if (DAO.DaoUser.getUserByUsername(username.trim()) != null || DAO.DaoUser.getUserByEmail(username.trim()) != null) {
+            response.sendRedirect(request.getContextPath() + "/admin/login.jsp?error=Access+Denied:+Candidate+accounts+cannot+access+Admin+Panel");
+            return;
+        }
+
         Admin a = new Admin();
-        a.setUsername(username);
+        a.setUsername(username.trim());
         a.setPassword(password);
 
         int i = DaoAdmin.doLogin(a);
         if (i > 0) {
-            HttpSession session = request.getSession();
-            session.setAttribute("un", username);
-            session.setAttribute("username", username);
+            HttpSession session = request.getSession(true);
+            session.setAttribute("admin_un", username.trim());
+            session.setAttribute("un", username.trim());
+            session.setAttribute("role", "admin");
+            // Clear candidate attributes from session
+            session.removeAttribute("userId");
+            session.removeAttribute("userEmail");
+            session.removeAttribute("userName");
             response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");
         } else {
             response.sendRedirect(request.getContextPath() + "/admin/login.jsp?error=Invalid+credentials");

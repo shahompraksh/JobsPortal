@@ -1,11 +1,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
-    // Get username from session
+    // Get username and role from session
     String username = (String) session.getAttribute("username");
+    String role = (String) session.getAttribute("role");
     
-    // If user is not logged in, redirect to login page
-    if (username == null) {
-        response.sendRedirect("login.jsp");
+    // If user is not logged in or is not candidate, redirect appropriately
+    if (username == null || !"candidate".equalsIgnoreCase(role)) {
+        if ("admin".equalsIgnoreCase(role)) {
+            response.sendRedirect(request.getContextPath() + "/admin/dashboard.jsp");
+            return;
+        }
+        response.sendRedirect(request.getContextPath() + "/login.jsp");
         return;
     }
     String dashInitial = (!username.isEmpty()) ? username.substring(0, 1).toUpperCase() : "U";

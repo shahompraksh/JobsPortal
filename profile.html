@@ -14,6 +14,21 @@
     
     <!-- Modern Design System Stylesheet -->
     <link rel="stylesheet" href="modern-style.css">
+
+    <!-- Immediate Candidate Route Guard -->
+    <script>
+        (function() {
+            var sess = sessionStorage.getItem('elevate_candidate_session') || localStorage.getItem('elevate_candidate_session');
+            if (!sess) {
+                var adminSess = sessionStorage.getItem('elevate_admin_session') || localStorage.getItem('elevate_admin_session');
+                if (adminSess) {
+                    window.location.replace('admin/dashboard.html');
+                } else {
+                    window.location.replace('login.html');
+                }
+            }
+        })();
+    </script>
 </head>
 <body class="bg-light">
 
@@ -308,24 +323,30 @@
 
     <script>
         function loadProfileData() {
-            let userStr = localStorage.getItem('elevate_user');
-            if (!userStr) {
-                const defaultUser = {
-                    name: 'Om Prakash Sah',
-                    username: 'om_prakash',
-                    email: 'shahomprakash2004@gmail.com',
-                    phone: '+977 9761819137'
-                };
-                localStorage.setItem('elevate_user', JSON.stringify(defaultUser));
-                userStr = JSON.stringify(defaultUser);
+            const sessRaw = sessionStorage.getItem('elevate_candidate_session') || localStorage.getItem('elevate_candidate_session');
+            if (!sessRaw) {
+                const adminSess = sessionStorage.getItem('elevate_admin_session') || localStorage.getItem('elevate_admin_session');
+                if (adminSess) {
+                    window.location.replace('admin/dashboard.html');
+                } else {
+                    window.location.replace('login.html');
+                }
+                return;
             }
 
             try {
-                const u = JSON.parse(userStr);
-                const name = u.name || 'Om Prakash Sah';
-                const username = u.username || 'om_prakash';
-                const email = u.email || 'shahomprakash2004@gmail.com';
-                const phone = u.phone || '+977 9761819137';
+                const u = JSON.parse(sessRaw);
+                if (!u || u.role !== 'candidate') {
+                    sessionStorage.removeItem('elevate_candidate_session');
+                    localStorage.removeItem('elevate_candidate_session');
+                    window.location.replace('login.html');
+                    return;
+                }
+
+                const name = u.name || 'Candidate';
+                const username = u.username || 'candidate';
+                const email = u.email || '';
+                const phone = u.phone || '+977 98XXXXXXXX';
                 const initial = name.charAt(0).toUpperCase();
 
                 document.getElementById('profileHeaderAvatar').innerText = initial;
@@ -336,10 +357,12 @@
                 document.getElementById('profileInputEmail').value = email;
                 document.getElementById('profileInputPhone').value = phone;
 
-                document.getElementById('navUserInitial').innerText = initial;
-                document.getElementById('navUserName').innerText = name;
-                document.getElementById('navDropdownName').innerText = name;
-            } catch(e) {}
+                if (document.getElementById('navUserInitial')) document.getElementById('navUserInitial').innerText = initial;
+                if (document.getElementById('navUserName')) document.getElementById('navUserName').innerText = name;
+                if (document.getElementById('navDropdownName')) document.getElementById('navDropdownName').innerText = name;
+            } catch(e) {
+                window.location.replace('login.html');
+            }
         }
 
         function handleProfileSave(e) {
@@ -356,14 +379,36 @@
                 const name = document.getElementById('profileInputName').value.trim();
                 const email = document.getElementById('profileInputEmail').value.trim();
                 const phone = document.getElementById('profileInputPhone').value.trim();
+                const username = document.getElementById('profileInputUsername').value.trim();
 
                 const updated = {
                     name: name,
-                    username: document.getElementById('profileInputUsername').value.trim(),
+                    username: username,
                     email: email,
-                    phone: phone
+                    phone: phone,
+                    role: 'candidate'
                 };
+
+                // Update session
+                sessionStorage.setItem('elevate_candidate_session', JSON.stringify(updated));
+                if (localStorage.getItem('elevate_candidate_session')) {
+                    localStorage.setItem('elevate_candidate_session', JSON.stringify(updated));
+                }
                 localStorage.setItem('elevate_user', JSON.stringify(updated));
+
+                // Update candidate accounts list
+                try {
+                    const saved = localStorage.getItem('elevate_candidate_accounts');
+                    if (saved) {
+                        const accounts = JSON.parse(saved);
+                        const idx = accounts.findIndex(a => a.username && a.username.toLowerCase() === username.toLowerCase());
+                        if (idx >= 0) {
+                            accounts[idx] = Object.assign(accounts[idx], updated);
+                            localStorage.setItem('elevate_candidate_accounts', JSON.stringify(accounts));
+                        }
+                    }
+                } catch(err) {}
+
                 loadProfileData();
 
                 document.getElementById('profileAlertPlaceholder').innerHTML = `
@@ -378,8 +423,11 @@
         }
 
         function logoutUser() {
+            sessionStorage.removeItem('elevate_candidate_session');
+            localStorage.removeItem('elevate_candidate_session');
+            sessionStorage.removeItem('elevate_user');
             localStorage.removeItem('elevate_user');
-            window.location.href = 'login.html';
+            window.location.replace('login.html');
         }
 
         window.addEventListener('DOMContentLoaded', loadProfileData);

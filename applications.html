@@ -14,6 +14,21 @@
     
     <!-- Modern Design System Stylesheet -->
     <link rel="stylesheet" href="modern-style.css">
+
+    <!-- Immediate Candidate Route Guard -->
+    <script>
+        (function() {
+            var sess = sessionStorage.getItem('elevate_candidate_session') || localStorage.getItem('elevate_candidate_session');
+            if (!sess) {
+                var adminSess = sessionStorage.getItem('elevate_admin_session') || localStorage.getItem('elevate_admin_session');
+                if (adminSess) {
+                    window.location.replace('admin/dashboard.html');
+                } else {
+                    window.location.replace('login.html');
+                }
+            }
+        })();
+    </script>
 </head>
 <body class="bg-light">
 
@@ -509,31 +524,41 @@
         }
 
         function checkUser() {
-            let userStr = localStorage.getItem('elevate_user');
-            if (!userStr) {
-                const defaultUser = {
-                    name: 'Om Prakash Sah',
-                    username: 'om_prakash',
-                    email: 'shahomprakash2004@gmail.com',
-                    phone: '+977 9761819137'
-                };
-                localStorage.setItem('elevate_user', JSON.stringify(defaultUser));
-                userStr = JSON.stringify(defaultUser);
+            const sessRaw = sessionStorage.getItem('elevate_candidate_session') || localStorage.getItem('elevate_candidate_session');
+            if (!sessRaw) {
+                const adminSess = sessionStorage.getItem('elevate_admin_session') || localStorage.getItem('elevate_admin_session');
+                if (adminSess) {
+                    window.location.replace('admin/dashboard.html');
+                } else {
+                    window.location.replace('login.html');
+                }
+                return;
             }
 
             try {
-                const u = JSON.parse(userStr);
-                const name = u.name || u.username || 'Om Prakash';
+                const u = JSON.parse(sessRaw);
+                if (!u || u.role !== 'candidate') {
+                    sessionStorage.removeItem('elevate_candidate_session');
+                    localStorage.removeItem('elevate_candidate_session');
+                    window.location.replace('login.html');
+                    return;
+                }
+                const name = u.name || u.username || 'Candidate';
                 const initial = name.charAt(0).toUpperCase();
-                document.getElementById('navUserInitial').innerText = initial;
-                document.getElementById('navUserName').innerText = name;
-                document.getElementById('navDropdownName').innerText = name;
-            } catch(e) {}
+                if (document.getElementById('navUserInitial')) document.getElementById('navUserInitial').innerText = initial;
+                if (document.getElementById('navUserName')) document.getElementById('navUserName').innerText = name;
+                if (document.getElementById('navDropdownName')) document.getElementById('navDropdownName').innerText = name;
+            } catch(e) {
+                window.location.replace('login.html');
+            }
         }
 
         function logoutUser() {
+            sessionStorage.removeItem('elevate_candidate_session');
+            localStorage.removeItem('elevate_candidate_session');
+            sessionStorage.removeItem('elevate_user');
             localStorage.removeItem('elevate_user');
-            window.location.href = 'login.html';
+            window.location.replace('login.html');
         }
 
         window.addEventListener('DOMContentLoaded', () => {
