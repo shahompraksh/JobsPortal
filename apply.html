@@ -4,16 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title id="pageApplyTitle">Apply for Job | Elevate Workforce</title>
-    
+    <meta name="description" content="Apply for a job on Elevate Workforce. Login required to submit your application.">
+
     <!-- Google Fonts & Bootstrap -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-    
+
     <!-- Modern Design System Stylesheet -->
     <link rel="stylesheet" href="modern-style.css">
+
+    <!-- Immediate Auth Route Guard: runs before DOM renders -->
+    <script>
+        (function () {
+            // Only elevate_candidate_session is a valid auth token — never elevate_user
+            var sess = sessionStorage.getItem('elevate_candidate_session') || localStorage.getItem('elevate_candidate_session');
+            if (sess) {
+                try {
+                    var u = JSON.parse(sess);
+                    if (!u || u.role !== 'candidate') {
+                        // Invalid/tampered session — clear and block
+                        sessionStorage.removeItem('elevate_candidate_session');
+                        localStorage.removeItem('elevate_candidate_session');
+                        // Will show auth wall via JS below
+                    }
+                } catch (e) {
+                    sessionStorage.removeItem('elevate_candidate_session');
+                    localStorage.removeItem('elevate_candidate_session');
+                }
+            }
+            // Note: We do NOT redirect here — we show an in-page auth wall instead,
+            // so the job details (title, company) are still visible to the user.
+            // The form and all candidate data are NEVER rendered in HTML; they are
+            // injected by JS only after session validation.
+        })();
+    </script>
 </head>
 <body class="bg-light">
 
@@ -49,8 +76,9 @@
                         </a>
                     </li>
 
-                    <!-- Dynamic Login / User Profile -->
+                    <!-- Dynamic Login / User Profile — populated by JS only after auth check -->
                     <li class="nav-item ms-lg-3 mt-2 mt-lg-0" id="navAuthSection">
+                        <!-- Default: login/register buttons (replaced by JS if logged in) -->
                         <div class="d-flex align-items-center gap-2">
                             <a href="login.html" class="btn btn-outline-primary rounded-pill px-3 py-1 fw-semibold">Login</a>
                             <a href="register.html" class="btn btn-primary rounded-pill px-3 py-1 fw-semibold shadow-sm">Register</a>
@@ -64,7 +92,7 @@
     <div class="container my-5">
         <div class="row justify-content-center">
             <div class="col-lg-8 col-md-10">
-                
+
                 <!-- Back Link -->
                 <div class="mb-3">
                     <a href="findajob.html" class="text-slate-600 text-decoration-none small fw-semibold">
@@ -73,7 +101,7 @@
                 </div>
 
                 <div class="card border-0 shadow-sm rounded-4 overflow-hidden bg-white">
-                    <!-- Job Banner -->
+                    <!-- Job Banner — always visible, populated by JS from jobs database -->
                     <div class="p-4 bg-primary text-white">
                         <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-2">
                             <span class="badge bg-white text-primary rounded-pill px-3 py-1 fw-bold" id="jobTypeBadge">
@@ -83,64 +111,126 @@
                                 <i class="bi bi-geo-alt-fill me-1"></i> <span id="jobLocationText">Kathmandu</span>
                             </span>
                         </div>
-                        <h3 class="fw-bold mb-1" id="jobTitleText">Full Stack Java & Web Developer</h3>
-                        <p class="mb-0 text-white-50 fs-6"><i class="bi bi-building me-1"></i> <span id="jobCompanyText">Nepal IT Solution</span></p>
+                        <h3 class="fw-bold mb-1" id="jobTitleText">Loading Job...</h3>
+                        <p class="mb-0 text-white-50 fs-6"><i class="bi bi-building me-1"></i> <span id="jobCompanyText">—</span></p>
                     </div>
 
                     <!-- Application Body -->
                     <div class="card-body p-4 p-lg-5">
-                        <div class="alert alert-info d-flex align-items-center gap-2 rounded-3 small mb-4">
-                            <i class="bi bi-info-circle-fill fs-5 text-primary flex-shrink-0"></i>
-                            <div>
-                                Applying with your verified candidate profile. Please ensure your contact information and resume are up-to-date.
-                            </div>
-                        </div>
 
-                        <form id="applyJobForm" onsubmit="return handleApplySubmit(event)">
-                            <div class="row g-3">
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-slate-700">Candidate Name</label>
-                                    <input type="text" class="form-control bg-light" id="candidateName" value="Om Prakash Sah" readonly>
+                        <!-- ===== AUTH WALL (shown when NOT logged in) ===== -->
+                        <div id="authWall" class="d-none">
+                            <div class="text-center py-4">
+                                <div class="mb-4">
+                                    <div class="mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3"
+                                         style="width: 80px; height: 80px; background: linear-gradient(135deg, #fef3c7, #fde68a); font-size: 2.2rem;">
+                                        🔒
+                                    </div>
+                                    <h4 class="fw-bold text-slate-900 mb-2">Login Required</h4>
+                                    <p class="text-muted mb-0" style="max-width: 420px; margin: 0 auto;">
+                                        Please login with your Candidate ID first to continue your application.
+                                    </p>
                                 </div>
 
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-slate-700">Registered Email</label>
-                                    <input type="email" class="form-control bg-light" id="candidateEmail" value="shahomprakash2004@gmail.com" readonly>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-slate-700">Phone Number</label>
-                                    <input type="text" class="form-control bg-light" id="candidatePhone" value="+977 9761819137" readonly>
-                                </div>
-
-                                <div class="col-md-6">
-                                    <label class="form-label small fw-bold text-slate-700">Compensation Benchmark</label>
-                                    <input type="text" class="form-control bg-light" id="jobSalaryBenchmark" value="NPR 40,000 / month" readonly>
-                                </div>
-
-                                <div class="col-12 mt-4">
-                                    <label class="form-label small fw-bold text-slate-700">Attached Resume</label>
-                                    <div class="p-3 border rounded-3 bg-light d-flex align-items-center justify-content-between flex-wrap gap-2">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <i class="bi bi-file-earmark-pdf-fill text-danger fs-4"></i>
-                                            <div>
-                                                <div class="fw-semibold small text-slate-800">Resume on File</div>
-                                                <small class="text-muted">Will be shared securely with hiring partner</small>
-                                            </div>
+                                <div class="alert border-0 rounded-4 py-3 px-4 mb-4 d-inline-flex align-items-start gap-3 text-start"
+                                     style="background: #fffbeb; border-left: 4px solid #f59e0b !important; max-width: 480px;">
+                                    <i class="bi bi-shield-lock-fill text-warning fs-4 flex-shrink-0 mt-1"></i>
+                                    <div>
+                                        <div class="fw-semibold text-slate-800 small mb-1">Authentication Required</div>
+                                        <div class="text-slate-600 small">
+                                            Your candidate information will only be retrieved from your authenticated session after you log in. We do not pre-fill or display personal information without verification.
                                         </div>
-                                        <a href="profile.html" class="btn btn-outline-primary btn-sm rounded-pill px-3">
-                                            <i class="bi bi-eye me-1"></i> Preview / Update
-                                        </a>
                                     </div>
                                 </div>
 
-                                <div class="col-12 mt-4">
-                                    <button type="submit" id="submitApplyBtn" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow-sm">
-                                        <i class="bi bi-send-check-fill me-2"></i> Confirm & Submit Application
-                                    </button>
+                                <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                                    <a id="authWallLoginBtn" href="login.html" class="btn btn-primary rounded-pill px-5 py-3 fw-bold shadow-sm">
+                                        <i class="bi bi-box-arrow-in-right me-2"></i> Login to Apply
+                                    </a>
+                                    <a href="register.html" class="btn btn-outline-primary rounded-pill px-5 py-3 fw-semibold">
+                                        <i class="bi bi-person-plus me-2"></i> Create Account
+                                    </a>
+                                </div>
+                                <p class="text-muted small mt-3">
+                                    Don't have a Candidate ID yet? <a href="register.html" class="text-primary fw-semibold">Register here</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- ===== SESSION EXPIRED STATE ===== -->
+                        <div id="sessionExpiredWall" class="d-none">
+                            <div class="text-center py-4">
+                                <div class="mx-auto d-flex align-items-center justify-content-center rounded-circle mb-3"
+                                     style="width: 80px; height: 80px; background: linear-gradient(135deg, #fee2e2, #fecaca); font-size: 2.2rem;">
+                                    🔒
+                                </div>
+                                <h4 class="fw-bold text-slate-900 mb-2">Session Expired</h4>
+                                <p class="text-muted mb-4">Your session has expired. Please login again with your Candidate ID.</p>
+                                <a id="sessionExpiredLoginBtn" href="login.html" class="btn btn-primary rounded-pill px-5 py-3 fw-bold shadow-sm">
+                                    <i class="bi bi-box-arrow-in-right me-2"></i> Login Again
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- ===== APPLICATION FORM (hidden until auth is verified) ===== -->
+                        <div id="applyFormWrapper" class="d-none">
+                            <div class="alert alert-success d-flex align-items-center gap-2 rounded-3 small mb-4" id="candidateVerifiedBanner">
+                                <i class="bi bi-patch-check-fill fs-5 text-success flex-shrink-0"></i>
+                                <div>
+                                    ✅ Candidate verified. You can now complete and submit your application.
+                                    <span class="d-none d-sm-inline text-muted"> — Ensure your contact information and resume are up-to-date.</span>
                                 </div>
                             </div>
-                        </form>
+
+                            <form id="applyJobForm" onsubmit="return handleApplySubmit(event)" autocomplete="off">
+                                <div class="row g-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-bold text-slate-700">Candidate Name</label>
+                                        <!-- Value is NEVER set in HTML — only populated by JS from verified session -->
+                                        <input type="text" class="form-control bg-light" id="candidateName" value="" readonly>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-bold text-slate-700">Registered Email</label>
+                                        <input type="email" class="form-control bg-light" id="candidateEmail" value="" readonly>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-bold text-slate-700">Phone Number</label>
+                                        <input type="text" class="form-control bg-light" id="candidatePhone" value="" readonly>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label small fw-bold text-slate-700">Compensation Benchmark</label>
+                                        <input type="text" class="form-control bg-light" id="jobSalaryBenchmark" value="" readonly>
+                                    </div>
+
+                                    <div class="col-12 mt-4">
+                                        <label class="form-label small fw-bold text-slate-700">Attached Resume</label>
+                                        <div class="p-3 border rounded-3 bg-light d-flex align-items-center justify-content-between flex-wrap gap-2">
+                                            <div class="d-flex align-items-center gap-2">
+                                                <i class="bi bi-file-earmark-pdf-fill text-danger fs-4"></i>
+                                                <div>
+                                                    <div class="fw-semibold small text-slate-800">Resume on File</div>
+                                                    <small class="text-muted">Will be shared securely with hiring partner</small>
+                                                </div>
+                                            </div>
+                                            <a href="profile.html" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+                                                <i class="bi bi-eye me-1"></i> Preview / Update
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mt-4">
+                                        <button type="submit" id="submitApplyBtn" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow-sm">
+                                            <i class="bi bi-send-check-fill me-2"></i> Confirm &amp; Submit Application
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- ===== END APPLICATION FORM ===== -->
+
                     </div>
                 </div>
 
@@ -152,7 +242,7 @@
     <footer class="modern-footer">
         <div class="container pb-5">
             <div class="row g-4 justify-content-between">
-                
+
                 <!-- Column 1: Brand & Bio -->
                 <div class="col-lg-4 col-md-6 footer-brand">
                     <div class="d-flex align-items-center gap-2 mb-3">
@@ -186,10 +276,10 @@
                 <div class="col-lg-3 col-md-6 col-6">
                     <h5 class="footer-col-title">Job Categories</h5>
                     <ul class="footer-links">
-                        <li><a href="findajob.html?category=IT"><i class="bi bi-code-slash text-info small"></i> IT & Software</a></li>
-                        <li><a href="findajob.html?category=Marketing"><i class="bi bi-megaphone text-warning small"></i> Marketing & Growth</a></li>
-                        <li><a href="findajob.html?category=Finance"><i class="bi bi-cash-coin text-success small"></i> Finance & Accounting</a></li>
-                        <li><a href="findajob.html?category=Design"><i class="bi bi-palette text-danger small"></i> UI/UX & Design</a></li>
+                        <li><a href="findajob.html?category=IT"><i class="bi bi-code-slash text-info small"></i> IT &amp; Software</a></li>
+                        <li><a href="findajob.html?category=Marketing"><i class="bi bi-megaphone text-warning small"></i> Marketing &amp; Growth</a></li>
+                        <li><a href="findajob.html?category=Finance"><i class="bi bi-cash-coin text-success small"></i> Finance &amp; Accounting</a></li>
+                        <li><a href="findajob.html?category=Design"><i class="bi bi-palette text-danger small"></i> UI/UX &amp; Design</a></li>
                         <li><a href="findajob.html?type=Remote"><i class="bi bi-globe2 text-primary small"></i> Remote Opportunities</a></li>
                     </ul>
                 </div>
@@ -268,117 +358,185 @@
     <script src="modern-script.js"></script>
 
     <script>
+        // ─────────────────────────────────────────────────────────────────────────
+        // Jobs database (public data — no candidate info)
+        // ─────────────────────────────────────────────────────────────────────────
         const jobsDatabase = [
-            { id: 1, title: "Full Stack Java & Web Developer", company: "Nepal IT Solution", location: "Kathmandu", salary: 40000, type: "Full-Time" },
-            { id: 2, title: "UI/UX & Product Designer", company: "Nepal IT Solution", location: "Pokhara", salary: 50000, type: "Full-Time" },
-            { id: 4, title: "Technical Support Representative", company: "Bhagya Laxmi International Pvt. Ltd.", location: "Kathmandu", salary: 45000, type: "Full-Time" },
-            { id: 5, title: "Graphic Designer & Content Creator", company: "Himalaya Media Solutions", location: "Lalitpur", salary: 42000, type: "Full-Time" },
-            { id: 6, title: "AI-Assisted Software Engineer", company: "Robotics Association of Nepal", location: "Pokhara", salary: 75000, type: "Full-Time" },
-            { id: 7, title: "Biomedical Engineer (Sales & Service)", company: "KNS Enterprises Pvt Ltd", location: "Kathmandu", salary: 55000, type: "Full-Time" },
-            { id: 8, title: "Communication and Outreach Officer", company: "Youth Innovation Lab", location: "Lalitpur", salary: 60000, type: "Full-Time" },
-            { id: 9, title: "Data Integration Specialist (Bipad Portal)", company: "Sajag Nepal Project", location: "Kathmandu", salary: 85000, type: "Remote" },
-            { id: 10, title: "Admin and Finance Officer (AFO)", company: "SOSEC Nepal", location: "Kathmandu", salary: 50000, type: "Full-Time" },
-            { id: 11, title: "Sales Executive Officer", company: "NIP Holdings Pvt Ltd", location: "Kathmandu", salary: 38000, type: "Full-Time" },
-            { id: 12, title: "Project Coordinator", company: "National Federation of the Disabled Nepal", location: "Kathmandu", salary: 70000, type: "Full-Time" },
-            { id: 13, title: "Client Relations Officer", company: "JobsNepal Direct Recruitment", location: "Kathmandu", salary: 35000, type: "Full-Time" },
-            { id: 14, title: "Emergency Food Security & Livelihoods Officer", company: "Oxfam in Nepal", location: "Kathmandu", salary: 68000, type: "Full-Time" },
-            { id: 15, title: "Sustainable Infrastructure Specialist", company: "WWF Nepal", location: "Kathmandu", salary: 95000, type: "Full-Time" },
-            { id: 16, title: "Senior UI/UX Specialist", company: "Software Company", location: "Kathmandu", salary: 60000, type: "Full-Time" },
-            { id: 17, title: "Virtual Teachers (STEM & English)", company: "TurnKey Development Group", location: "Kathmandu", salary: 45000, type: "Remote" },
-            { id: 18, title: "Operations Manager", company: "IFRC Nepal Delegation", location: "Kathmandu", salary: 110000, type: "Full-Time" },
-            { id: 19, title: "Marketing Manager / Sales Executive", company: "Diplomat Nepal Pvt. Ltd.", location: "Kathmandu", salary: 52000, type: "Full-Time" },
-            { id: 20, title: "Research & Evaluation Coordinator", company: "FAIRMED Foundation Nepal", location: "Lalitpur", salary: 80000, type: "Full-Time" },
-            { id: 21, title: "Part-Time Bookkeeper - Remote", company: "Andmine", location: "Kathmandu", salary: 35000, type: "Part-Time" },
-            { id: 22, title: "Associate at a Law Firm", company: "Reputed Legal Consultancy", location: "Kathmandu", salary: 48000, type: "Full-Time" },
-            { id: 23, title: "District Project Manager", company: "Action For Nepal", location: "Kathmandu", salary: 75000, type: "Full-Time" },
-            { id: 24, title: "Project Administration Trainee", company: "World Vision International Nepal", location: "Lalitpur", salary: 28000, type: "Part-Time" },
-            { id: 25, title: "Client Relations & Order Processing Officer", company: "Kamal Rug", location: "Pokhara", salary: 40000, type: "Full-Time" }
+            { id: 1,  title: "Full Stack Java & Web Developer",                    company: "Nepal IT Solution",                         location: "Kathmandu", salary: 40000,  type: "Full-Time" },
+            { id: 2,  title: "UI/UX & Product Designer",                           company: "Nepal IT Solution",                         location: "Pokhara",   salary: 50000,  type: "Full-Time" },
+            { id: 4,  title: "Technical Support Representative",                   company: "Bhagya Laxmi International Pvt. Ltd.",       location: "Kathmandu", salary: 45000,  type: "Full-Time" },
+            { id: 5,  title: "Graphic Designer & Content Creator",                 company: "Himalaya Media Solutions",                  location: "Lalitpur",  salary: 42000,  type: "Full-Time" },
+            { id: 6,  title: "AI-Assisted Software Engineer",                      company: "Robotics Association of Nepal",              location: "Pokhara",   salary: 75000,  type: "Full-Time" },
+            { id: 7,  title: "Biomedical Engineer (Sales & Service)",              company: "KNS Enterprises Pvt Ltd",                   location: "Kathmandu", salary: 55000,  type: "Full-Time" },
+            { id: 8,  title: "Communication and Outreach Officer",                 company: "Youth Innovation Lab",                      location: "Lalitpur",  salary: 60000,  type: "Full-Time" },
+            { id: 9,  title: "Data Integration Specialist (Bipad Portal)",         company: "Sajag Nepal Project",                       location: "Kathmandu", salary: 85000,  type: "Remote"    },
+            { id: 10, title: "Admin and Finance Officer (AFO)",                    company: "SOSEC Nepal",                               location: "Kathmandu", salary: 50000,  type: "Full-Time" },
+            { id: 11, title: "Sales Executive Officer",                            company: "NIP Holdings Pvt Ltd",                      location: "Kathmandu", salary: 38000,  type: "Full-Time" },
+            { id: 12, title: "Project Coordinator",                                company: "National Federation of the Disabled Nepal", location: "Kathmandu", salary: 70000,  type: "Full-Time" },
+            { id: 13, title: "Client Relations Officer",                           company: "JobsNepal Direct Recruitment",              location: "Kathmandu", salary: 35000,  type: "Full-Time" },
+            { id: 14, title: "Emergency Food Security & Livelihoods Officer",      company: "Oxfam in Nepal",                            location: "Kathmandu", salary: 68000,  type: "Full-Time" },
+            { id: 15, title: "Sustainable Infrastructure Specialist",              company: "WWF Nepal",                                 location: "Kathmandu", salary: 95000,  type: "Full-Time" },
+            { id: 16, title: "Senior UI/UX Specialist",                            company: "Software Company",                          location: "Kathmandu", salary: 60000,  type: "Full-Time" },
+            { id: 17, title: "Virtual Teachers (STEM & English)",                  company: "TurnKey Development Group",                 location: "Kathmandu", salary: 45000,  type: "Remote"    },
+            { id: 18, title: "Operations Manager",                                 company: "IFRC Nepal Delegation",                     location: "Kathmandu", salary: 110000, type: "Full-Time" },
+            { id: 19, title: "Marketing Manager / Sales Executive",                company: "Diplomat Nepal Pvt. Ltd.",                  location: "Kathmandu", salary: 52000,  type: "Full-Time" },
+            { id: 20, title: "Research & Evaluation Coordinator",                  company: "FAIRMED Foundation Nepal",                  location: "Lalitpur",  salary: 80000,  type: "Full-Time" },
+            { id: 21, title: "Part-Time Bookkeeper - Remote",                      company: "Andmine",                                   location: "Kathmandu", salary: 35000,  type: "Part-Time" },
+            { id: 22, title: "Associate at a Law Firm",                            company: "Reputed Legal Consultancy",                 location: "Kathmandu", salary: 48000,  type: "Full-Time" },
+            { id: 23, title: "District Project Manager",                           company: "Action For Nepal",                          location: "Kathmandu", salary: 75000,  type: "Full-Time" },
+            { id: 24, title: "Project Administration Trainee",                     company: "World Vision International Nepal",          location: "Lalitpur",  salary: 28000,  type: "Part-Time" },
+            { id: 25, title: "Client Relations & Order Processing Officer",        company: "Kamal Rug",                                 location: "Pokhara",   salary: 40000,  type: "Full-Time" }
         ];
 
         let currentJob = jobsDatabase[0];
 
-        function initApplyPage() {
-            const params = new URLSearchParams(window.location.search);
-            const jobId = parseInt(params.get('jobId') || '1', 10);
-            const found = jobsDatabase.find(j => j.id === jobId);
-            if (found) currentJob = found;
-
-            document.title = `Apply for ${currentJob.title} | Elevate Workforce`;
-            document.getElementById('jobTypeBadge').innerText = currentJob.type;
-            document.getElementById('jobLocationText').innerText = currentJob.location;
-            document.getElementById('jobTitleText').innerText = currentJob.title;
-            document.getElementById('jobCompanyText').innerText = currentJob.company;
-            document.getElementById('jobSalaryBenchmark').value = `NPR ${Number(currentJob.salary).toLocaleString('en-US')} / month`;
-
-            // Candidate data
-            const userStr = localStorage.getItem('elevate_user');
-            if (userStr) {
-                try {
-                    const u = JSON.parse(userStr);
-                    if (u.name) document.getElementById('candidateName').value = u.name;
-                    if (u.email) document.getElementById('candidateEmail').value = u.email;
-                    if (u.phone) document.getElementById('candidatePhone').value = u.phone;
-                    const initial = (u.name || 'U').charAt(0).toUpperCase();
-
-                    document.getElementById('navAuthSection').innerHTML = `
-                        <div class="dropdown">
-                            <button class="btn user-dropdown-btn dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="user-avatar-badge">${initial}</span>
-                                <span class="d-inline-block text-truncate" style="max-width: 130px;">${u.name || 'Candidate'}</span>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="userMenuButton">
-                                <li class="px-3 py-2 border-bottom mb-1">
-                                    <small class="text-muted d-block">Signed in as</small>
-                                    <strong class="text-dark">${u.name || 'Candidate'}</strong>
-                                </li>
-                                <li><a class="dropdown-item" href="userdashboard.html"><i class="bi bi-grid-1x2 text-primary"></i> Dashboard</a></li>
-                                <li><a class="dropdown-item" href="profile.html"><i class="bi bi-person-gear text-info"></i> Profile</a></li>
-                                <li><a class="dropdown-item" href="applications.html"><i class="bi bi-file-earmark-text text-success"></i> Applications</a></li>
-                                <li><hr class="dropdown-divider my-1"></li>
-                                <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="localStorage.removeItem('elevate_user'); window.location.reload();"><i class="bi bi-box-arrow-right text-danger"></i> Logout</a></li>
-                            </ul>
-                        </div>
-                    `;
-                } catch(e) {}
-            }
+        // ─────────────────────────────────────────────────────────────────────────
+        // Auth helpers — ONLY elevate_candidate_session is trusted
+        // ─────────────────────────────────────────────────────────────────────────
+        function getValidCandidateSession() {
+            const raw = sessionStorage.getItem('elevate_candidate_session') ||
+                        localStorage.getItem('elevate_candidate_session');
+            if (!raw) return null;
+            try {
+                const u = JSON.parse(raw);
+                if (u && u.role === 'candidate') return u;
+            } catch (e) {}
+            return null;
         }
 
+        function buildNavUserDropdown(u) {
+            const name    = u.name || u.username || 'Candidate';
+            const initial = name.charAt(0).toUpperCase();
+            return `
+                <div class="dropdown">
+                    <button class="btn user-dropdown-btn dropdown-toggle" type="button"
+                            id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="user-avatar-badge">${initial}</span>
+                        <span class="d-inline-block text-truncate" style="max-width:130px;">${name}</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="userMenuButton">
+                        <li class="px-3 py-2 border-bottom mb-1">
+                            <small class="text-muted d-block">Signed in as</small>
+                            <strong class="text-dark">${name}</strong>
+                        </li>
+                        <li><a class="dropdown-item" href="userdashboard.html"><i class="bi bi-grid-1x2 text-primary"></i> Dashboard</a></li>
+                        <li><a class="dropdown-item" href="profile.html"><i class="bi bi-person-gear text-info"></i> Profile</a></li>
+                        <li><a class="dropdown-item" href="applications.html"><i class="bi bi-file-earmark-text text-success"></i> Applications</a></li>
+                        <li><hr class="dropdown-divider my-1"></li>
+                        <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="logoutUser()"><i class="bi bi-box-arrow-right text-danger"></i> Logout</a></li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        function logoutUser() {
+            sessionStorage.removeItem('elevate_candidate_session');
+            localStorage.removeItem('elevate_candidate_session');
+            sessionStorage.removeItem('elevate_user');
+            localStorage.removeItem('elevate_user');
+            window.location.replace('login.html');
+        }
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // Build redirect URL (current page + job params) for login redirect
+        // ─────────────────────────────────────────────────────────────────────────
+        function buildRedirectParam() {
+            return encodeURIComponent(window.location.pathname.split('/').pop() + window.location.search);
+        }
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // Page initialisation
+        // ─────────────────────────────────────────────────────────────────────────
+        function initApplyPage() {
+            // 1. Resolve job from URL params
+            const params = new URLSearchParams(window.location.search);
+            const jobId  = parseInt(params.get('jobId') || '1', 10);
+            const found  = jobsDatabase.find(j => j.id === jobId);
+            if (found) currentJob = found;
+
+            // 2. Populate public job info (always visible, no candidate data)
+            document.title = `Apply for ${currentJob.title} | Elevate Workforce`;
+            document.getElementById('jobTypeBadge').innerText    = currentJob.type;
+            document.getElementById('jobLocationText').innerText = currentJob.location;
+            document.getElementById('jobTitleText').innerText    = currentJob.title;
+            document.getElementById('jobCompanyText').innerText  = currentJob.company;
+
+            // 3. Set login button redirect targets
+            const redirectParam = buildRedirectParam();
+            const loginUrl = `login.html?redirect=${redirectParam}`;
+            document.getElementById('authWallLoginBtn').href       = loginUrl;
+            document.getElementById('sessionExpiredLoginBtn').href = loginUrl;
+
+            // 4. Check authentication — ONLY from elevate_candidate_session
+            const user = getValidCandidateSession();
+
+            if (!user) {
+                // ── NOT LOGGED IN: show auth wall, hide form ──
+                document.getElementById('authWall').classList.remove('d-none');
+                document.getElementById('applyFormWrapper').classList.add('d-none');
+                document.getElementById('sessionExpiredWall').classList.add('d-none');
+                return; // Stop here — never populate any candidate data
+            }
+
+            // ── LOGGED IN: show form, populate from session only ──
+            document.getElementById('authWall').classList.add('d-none');
+            document.getElementById('sessionExpiredWall').classList.add('d-none');
+            document.getElementById('applyFormWrapper').classList.remove('d-none');
+
+            // Populate candidate fields from verified session
+            document.getElementById('candidateName').value  = user.name  || '';
+            document.getElementById('candidateEmail').value = user.email || '';
+            document.getElementById('candidatePhone').value = user.phone || '';
+            document.getElementById('jobSalaryBenchmark').value =
+                `NPR ${Number(currentJob.salary).toLocaleString('en-US')} / month`;
+
+            // Update navbar with logged-in user
+            document.getElementById('navAuthSection').innerHTML = buildNavUserDropdown(user);
+        }
+
+        // ─────────────────────────────────────────────────────────────────────────
+        // Form submission — re-validates session before accepting
+        // ─────────────────────────────────────────────────────────────────────────
         function handleApplySubmit(e) {
             e.preventDefault();
-            const btn = document.getElementById('submitApplyBtn');
+
+            // Re-check session at submit time (guards against mid-page logout)
+            const user = getValidCandidateSession();
+            if (!user) {
+                // Session has expired — show expired wall, hide form
+                document.getElementById('applyFormWrapper').classList.add('d-none');
+                document.getElementById('authWall').classList.add('d-none');
+                document.getElementById('sessionExpiredWall').classList.remove('d-none');
+                return false;
+            }
+
+            const btn          = document.getElementById('submitApplyBtn');
             const originalText = btn.innerHTML;
             btn.disabled = true;
             btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting Application...';
 
             setTimeout(() => {
-                // Add to saved applications in localStorage
+                // Save application entry using session data (not stale elevate_user)
                 let apps = [];
                 const saved = localStorage.getItem('elevate_applications');
                 if (saved) {
-                    try { apps = JSON.parse(saved); } catch(e) {}
+                    try { apps = JSON.parse(saved); } catch (e) {}
                 }
-                const now = new Date();
+
+                const now     = new Date();
                 const dateStr = now.toISOString().slice(0, 10) + ' ' + now.toTimeString().slice(0, 8);
 
-                // Get logged-in candidate info for admin visibility
-                let applicantName = 'Registered Candidate';
-                let applicantEmail = '';
-                try {
-                    const sess = JSON.parse(sessionStorage.getItem('elevate_candidate_session') || localStorage.getItem('elevate_candidate_session') || '{}');
-                    if (sess && sess.name) applicantName = sess.name;
-                    if (sess && sess.email) applicantEmail = sess.email;
-                } catch(e) {}
-
                 const appEntry = {
-                    id: Date.now(),
-                    title: currentJob.title,
-                    job: currentJob.title,       // alias for admin panel
-                    company: currentJob.company,
-                    appliedDate: dateStr,
-                    date: dateStr,               // alias for admin panel
-                    applicant: applicantName,
-                    applicantEmail: applicantEmail,
-                    status: "Pending"
+                    id:             Date.now(),
+                    title:          currentJob.title,
+                    job:            currentJob.title,       // alias for admin panel
+                    company:        currentJob.company,
+                    appliedDate:    dateStr,
+                    date:           dateStr,               // alias for admin panel
+                    applicant:      user.name  || 'Registered Candidate',
+                    applicantEmail: user.email || '',
+                    candidateId:    user.id    || '',
+                    status:         'Pending'
                 };
                 apps.unshift(appEntry);
                 localStorage.setItem('elevate_applications', JSON.stringify(apps));
@@ -386,13 +544,14 @@
                 const companyEl = document.getElementById('successCompanyName');
                 if (companyEl) companyEl.innerText = currentJob.company;
                 const modalEl = document.getElementById('applySuccessModal');
-                const modal = new bootstrap.Modal(modalEl);
+                const modal   = new bootstrap.Modal(modalEl);
                 modal.show();
 
                 setTimeout(() => {
                     window.location.href = 'applications.html';
                 }, 1800);
             }, 700);
+
             return false;
         }
 

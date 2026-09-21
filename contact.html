@@ -394,12 +394,14 @@
             return false;
         }
 
-        // Check login state
+        // Check login state — only trust elevate_candidate_session
         window.addEventListener('DOMContentLoaded', () => {
-            const userStr = localStorage.getItem('elevate_user');
-            if (userStr) {
+            const sessRaw = sessionStorage.getItem('elevate_candidate_session') ||
+                            localStorage.getItem('elevate_candidate_session');
+            if (sessRaw) {
                 try {
-                    const u = JSON.parse(userStr);
+                    const u = JSON.parse(sessRaw);
+                    if (!u || u.role !== 'candidate') return;
                     const initial = (u.name || u.username || 'U').charAt(0).toUpperCase();
                     const name = u.name || u.username || 'Candidate';
                     document.getElementById('navAuthSection').innerHTML = `
@@ -417,7 +419,7 @@
                                 <li><a class="dropdown-item" href="profile.html"><i class="bi bi-person-gear text-info"></i> Profile</a></li>
                                 <li><a class="dropdown-item" href="applications.html"><i class="bi bi-file-earmark-text text-success"></i> Applications</a></li>
                                 <li><hr class="dropdown-divider my-1"></li>
-                                <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="localStorage.removeItem('elevate_user'); window.location.reload();"><i class="bi bi-box-arrow-right text-danger"></i> Logout</a></li>
+                                <li><a class="dropdown-item text-danger" href="javascript:void(0)" onclick="sessionStorage.removeItem('elevate_candidate_session'); localStorage.removeItem('elevate_candidate_session'); sessionStorage.removeItem('elevate_user'); localStorage.removeItem('elevate_user'); window.location.reload();"><i class="bi bi-box-arrow-right text-danger"></i> Logout</a></li>
                             </ul>
                         </div>
                     `;

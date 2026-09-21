@@ -813,12 +813,14 @@
             window.scrollTo({ top: 380, behavior: 'smooth' });
         }
 
-        // Check login state from localStorage
+        // Check login state — only trust elevate_candidate_session
         function initNavAuth() {
-            const userStr = localStorage.getItem('elevate_user');
-            if (userStr) {
+            const sessRaw = sessionStorage.getItem('elevate_candidate_session') ||
+                            localStorage.getItem('elevate_candidate_session');
+            if (sessRaw) {
                 try {
-                    const u = JSON.parse(userStr);
+                    const u = JSON.parse(sessRaw);
+                    if (!u || u.role !== 'candidate') return;
                     const initial = (u.name || u.username || 'U').charAt(0).toUpperCase();
                     const name = u.name || u.username || 'Candidate';
                     document.getElementById('navAuthSection').innerHTML = `
@@ -845,6 +847,9 @@
         }
 
         function logoutUser() {
+            sessionStorage.removeItem('elevate_candidate_session');
+            localStorage.removeItem('elevate_candidate_session');
+            sessionStorage.removeItem('elevate_user');
             localStorage.removeItem('elevate_user');
             window.location.reload();
         }

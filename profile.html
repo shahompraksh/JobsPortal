@@ -68,13 +68,13 @@
                     <li class="nav-item ms-lg-3 mt-2 mt-lg-0" id="navAuthSection">
                         <div class="dropdown">
                             <button class="btn user-dropdown-btn dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                <span class="user-avatar-badge" id="navUserInitial">O</span>
-                                <span class="d-inline-block text-truncate" style="max-width: 130px;" id="navUserName">Om Prakash</span>
+                                <span class="user-avatar-badge" id="navUserInitial"></span>
+                                <span class="d-inline-block text-truncate" style="max-width: 130px;" id="navUserName"></span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu" aria-labelledby="userMenuButton">
                                 <li class="px-3 py-2 border-bottom mb-1">
                                     <small class="text-muted d-block">Signed in as</small>
-                                    <strong class="text-dark" id="navDropdownName">Om Prakash</strong>
+                                    <strong class="text-dark" id="navDropdownName"></strong>
                                 </li>
                                 <li>
                                     <a class="dropdown-item" href="userdashboard.html">
@@ -114,10 +114,9 @@
                     <!-- Profile Header Banner -->
                     <div class="p-4 bg-primary text-white text-center position-relative">
                         <div class="user-avatar-badge mx-auto mb-2 shadow" id="profileHeaderAvatar" style="width: 70px; height: 70px; font-size: 2rem; background: white; color: var(--primary);">
-                            O
                         </div>
-                        <h3 class="fw-bold mb-1" id="profileHeaderName">Om Prakash Sah</h3>
-                        <p class="text-white-50 mb-0 small"><i class="bi bi-person-check me-1"></i> @<span id="profileHeaderUsername">om_prakash</span></p>
+                        <h3 class="fw-bold mb-1" id="profileHeaderName"></h3>
+                        <p class="text-white-50 mb-0 small"><i class="bi bi-person-check me-1"></i> @<span id="profileHeaderUsername"></span></p>
                     </div>
 
                     <div class="card-body p-4 p-lg-5">
@@ -133,7 +132,7 @@
                                     <label class="form-label small fw-bold text-slate-700">Full Name <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light text-muted"><i class="bi bi-person"></i></span>
-                                        <input type="text" name="name" id="profileInputName" value="Om Prakash Sah" class="form-control" required>
+                                        <input type="text" name="name" id="profileInputName" value="" class="form-control" required>
                                     </div>
                                 </div>
 
@@ -141,7 +140,7 @@
                                     <label class="form-label small fw-bold text-slate-700">Username</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light text-muted"><i class="bi bi-at"></i></span>
-                                        <input type="text" name="username" id="profileInputUsername" value="om_prakash" class="form-control bg-light" readonly>
+                                        <input type="text" name="username" id="profileInputUsername" value="" class="form-control bg-light" readonly>
                                     </div>
                                     <small class="text-muted">Username cannot be altered.</small>
                                 </div>
@@ -150,7 +149,7 @@
                                     <label class="form-label small fw-bold text-slate-700">Email Address <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light text-muted"><i class="bi bi-envelope"></i></span>
-                                        <input type="email" name="email" id="profileInputEmail" value="shahomprakash2004@gmail.com" class="form-control" required>
+                                        <input type="email" name="email" id="profileInputEmail" value="" class="form-control" required>
                                     </div>
                                 </div>
 
@@ -158,7 +157,7 @@
                                     <label class="form-label small fw-bold text-slate-700">Phone Number</label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light text-muted"><i class="bi bi-telephone"></i></span>
-                                        <input type="text" name="phone" id="profileInputPhone" value="+977 9761819137" class="form-control" placeholder="+977 98XXXXXXXX">
+                                        <input type="text" name="phone" id="profileInputPhone" value="" class="form-control" placeholder="+977 98XXXXXXXX">
                                     </div>
                                 </div>
 
@@ -166,7 +165,7 @@
                                     <label class="form-label small fw-bold text-slate-700">Account Password <span class="text-danger">*</span></label>
                                     <div class="input-group">
                                         <span class="input-group-text bg-light text-muted"><i class="bi bi-lock"></i></span>
-                                        <input type="password" name="password" id="profileInputPassword" value="••••••••" class="form-control" required>
+                                        <input type="password" name="password" id="profileInputPassword" value="" class="form-control" required>
                                     </div>
                                 </div>
                             </div>
@@ -183,8 +182,8 @@
                                     <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-2 py-1">
                                         <i class="bi bi-check-lg me-1"></i> Active Resume
                                     </span>
-                                    <span class="small fw-semibold text-primary">
-                                        <i class="bi bi-file-earmark-pdf me-1"></i> om_prakash_resume.pdf
+                                    <span class="small fw-semibold text-primary" id="profileResumeLabel">
+                                        <i class="bi bi-file-earmark-pdf me-1"></i> <span id="profileResumeName">resume_on_file.pdf</span>
                                     </span>
                                 </div>
                             </div>
@@ -356,6 +355,10 @@
                 document.getElementById('profileInputUsername').value = username;
                 document.getElementById('profileInputEmail').value = email;
                 document.getElementById('profileInputPhone').value = phone;
+
+                // Set a dynamic resume filename based on username
+                const resumeNameEl = document.getElementById('profileResumeName');
+                if (resumeNameEl) resumeNameEl.innerText = username + '_resume.pdf';
 
                 if (document.getElementById('navUserInitial')) document.getElementById('navUserInitial').innerText = initial;
                 if (document.getElementById('navUserName')) document.getElementById('navUserName').innerText = name;

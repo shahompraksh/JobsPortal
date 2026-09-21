@@ -970,7 +970,14 @@
                     }
 
                     setTimeout(() => {
-                        window.location.href = 'userdashboard.html';
+                        // Honor redirect param so users return to the page they tried to access
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const redirectTarget = urlParams.get('redirect');
+                        if (redirectTarget) {
+                            window.location.href = decodeURIComponent(redirectTarget);
+                        } else {
+                            window.location.href = 'userdashboard.html';
+                        }
                     }, 500);
                 } else {
                     if (alertBox) {
